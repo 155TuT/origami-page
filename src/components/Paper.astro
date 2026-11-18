@@ -1,0 +1,10 @@
+---
+import type { Section } from "../lib/sections";
+interface Props { section: Section; ruling: "grid" | "ruled"; }
+const { section, ruling } = Astro.props;
+---
+<div class="paper-slot">
+  <main id="content" class="site-main" tabindex="0" data-fold-paper={section} data-ruling={ruling}>
+    <div class="sheet-ink"><slot /></div>
+  </main>
+</div>

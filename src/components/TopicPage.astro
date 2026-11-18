@@ -1,0 +1,12 @@
+---
+import Site from "../layouts/Site.astro";
+import PostList from "./PostList.astro";
+import JournalAside from "./JournalAside.astro";
+import { href, type Post } from "../lib/blog";
+interface Props { name: string; type: "tag" | "category"; posts: Post[]; all: Post[]; }
+const { name, type, posts, all } = Astro.props;
+---
+<Site title={name} current={type === "tag" ? "tags" : "archive"} ruling="grid"><div class="interior-grid">
+  <div><header class="page-heading"><a class="eyeline" href={href(type === "tag" ? "tags/" : "archives/")}>{type === "tag" ? "← 全部标签" : "← 文章归档"}</a><h1>{name}</h1><p>{posts.length} 篇手记</p></header><PostList posts={posts} /></div>
+  <JournalAside posts={all} />
+</div></Site>

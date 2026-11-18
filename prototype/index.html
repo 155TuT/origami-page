@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#dce5eb">
+  <meta name="description" content="折间，一份可以折成千纸鹤的双页手记。">
+  <title>纸上生风 · 折间 Fold Journal</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath fill='%236c8496' d='M2 6l10 7L22 3l-2 13 10-6-10 15-8-4-9 6 4-13z'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="journal.css">
+  <script type="module" src="./journal.js"></script>
+</head>
+<body data-edition="wind">
+  <header class="masthead">
+    <div class="brand">
+      <svg class="brand-seal" width="39" height="39" viewBox="0 0 40 40" aria-hidden="true">
+        <path fill="#3b5365" d="M2 6 20 2l18 5v26l-18 5-18-5z"/>
+        <g fill="none" stroke="#f1f6f9" stroke-width="1.35" stroke-linejoin="round">
+          <path d="m7 13 9 4 8-8-2 11 11-5-10 13-8-4-7 5 4-11z"/>
+          <path d="m12 18 3 6 7-4-6-3m6 3 1 8"/>
+        </g>
+      </svg>
+      <div class="brand-type"><strong>折间</strong><span>Fold Journal</span></div>
+    </div>
+    <nav class="page-nav" aria-label="纸页导航">
+      <span class="nav-label mono">INDEX</span>
+      <a href="#wind" class="page-link current" data-page="wind" aria-label="第 1 页，折纸手记" aria-current="page">
+        <canvas class="nav-crane" aria-hidden="true"></canvas>
+        <span><small>01</small>折纸手记</span>
+      </a>
+      <a href="#river" class="page-link" data-page="river" aria-label="第 2 页，散步笔记">
+        <canvas class="nav-crane" aria-hidden="true"></canvas>
+        <span><small>02</small>散步笔记</span>
+      </a>
+    </nav>
+  </header>
+
+  <main class="workbench">
+    <div class="desk-heading">
+      <div><span class="status-dot"></span><span class="mono">FOLDING DESK</span><span class="meta-divider">/</span><span>折纸工作台</span></div>
+      <span class="mono desk-issue">INTERACTION STUDY <b>№ 001</b></span>
+    </div>
+
+    <section class="stage" aria-label="折间双页手记">
+      <div class="desk-margin margin-left" aria-hidden="true"><span class="registration">+</span><span>F O L D &nbsp; J O U R N A L</span></div>
+      <div class="sheet-space" id="sheet-space">
+        <div class="sheet-corner nw" aria-hidden="true"></div><div class="sheet-corner ne" aria-hidden="true"></div>
+        <div class="sheet-corner sw" aria-hidden="true"></div><div class="sheet-corner se" aria-hidden="true"></div>
+
+        <article class="sheet wind visible" id="article-wind" aria-labelledby="title-wind">
+          <canvas class="paper-stock" width="1" height="1" data-ruling="ruled" aria-hidden="true"></canvas>
+          <div class="running-head">
+            <div><i class="ink-square"></i><span>私人刊物</span><span class="head-slash">/</span><span class="mono">FOLD JOURNAL</span></div>
+            <span class="mono sheet-volume">VOL. 01 — AUTUMN</span>
+          </div>
+          <div class="spread">
+            <div class="letterpress">
+              <div class="category"><span class="mini-rule"></span><span>折纸手记</span><span class="mono">ESSAY 01</span></div>
+              <h1 id="title-wind"><span>纸上</span><span><span>生风</span><em>。</em></span></h1>
+              <p class="translation" lang="en">Wind in the Folds</p>
+              <p class="excerpt">午后折了一只纸鹤。拇指压住翼根，轻轻提起纸尖，桌面上便多了一道细长的影子。</p>
+            </div>
+            <figure><canvas class="plate" width="1" height="1" data-plate="wind" role="img" aria-label="冷白千纸鹤的斜俯视图，翼根和反折的喙落着蓝灰色的阴影"></canvas></figure>
+          </div>
+          <div class="colophon">
+            <span class="folio-no"><b>01</b><span>/</span><span>02</span></span>
+            <a href="#river" class="turn-link"><span>翻到散步笔记</span><span class="turn-arrow">→</span></a>
+          </div>
+        </article>
+
+        <article class="sheet river" id="article-river" aria-labelledby="title-river" aria-hidden="true" inert>
+          <canvas class="paper-stock" width="1" height="1" data-ruling="grid" aria-hidden="true"></canvas>
+          <div class="running-head">
+            <div><i class="ink-square"></i><span>私人刊物</span><span class="head-slash">/</span><span class="mono">FOLD JOURNAL</span></div>
+            <span class="mono sheet-volume">VOL. 01 — AUTUMN</span>
+          </div>
+          <div class="spread">
+            <div class="letterpress">
+              <div class="category"><span class="mini-rule"></span><span>散步笔记</span><span class="mono">WALK 02</span></div>
+              <h1 id="title-river"><span>河岸</span><span><span>余晖</span><em>。</em></span></h1>
+              <p class="translation" lang="en">Along the River</p>
+              <p class="excerpt">走到桥下，太阳只剩半枚。对岸的树影铺上水面，一艘小船经过，把银灰色的天光分成两行。</p>
+            </div>
+            <figure><canvas class="plate" width="1" height="1" data-plate="river" role="img" aria-label="淡紫色的日轮、蓝灰色的河岸和水中银色的倒影"></canvas></figure>
+          </div>
+          <div class="colophon">
+            <span class="folio-no"><b>02</b><span>/</span><span>02</span></span>
+            <a href="#wind" class="turn-link"><span>翻回折纸手记</span><span class="turn-arrow">→</span></a>
+          </div>
+        </article>
+      </div>
+      <div class="desk-margin margin-right" aria-hidden="true"><span class="margin-ticks"></span><span id="margin-page">PLATE 01</span></div>
+    </section>
+
+    <div class="desk-controls">
+      <div class="instruction"><span aria-hidden="true">↗</span><span id="phase-label">点击导航里的纸鹤换页</span></div>
+      <div class="speed-controls" role="group" aria-label="动效速度">
+        <span class="speed-label">播放速度</span>
+        <button type="button" data-speed="1" aria-pressed="true">1×</button>
+        <button type="button" data-speed="0.5" aria-pressed="false">0.5× 慢放</button>
+      </div>
+    </div>
+  </main>
+  <footer class="desk-footer">
+    <div><span class="print-mark" aria-hidden="true">✳</span><span class="mono">FOLD JOURNAL</span><span class="footer-divider">/</span><span>一份可以折起来的博客</span></div>
+    <details id="readout"><summary>动效读数</summary><div class="readout-body"><b>切换实测</b><p id="renderer-info"></p><p id="metrics">完成一次换页后显示本机的帧间隔和绘制耗时。</p><p id="mesh-metrics"></p><small>帧间隔取自 requestAnimationFrame。绘制耗时为主线程提交指令的时间。</small></div></details>
+  </footer>
+  <canvas id="motion" width="1" height="1" aria-hidden="true" hidden></canvas>
+  <canvas id="motion-gl" width="1" height="1" aria-hidden="true" hidden></canvas>
+  <canvas id="shuttle" width="1" height="1" aria-hidden="true" hidden></canvas>
+  <p id="announcement" class="sr-only" role="status" aria-live="polite"></p>
+  <noscript><p>启用 JavaScript 即可查看折叠动效。</p></noscript>
+</body>
+</html>

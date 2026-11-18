@@ -1,0 +1,68 @@
+---
+import { ClientRouter } from "astro:transitions";
+import ReadingSettings from "../components/ReadingSettings.astro";
+import Paper from "../components/Paper.astro";
+import { href, siteName } from "../lib/blog";
+import { sections, type Section } from "../lib/sections";
+import initialPreferences from "../scripts/initial-preferences.js?raw";
+import "../styles/journal.css";
+interface Props {
+  title?: string;
+  description?: string;
+  current: Section;
+  ruling?: "ruled" | "grid";
+}
+const { title, description = "折间，一本关于折纸、设计、代码和日常散步的个人手记。", current, ruling = "ruled" } = Astro.props;
+const documentTitle = title ? title + " · " + siteName : siteName + " · Fold Journal";
+const canonical = Astro.site && new URL(Astro.url.pathname, Astro.site);
+const image = import.meta.env.PUBLIC_DESK_IMAGE_URL?.trim();
+const deskImage = image && (/^(?:https?:)?\/\//i.test(image) ? image : href(image));
+---
+<!doctype html>
+<html lang="zh-CN" transition:animate="none">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <meta name="color-scheme" content="light dark" />
+    <meta name="theme-color" content="#f6f7f4" />
+    <meta property="og:title" content={documentTitle} />
+    <meta property="og:description" content={description} />
+    {canonical && <link rel="canonical" href={canonical} />}
+    <link rel="icon" href="data:," />
+    <title>{documentTitle}</title>
+    <script is:inline set:html={initialPreferences}></script>
+    <ClientRouter fallback="swap" />
+  </head>
+  <body>
+    <div class="desk-backdrop" aria-hidden="true" transition:persist="desk-backdrop">
+      {deskImage && <img src={deskImage} alt="" decoding="async" fetchpriority="low" />}
+    </div>
+    <a class="skip-link" href="#content">跳到正文</a>
+    <header class="site-header">
+      <div class="header-inner">
+        <a class="wordmark" href={href()} aria-label="折间首页"><strong>折间</strong><i lang="en">Fold Journal</i></a>
+        <ReadingSettings />
+        <nav class="site-nav" aria-label="主导航">
+          {sections.map(section => <a href={href(section.path)} aria-current={current === section.id ? (href(section.path) === Astro.url.pathname ? "page" : "location") : undefined}>
+            <span class="nav-fold-icon" data-fold-dock={section.id} aria-hidden="true"><img src={href(section.icon)} width="39" height="32" alt="" /></span>
+            <span>{section.label}</span>
+          </a>)}
+        </nav>
+      </div>
+    </header>
+    <Paper section={current} ruling={ruling}>
+      <div class="sheet-content"><slot /></div>
+    </Paper>
+    <div id="fold-stage" aria-hidden="true" inert transition:persist="fold-stage" transition:animate="none">
+      <div class="fold-flat" hidden></div>
+      <canvas id="motion" width="1" height="1" hidden></canvas>
+      <canvas id="motion-gl" width="1" height="1" hidden></canvas>
+      <img id="shuttle" width="39" height="32" alt="" hidden />
+      <output id="renderer-info" hidden></output>
+    </div>
+    <script>
+      import "../scripts/navigation";
+    </script>
+  </body>
+</html>

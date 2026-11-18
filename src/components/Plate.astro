@@ -1,0 +1,13 @@
+---
+import { artwork, href } from "../lib/blog";
+interface Props { art: keyof typeof artwork; }
+const { art } = Astro.props;
+const image = artwork[art];
+---
+<figure class:list={["plate", "plate-" + art]}>
+  <div class="plate-drawing">
+    <span class="plate-orbit" aria-hidden="true"></span>
+    <img src={href("art/" + image.file)} width="1260" height="795" alt={image.alt} fetchpriority="high" />
+  </div>
+  <figcaption><span>{image.caption}</span><i lang="en">{image.english}</i></figcaption>
+</figure>

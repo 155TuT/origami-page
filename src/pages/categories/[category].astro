@@ -1,0 +1,9 @@
+---
+import TopicPage from "../../components/TopicPage.astro";
+import { allPosts, groupPosts } from "../../lib/blog";
+export async function getStaticPaths() {
+  const all = await allPosts();
+  return [...groupPosts(all, "category")].map(([name, posts]) => ({ params: { category: name }, props: { name, posts, all } }));
+}
+---
+<TopicPage type="category" {...Astro.props} />

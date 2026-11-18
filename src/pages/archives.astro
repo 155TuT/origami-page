@@ -1,0 +1,15 @@
+---
+import Site from "../layouts/Site.astro";
+import PostList from "../components/PostList.astro";
+import JournalAside from "../components/JournalAside.astro";
+import { allPosts, groupPosts } from "../lib/blog";
+const posts = await allPosts();
+---
+<Site title="文章归档" current="archive">
+  <div class="interior-grid">
+    <div><header class="page-heading"><p class="eyeline">按时间浏览</p><h1>文章归档</h1><p>共 {posts.length} 篇手记</p></header>
+      {[...groupPosts(posts,"year")].map(([year, entries]) => <section class="archive-year"><h2>{year}</h2><PostList posts={entries} /></section>)}
+    </div>
+    <JournalAside posts={posts} />
+  </div>
+</Site>

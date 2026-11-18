@@ -1,0 +1,5 @@
+---
+import Site from "../layouts/Site.astro";
+import { href } from "../lib/blog";
+---
+<Site title="找不到这一页" current="home"><div class="error-page"><p class="eyeline">404</p><h1>找不到这一页</h1><p>可以回到首页，或在归档中查找文章。</p><div class="error-links"><a class="read-button" href={href()}>返回首页 →</a><a class="text-link" href={href("archives/")}>文章归档 ↗</a></div></div></Site>

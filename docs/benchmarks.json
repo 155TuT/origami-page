@@ -1,0 +1,619 @@
+{
+  "date": "2026-11-04T10:57:08.043Z",
+  "host": "Windows, Playwright, headless, local HTTP, serial runs, native rAF",
+  "platform": "win32",
+  "cpu": "AMD Ryzen AI 7 H 350 w/ Radeon 860M ",
+  "results": [
+    {
+      "spec": {
+        "name": "Chrome desk",
+        "engine": "chrome",
+        "channel": "chrome",
+        "w": 1366,
+        "h": 850,
+        "dpr": 1
+      },
+      "version": "156.0.8078.80",
+      "info": {
+        "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.0.0 Safari/537.36",
+        "view": [
+          1366,
+          850,
+          1
+        ],
+        "nativeClock": "function requestAnimationFrame() { [native code] }",
+        "idle": true,
+        "queries": true,
+        "inert": true,
+        "letterSpacing": true,
+        "paper": [
+          765,
+          500
+        ]
+      },
+      "turns": [
+        "平均 100 帧/秒，P95 帧间隔 10.2 ms，P95 绘制提交 0.8 ms。换页准备 0.3 ms，缓存页制纹与插图 1.6 ms。采样 232 个帧间隔，0 个超过 25 ms。",
+        "平均 100 帧/秒，P95 帧间隔 10.2 ms，P95 绘制提交 0.9 ms。换页准备 0.2 ms，缓存页制纹与插图 1.6 ms。采样 232 个帧间隔，0 个超过 25 ms。",
+        "平均 100 帧/秒，P95 帧间隔 10.2 ms，P95 绘制提交 0.9 ms。换页准备 0.1 ms，缓存页制纹与插图 1.6 ms。采样 232 个帧间隔，0 个超过 25 ms。",
+        "平均 100 帧/秒，P95 帧间隔 10.2 ms，P95 绘制提交 0.9 ms。换页准备 0.2 ms，缓存页制纹与插图 1.6 ms。采样 232 个帧间隔，0 个超过 25 ms。"
+      ],
+      "overlay": [
+        772,
+        508
+      ],
+      "sheets": [
+        [
+          765,
+          500
+        ],
+        [
+          765,
+          500
+        ]
+      ],
+      "errors": []
+    },
+    {
+      "spec": {
+        "name": "Chrome same crane x6",
+        "engine": "chrome",
+        "channel": "chrome",
+        "w": 1366,
+        "h": 850,
+        "dpr": 1,
+        "six": true
+      },
+      "version": "156.0.8078.80",
+      "info": {
+        "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.0.0 Safari/537.36",
+        "view": [
+          1366,
+          850,
+          1
+        ],
+        "nativeClock": "function requestAnimationFrame() { [native code] }",
+        "idle": true,
+        "queries": true,
+        "inert": true,
+        "letterSpacing": true,
+        "paper": [
+          765,
+          500
+        ]
+      },
+      "turns": [
+        "平均 100 帧/秒，P95 帧间隔 10.1 ms，P95 绘制提交 0.8 ms。换页准备 0.3 ms，缓存页制纹与插图 1.9 ms。采样 232 个帧间隔，0 个超过 25 ms。",
+        "平均 100 帧/秒，P95 帧间隔 10.1 ms，P95 绘制提交 0.9 ms。换页准备 1.9 ms，缓存页制纹与插图 3.0 ms。采样 231 个帧间隔，0 个超过 25 ms。",
+        "平均 100 帧/秒，P95 帧间隔 10.1 ms，P95 绘制提交 0.9 ms。换页准备 1.8 ms，缓存页制纹与插图 3.0 ms。采样 232 个帧间隔，0 个超过 25 ms。",
+        "平均 100 帧/秒，P95 帧间隔 10.2 ms，P95 绘制提交 0.9 ms。换页准备 1.4 ms，缓存页制纹与插图 2.4 ms。采样 232 个帧间隔，0 个超过 25 ms。",
+        "平均 100 帧/秒，P95 帧间隔 10.2 ms，P95 绘制提交 0.9 ms。换页准备 1.6 ms，缓存页制纹与插图 2.3 ms。采样 232 个帧间隔，0 个超过 25 ms。"
+      ],
+      "overlay": [
+        772,
+        508
+      ],
+      "sheets": [
+        [
+          765,
+          500
+        ],
+        [
+          1,
+          1
+        ],
+        [
+          1,
+          1
+        ],
+        [
+          1,
+          1
+        ],
+        [
+          1,
+          1
+        ],
+        [
+          765,
+          500
+        ]
+      ],
+      "errors": []
+    },
+    {
+      "spec": {
+        "name": "Phone 4x",
+        "engine": "chrome",
+        "channel": "chrome",
+        "w": 390,
+        "h": 844,
+        "dpr": 3,
+        "slow": 4
+      },
+      "version": "156.0.8078.80",
+      "info": {
+        "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.0.0 Safari/537.36",
+        "view": [
+          390,
+          844,
+          3
+        ],
+        "nativeClock": "function requestAnimationFrame() { [native code] }",
+        "idle": true,
+        "queries": true,
+        "inert": true,
+        "letterSpacing": true,
+        "paper": [
+          234,
+          405
+        ]
+      },
+      "turns": [
+        "平均 100 帧/秒，P95 帧间隔 10.1 ms，P95 绘制提交 2.7 ms。换页准备 2.0 ms，缓存页制纹与插图 9.2 ms。采样 232 个帧间隔，0 个超过 25 ms。",
+        "平均 100 帧/秒，P95 帧间隔 10.1 ms，P95 绘制提交 4.0 ms。换页准备 0.8 ms，缓存页制纹与插图 9.2 ms。采样 232 个帧间隔，0 个超过 25 ms。",
+        "平均 100 帧/秒，P95 帧间隔 10.1 ms，P95 绘制提交 2.8 ms。换页准备 0.9 ms，缓存页制纹与插图 9.2 ms。采样 232 个帧间隔，0 个超过 25 ms。",
+        "平均 100 帧/秒，P95 帧间隔 10.2 ms，P95 绘制提交 2.9 ms。换页准备 0.6 ms，缓存页制纹与插图 9.2 ms。采样 232 个帧间隔，0 个超过 25 ms。"
+      ],
+      "overlay": [
+        360,
+        618
+      ],
+      "sheets": [
+        [
+          351,
+          608
+        ],
+        [
+          351,
+          608
+        ]
+      ],
+      "errors": []
+    },
+    {
+      "spec": {
+        "name": "Phone 6x",
+        "engine": "chrome",
+        "channel": "chrome",
+        "w": 360,
+        "h": 800,
+        "dpr": 3,
+        "slow": 6
+      },
+      "version": "156.0.8078.80",
+      "info": {
+        "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.0.0 Safari/537.36",
+        "view": [
+          360,
+          800,
+          3
+        ],
+        "nativeClock": "function requestAnimationFrame() { [native code] }",
+        "idle": true,
+        "queries": true,
+        "inert": true,
+        "letterSpacing": true,
+        "paper": [
+          216,
+          402
+        ]
+      },
+      "turns": [
+        "平均 100 帧/秒，P95 帧间隔 10.1 ms，P95 绘制提交 5.7 ms。换页准备 3.0 ms，缓存页制纹与插图 15.5 ms。采样 231 个帧间隔，0 个超过 25 ms。",
+        "平均 100 帧/秒，P95 帧间隔 10.1 ms，P95 绘制提交 4.9 ms。换页准备 2.2 ms，缓存页制纹与插图 15.5 ms。采样 231 个帧间隔，0 个超过 25 ms。",
+        "平均 100 帧/秒，P95 帧间隔 10.2 ms，P95 绘制提交 4.9 ms。换页准备 1.7 ms，缓存页制纹与插图 15.5 ms。采样 231 个帧间隔，0 个超过 25 ms。",
+        "平均 100 帧/秒，P95 帧间隔 10.2 ms，P95 绘制提交 4.8 ms。换页准备 1.4 ms，缓存页制纹与插图 15.5 ms。采样 231 个帧间隔，0 个超过 25 ms。"
+      ],
+      "overlay": [
+        333,
+        615
+      ],
+      "sheets": [
+        [
+          324,
+          603
+        ],
+        [
+          324,
+          603
+        ]
+      ],
+      "errors": []
+    },
+    {
+      "spec": {
+        "name": "Edge desk",
+        "engine": "edge",
+        "channel": "msedge",
+        "w": 1366,
+        "h": 850,
+        "dpr": 1
+      },
+      "version": "156.0.4314.58",
+      "info": {
+        "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.0.0 Safari/537.36 Edg/156.0.0.0",
+        "view": [
+          1366,
+          850,
+          1
+        ],
+        "nativeClock": "function requestAnimationFrame() { [native code] }",
+        "idle": true,
+        "queries": true,
+        "inert": true,
+        "letterSpacing": true,
+        "paper": [
+          765,
+          500
+        ]
+      },
+      "turns": [
+        "平均 100 帧/秒，P95 帧间隔 10.1 ms，P95 绘制提交 0.8 ms。换页准备 0.4 ms，缓存页制纹与插图 1.6 ms。采样 232 个帧间隔，0 个超过 25 ms。",
+        "平均 100 帧/秒，P95 帧间隔 10.2 ms，P95 绘制提交 0.9 ms。换页准备 0.2 ms，缓存页制纹与插图 1.6 ms。采样 232 个帧间隔，0 个超过 25 ms。",
+        "平均 100 帧/秒，P95 帧间隔 10.2 ms，P95 绘制提交 0.9 ms。换页准备 0.1 ms，缓存页制纹与插图 1.6 ms。采样 232 个帧间隔，0 个超过 25 ms。",
+        "平均 100 帧/秒，P95 帧间隔 10.2 ms，P95 绘制提交 0.8 ms。换页准备 0.2 ms，缓存页制纹与插图 1.6 ms。采样 232 个帧间隔，0 个超过 25 ms。"
+      ],
+      "overlay": [
+        772,
+        508
+      ],
+      "sheets": [
+        [
+          765,
+          500
+        ],
+        [
+          765,
+          500
+        ]
+      ],
+      "errors": []
+    },
+    {
+      "spec": {
+        "name": "Firefox desk",
+        "engine": "firefox",
+        "w": 1366,
+        "h": 850,
+        "dpr": 1
+      },
+      "version": "156.0",
+      "info": {
+        "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:156.0) Gecko/20100101 Firefox/156.0",
+        "view": [
+          1366,
+          850,
+          1
+        ],
+        "nativeClock": "function requestAnimationFrame() {\n    [native code]\n}",
+        "idle": true,
+        "queries": true,
+        "inert": true,
+        "letterSpacing": true,
+        "paper": [
+          765,
+          500
+        ]
+      },
+      "turns": [
+        "平均 100 帧/秒，P95 帧间隔 10.6 ms，P95 绘制提交 8.0 ms。换页准备 0.0 ms，缓存页制纹与插图 9.0 ms。采样 231 个帧间隔，0 个超过 25 ms。",
+        "平均 100 帧/秒，P95 帧间隔 10.3 ms，P95 绘制提交 8.0 ms。换页准备 0.0 ms，缓存页制纹与插图 9.0 ms。采样 232 个帧间隔，0 个超过 25 ms。",
+        "平均 100 帧/秒，P95 帧间隔 10.3 ms，P95 绘制提交 8.0 ms。换页准备 0.0 ms，缓存页制纹与插图 9.0 ms。采样 232 个帧间隔，0 个超过 25 ms。",
+        "平均 100 帧/秒，P95 帧间隔 10.5 ms，P95 绘制提交 8.0 ms。换页准备 0.0 ms，缓存页制纹与插图 9.0 ms。采样 232 个帧间隔，0 个超过 25 ms。"
+      ],
+      "overlay": [
+        772,
+        514
+      ],
+      "sheets": [
+        [
+          765,
+          500
+        ],
+        [
+          765,
+          500
+        ]
+      ],
+      "errors": []
+    },
+    {
+      "spec": {
+        "name": "WebKit desk",
+        "engine": "webkit",
+        "w": 1366,
+        "h": 850,
+        "dpr": 1
+      },
+      "version": "26.6",
+      "info": {
+        "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/26.6 Safari/605.1.15",
+        "view": [
+          1366,
+          850,
+          1
+        ],
+        "nativeClock": "function requestAnimationFrame() {\n    [native code]\n}",
+        "idle": false,
+        "queries": true,
+        "inert": true,
+        "letterSpacing": true,
+        "paper": [
+          765,
+          500
+        ]
+      },
+      "turns": [
+        "平均 95 帧/秒，P95 帧间隔 21.0 ms，P95 绘制提交 1.0 ms。换页准备 1.0 ms，缓存页制纹与插图 4.0 ms。采样 222 个帧间隔，2 个超过 25 ms。",
+        "平均 93 帧/秒，P95 帧间隔 20.0 ms，P95 绘制提交 1.0 ms。换页准备 0.0 ms，缓存页制纹与插图 4.0 ms。采样 218 个帧间隔，0 个超过 25 ms。",
+        "平均 94 帧/秒，P95 帧间隔 20.0 ms，P95 绘制提交 1.0 ms。换页准备 1.0 ms，缓存页制纹与插图 4.0 ms。采样 220 个帧间隔，2 个超过 25 ms。",
+        "平均 97 帧/秒，P95 帧间隔 19.0 ms，P95 绘制提交 1.0 ms。换页准备 0.0 ms，缓存页制纹与插图 4.0 ms。采样 226 个帧间隔，2 个超过 25 ms。"
+      ],
+      "overlay": [
+        772,
+        508
+      ],
+      "sheets": [
+        [
+          765,
+          500
+        ],
+        [
+          765,
+          500
+        ]
+      ],
+      "errors": []
+    },
+    {
+      "spec": {
+        "name": "WebKit narrow",
+        "engine": "webkit",
+        "w": 390,
+        "h": 844,
+        "dpr": 3
+      },
+      "version": "26.6",
+      "info": {
+        "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/26.6 Safari/605.1.15",
+        "view": [
+          390,
+          844,
+          3
+        ],
+        "nativeClock": "function requestAnimationFrame() {\n    [native code]\n}",
+        "idle": false,
+        "queries": true,
+        "inert": true,
+        "letterSpacing": true,
+        "paper": [
+          234,
+          405
+        ]
+      },
+      "turns": [
+        "平均 102 帧/秒，P95 帧间隔 35.0 ms，P95 绘制提交 1.0 ms。换页准备 1.0 ms，缓存页制纹与插图 4.0 ms。采样 239 个帧间隔，18 个超过 25 ms。",
+        "平均 105 帧/秒，P95 帧间隔 30.0 ms，P95 绘制提交 1.0 ms。换页准备 0.0 ms，缓存页制纹与插图 4.0 ms。采样 247 个帧间隔，21 个超过 25 ms。",
+        "平均 105 帧/秒，P95 帧间隔 31.0 ms，P95 绘制提交 1.0 ms。换页准备 0.0 ms，缓存页制纹与插图 4.0 ms。采样 245 个帧间隔，20 个超过 25 ms。",
+        "平均 104 帧/秒，P95 帧间隔 31.0 ms，P95 绘制提交 1.0 ms。换页准备 0.0 ms，缓存页制纹与插图 4.0 ms。采样 243 个帧间隔，20 个超过 25 ms。"
+      ],
+      "overlay": [
+        363,
+        618
+      ],
+      "sheets": [
+        [
+          351,
+          608
+        ],
+        [
+          351,
+          608
+        ]
+      ],
+      "errors": []
+    }
+  ],
+  "coldPreparation": {
+    "method": "fresh browser context, idle preparation disabled, 3 first turns per setting",
+    "previousTextBitmapVersion": [
+      {
+        "spec": [
+          1366,
+          850,
+          1,
+          1
+        ],
+        "turn": "平均 99 帧/秒，P95 帧间隔 10.2 ms，P95 绘制提交 0.8 ms。换页准备 18.9 ms，缓存页制纹与插图 14.6 ms。采样 231 个帧间隔，1 个超过 25 ms。"
+      },
+      {
+        "spec": [
+          1366,
+          850,
+          1,
+          1
+        ],
+        "turn": "平均 100 帧/秒，P95 帧间隔 10.2 ms，P95 绘制提交 0.8 ms。换页准备 18.6 ms，缓存页制纹与插图 14.3 ms。采样 233 个帧间隔，0 个超过 25 ms。"
+      },
+      {
+        "spec": [
+          1366,
+          850,
+          1,
+          1
+        ],
+        "turn": "平均 100 帧/秒，P95 帧间隔 10.2 ms，P95 绘制提交 0.8 ms。换页准备 20.0 ms，缓存页制纹与插图 15.5 ms。采样 233 个帧间隔，0 个超过 25 ms。"
+      },
+      {
+        "spec": [
+          360,
+          800,
+          3,
+          6
+        ],
+        "turn": "平均 99 帧/秒，P95 帧间隔 10.2 ms，P95 绘制提交 4.0 ms。换页准备 141.0 ms，缓存页制纹与插图 111.4 ms。采样 229 个帧间隔，1 个超过 25 ms。"
+      },
+      {
+        "spec": [
+          360,
+          800,
+          3,
+          6
+        ],
+        "turn": "平均 99 帧/秒，P95 帧间隔 10.2 ms，P95 绘制提交 4.3 ms。换页准备 130.8 ms，缓存页制纹与插图 103.0 ms。采样 230 个帧间隔，1 个超过 25 ms。"
+      },
+      {
+        "spec": [
+          360,
+          800,
+          3,
+          6
+        ],
+        "turn": "平均 99 帧/秒，P95 帧间隔 10.1 ms，P95 绘制提交 5.1 ms。换页准备 133.6 ms，缓存页制纹与插图 105.0 ms。采样 230 个帧间隔，1 个超过 25 ms。"
+      }
+    ],
+    "deliveredNativeTextVersion": [
+      {
+        "spec": [
+          1366,
+          850,
+          1,
+          1
+        ],
+        "turn": "平均 100 帧/秒，P95 帧间隔 10.2 ms，P95 绘制提交 0.8 ms。换页准备 1.5 ms，缓存页制纹与插图 1.9 ms。采样 232 个帧间隔，0 个超过 25 ms。"
+      },
+      {
+        "spec": [
+          1366,
+          850,
+          1,
+          1
+        ],
+        "turn": "平均 100 帧/秒，P95 帧间隔 10.1 ms，P95 绘制提交 0.8 ms。换页准备 1.4 ms，缓存页制纹与插图 1.7 ms。采样 232 个帧间隔，0 个超过 25 ms。"
+      },
+      {
+        "spec": [
+          1366,
+          850,
+          1,
+          1
+        ],
+        "turn": "平均 100 帧/秒，P95 帧间隔 10.1 ms，P95 绘制提交 0.8 ms。换页准备 1.3 ms，缓存页制纹与插图 2.2 ms。采样 232 个帧间隔，0 个超过 25 ms。"
+      },
+      {
+        "spec": [
+          360,
+          800,
+          3,
+          6
+        ],
+        "turn": "平均 98 帧/秒，P95 帧间隔 10.2 ms，P95 绘制提交 3.9 ms。换页准备 13.0 ms，缓存页制纹与插图 16.1 ms。采样 229 个帧间隔，1 个超过 25 ms。"
+      },
+      {
+        "spec": [
+          360,
+          800,
+          3,
+          6
+        ],
+        "turn": "平均 97 帧/秒，P95 帧间隔 10.2 ms，P95 绘制提交 4.2 ms。换页准备 13.4 ms，缓存页制纹与插图 14.7 ms。采样 226 个帧间隔，1 个超过 25 ms。"
+      },
+      {
+        "spec": [
+          360,
+          800,
+          3,
+          6
+        ],
+        "turn": "平均 98 帧/秒，P95 帧间隔 10.2 ms，P95 绘制提交 4.1 ms。换页准备 10.5 ms，缓存页制纹与插图 13.0 ms。采样 229 个帧间隔，1 个超过 25 ms。"
+      }
+    ]
+  },
+  "earlierWebKitProbe": {
+    "note": "large motion surface, before dirty regions and separate travelling sprite",
+    "instrumented": {
+      "engine": "wk3",
+      "idle": [
+        30,
+        31
+      ],
+      "turns": [
+        [
+          "full",
+          "平均 27 帧/秒，P95 帧间隔 50.0 ms，P95 绘制提交 1.0 ms。换页准备 17.0 ms，缓存页制纹与插图 13.0 ms。采样 64 个帧间隔，64 个超过 25 ms。"
+        ],
+        [
+          "full",
+          "平均 26 帧/秒，P95 帧间隔 49.0 ms，P95 绘制提交 1.0 ms。换页准备 1.0 ms，缓存页制纹与插图 13.0 ms。采样 62 个帧间隔，62 个超过 25 ms。"
+        ],
+        [
+          "plain",
+          "平均 29 帧/秒，P95 帧间隔 47.0 ms，P95 绘制提交 1.0 ms。换页准备 1.0 ms，缓存页制纹与插图 13.0 ms。采样 68 个帧间隔，68 个超过 25 ms。"
+        ],
+        [
+          "plain",
+          "平均 28 帧/秒，P95 帧间隔 48.0 ms，P95 绘制提交 1.0 ms。换页准备 1.0 ms，缓存页制纹与插图 13.0 ms。采样 67 个帧间隔，67 个超过 25 ms。"
+        ],
+        [
+          "empty",
+          "平均 30 帧/秒，P95 帧间隔 46.0 ms，P95 绘制提交 1.0 ms。换页准备 0.0 ms，缓存页制纹与插图 13.0 ms。采样 70 个帧间隔，70 个超过 25 ms。"
+        ],
+        [
+          "empty",
+          "平均 29 帧/秒，P95 帧间隔 47.0 ms，P95 绘制提交 1.0 ms。换页准备 0.0 ms，缓存页制纹与插图 13.0 ms。采样 69 个帧间隔，69 个超过 25 ms。"
+        ]
+      ]
+    }
+  },
+  "visualChecks": {
+    "materials": {
+      "wind": {
+        "fold": 0.36036760027883563,
+        "changed": 13958,
+        "paperPixels": 134671,
+        "matches": 127,
+        "maxError": 1.1718571004216928e-13,
+        "mappedFaces": 110
+      },
+      "river": {
+        "fold": 0.5499259259259259,
+        "changed": 14158,
+        "paperPixels": 58547,
+        "matches": 234,
+        "maxError": 1.2409095402129096e-13,
+        "mappedFaces": 100
+      }
+    },
+    "half": [
+      {
+        "key": "wind",
+        "scale": 0.5014060829012743,
+        "fold": 0.7172603977364395,
+        "ink": 0,
+        "ruling": 1,
+        "bounds": [
+          382.8371914452034,
+          253.14780994161913,
+          707.0219449777211,
+          475.1751899351482
+        ]
+      },
+      {
+        "key": "river",
+        "scale": 0.5014060829012743,
+        "fold": 0.7172603977364395,
+        "ink": 0,
+        "ruling": 1,
+        "bounds": [
+          382.8371914452034,
+          253.14780994161913,
+          707.0219449777211,
+          475.1751899351482
+        ]
+      }
+    ],
+    "identicalIcons": true,
+    "end": "article-river",
+    "errors": []
+  }
+}

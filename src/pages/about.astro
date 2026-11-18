@@ -1,0 +1,13 @@
+---
+import Site from "../layouts/Site.astro";
+import JournalAside from "../components/JournalAside.astro";
+import { allPosts, href } from "../lib/blog";
+const posts = await allPosts();
+---
+<Site title="关于折间" current="about"><div class="interior-grid">
+  <div><header class="page-heading"><p class="eyeline">Fold Journal</p><h1>关于折间</h1></header>
+    <div class="prose about-text"><p>折间是一本放在网上的个人手记。这里收录折纸、设计和代码，也留一栏给平常散步时看到的风景。</p>
+    <h2>从哪里读起</h2><p><a href={href("archives/")}>文章归档</a>按时间排列。想沿一个主题往下读，可以翻翻<a href={href("tags/")}>标签索引</a>。</p>
+    <h2>关于那只纸鹤</h2><p>翻页时，眼前这张纸收回它所属的栏目，下一张从对应的栏目图标展开。阅读设置里可以切换深浅色，也可以直接翻页。</p></div>
+  </div><JournalAside posts={posts} />
+</div></Site>

@@ -1,0 +1,2832 @@
+{
+  "date": "2026-11-04T12:49:38.501Z",
+  "platform": "win32",
+  "cpu": "AMD Ryzen AI 7 H 350 w/ Radeon 860M",
+  "method": "Local HTTP, headless browsers, native requestAnimationFrame. Sequential ABBA within each viewport, fresh process per block, 4 full switches per block. P95 nearest rank per switch. Group statistics across switches; callback intervals do not measure displayed FPS. Chrome 4x throttles CPU only. Other engine rows run after Chrome. Forced GPU waits for initialization before the first timed switch.",
+  "byCondition": {
+    "Chrome desk / 2d": {
+      "n": 8,
+      "actualBackend": [
+        "2d"
+      ],
+      "meshDrawP95Ms": {
+        "min": 0.9,
+        "median": 1.1,
+        "max": 1.1
+      },
+      "meshGapP95Ms": {
+        "min": 10.1,
+        "median": 10.2,
+        "max": 10.2
+      },
+      "fullGapP95Ms": {
+        "min": 10.1,
+        "median": 10.2,
+        "max": 10.2
+      },
+      "slowIntervals": 0
+    },
+    "Chrome desk / webgl2": {
+      "n": 8,
+      "actualBackend": [
+        "webgl2"
+      ],
+      "meshDrawP95Ms": {
+        "min": 0.3,
+        "median": 0.3,
+        "max": 0.4
+      },
+      "meshGapP95Ms": {
+        "min": 10.1,
+        "median": 10.15,
+        "max": 10.2
+      },
+      "fullGapP95Ms": {
+        "min": 10.1,
+        "median": 10.1,
+        "max": 10.2
+      },
+      "slowIntervals": 0
+    },
+    "Phone 4x / 2d": {
+      "n": 8,
+      "actualBackend": [
+        "2d"
+      ],
+      "meshDrawP95Ms": {
+        "min": 2.8,
+        "median": 4.0,
+        "max": 4.4
+      },
+      "meshGapP95Ms": {
+        "min": 10.1,
+        "median": 10.1,
+        "max": 10.2
+      },
+      "fullGapP95Ms": {
+        "min": 10.1,
+        "median": 10.1,
+        "max": 10.2
+      },
+      "slowIntervals": 0
+    },
+    "Phone 4x / webgl2": {
+      "n": 8,
+      "actualBackend": [
+        "webgl2"
+      ],
+      "meshDrawP95Ms": {
+        "min": 0.9,
+        "median": 1.2,
+        "max": 1.5
+      },
+      "meshGapP95Ms": {
+        "min": 10.1,
+        "median": 10.1,
+        "max": 10.2
+      },
+      "fullGapP95Ms": {
+        "min": 10.1,
+        "median": 10.1,
+        "max": 10.2
+      },
+      "slowIntervals": 0
+    },
+    "Firefox desk / 2d": {
+      "n": 8,
+      "actualBackend": [
+        "2d"
+      ],
+      "meshDrawP95Ms": {
+        "min": 9.0,
+        "median": 9.0,
+        "max": 10.0
+      },
+      "meshGapP95Ms": {
+        "min": 12.12,
+        "median": 12.12,
+        "max": 12.14
+      },
+      "fullGapP95Ms": {
+        "min": 12.1,
+        "median": 12.1,
+        "max": 12.1
+      },
+      "slowIntervals": 0
+    },
+    "Firefox desk / webgl2": {
+      "n": 8,
+      "actualBackend": [
+        "webgl2"
+      ],
+      "meshDrawP95Ms": {
+        "min": 1.0,
+        "median": 1.0,
+        "max": 1.0
+      },
+      "meshGapP95Ms": {
+        "min": 12.12,
+        "median": 12.12,
+        "max": 12.14
+      },
+      "fullGapP95Ms": {
+        "min": 12.1,
+        "median": 12.1,
+        "max": 12.1
+      },
+      "slowIntervals": 0
+    },
+    "WebKit narrow / 2d": {
+      "n": 8,
+      "actualBackend": [
+        "2d"
+      ],
+      "meshDrawP95Ms": {
+        "min": 1.0,
+        "median": 1.0,
+        "max": 1.0
+      },
+      "meshGapP95Ms": {
+        "min": 26.0,
+        "median": 28.5,
+        "max": 32.0
+      },
+      "fullGapP95Ms": {
+        "min": 32.0,
+        "median": 34.5,
+        "max": 36.0
+      },
+      "slowIntervals": 171
+    },
+    "WebKit narrow / webgl2": {
+      "n": 8,
+      "actualBackend": [
+        "webgl2"
+      ],
+      "meshDrawP95Ms": {
+        "min": 1.0,
+        "median": 1.0,
+        "max": 1.0
+      },
+      "meshGapP95Ms": {
+        "min": 33.0,
+        "median": 34.0,
+        "max": 35.0
+      },
+      "fullGapP95Ms": {
+        "min": 39.0,
+        "median": 39.0,
+        "max": 41.0
+      },
+      "slowIntervals": 133
+    },
+    "Edge desk / 2d": {
+      "n": 8,
+      "actualBackend": [
+        "2d"
+      ],
+      "meshDrawP95Ms": {
+        "min": 0.8,
+        "median": 0.95,
+        "max": 1.2
+      },
+      "meshGapP95Ms": {
+        "min": 10.1,
+        "median": 10.1,
+        "max": 10.2
+      },
+      "fullGapP95Ms": {
+        "min": 10.1,
+        "median": 10.1,
+        "max": 10.2
+      },
+      "slowIntervals": 0
+    },
+    "Edge desk / webgl2": {
+      "n": 8,
+      "actualBackend": [
+        "webgl2"
+      ],
+      "meshDrawP95Ms": {
+        "min": 0.3,
+        "median": 0.3,
+        "max": 0.5
+      },
+      "meshGapP95Ms": {
+        "min": 10.1,
+        "median": 10.1,
+        "max": 10.2
+      },
+      "fullGapP95Ms": {
+        "min": 10.1,
+        "median": 10.15,
+        "max": 10.2
+      },
+      "slowIntervals": 0
+    }
+  },
+  "blocks": [
+    {
+      "profile": "Chrome desk / 2d",
+      "browser": "156.0.8078.80",
+      "viewport": [
+        1366,
+        850,
+        1
+      ],
+      "cpuThrottling": 1,
+      "hardware": {
+        "devices": [
+          "NVIDIA GeForce RTX 5060 Laptop GPU",
+          "AMD Radeon(TM) 860M Graphics",
+          "Microsoft Basic Render Driver"
+        ],
+        "canvas2d": "enabled",
+        "rasterization": "enabled",
+        "compositing": "enabled"
+      },
+      "paperCssPx": [
+        765,
+        500
+      ],
+      "activeStagePixels": [
+        772,
+        508
+      ],
+      "stockPixels": [
+        [
+          765,
+          500
+        ],
+        [
+          765,
+          500
+        ]
+      ],
+      "renderer": {
+        "backend": "2d",
+        "decision": "manual",
+        "ready": "false",
+        "message": "本轮折面 · Canvas 2D · 手动对照"
+      },
+      "turns": [
+        {
+          "backend": "2d",
+          "comparable": true,
+          "meshDrawP95Ms": 0.9,
+          "meshGapP95Ms": 10.2,
+          "consecutiveMeshIntervals": 153,
+          "fullGapP95Ms": 10.2,
+          "fullDrawP95Ms": 0.9,
+          "synchronousSwitchPreparationMs": 0.5,
+          "cachedArtBuildMs": 1.1,
+          "fullIntervals": 232,
+          "over25Ms": 0
+        },
+        {
+          "backend": "2d",
+          "comparable": true,
+          "meshDrawP95Ms": 1.1,
+          "meshGapP95Ms": 10.1,
+          "consecutiveMeshIntervals": 153,
+          "fullGapP95Ms": 10.1,
+          "fullDrawP95Ms": 1.1,
+          "synchronousSwitchPreparationMs": 0.3,
+          "cachedArtBuildMs": 1.1,
+          "fullIntervals": 232,
+          "over25Ms": 0
+        },
+        {
+          "backend": "2d",
+          "comparable": true,
+          "meshDrawP95Ms": 1.1,
+          "meshGapP95Ms": 10.1,
+          "consecutiveMeshIntervals": 153,
+          "fullGapP95Ms": 10.1,
+          "fullDrawP95Ms": 1.0,
+          "synchronousSwitchPreparationMs": 0.2,
+          "cachedArtBuildMs": 1.1,
+          "fullIntervals": 232,
+          "over25Ms": 0
+        },
+        {
+          "backend": "2d",
+          "comparable": true,
+          "meshDrawP95Ms": 1.1,
+          "meshGapP95Ms": 10.2,
+          "consecutiveMeshIntervals": 153,
+          "fullGapP95Ms": 10.2,
+          "fullDrawP95Ms": 1.0,
+          "synchronousSwitchPreparationMs": 0.2,
+          "cachedArtBuildMs": 1.1,
+          "fullIntervals": 232,
+          "over25Ms": 0
+        }
+      ]
+    },
+    {
+      "profile": "Chrome desk / webgl2",
+      "browser": "156.0.8078.80",
+      "viewport": [
+        1366,
+        850,
+        1
+      ],
+      "cpuThrottling": 1,
+      "hardware": {
+        "devices": [
+          "NVIDIA GeForce RTX 5060 Laptop GPU",
+          "AMD Radeon(TM) 860M Graphics",
+          "Microsoft Basic Render Driver"
+        ],
+        "canvas2d": "enabled",
+        "rasterization": "enabled",
+        "compositing": "enabled",
+        "webgl": "ANGLE (NVIDIA, NVIDIA GeForce RTX 5060 Laptop GPU (0x00002D59) Direct3D11 vs_5_0 ps_5_0, D3D11)"
+      },
+      "paperCssPx": [
+        765,
+        500
+      ],
+      "activeStagePixels": [
+        772,
+        508
+      ],
+      "stockPixels": [
+        [
+          765,
+          500
+        ],
+        [
+          765,
+          500
+        ]
+      ],
+      "renderer": {
+        "backend": "webgl2",
+        "decision": "manual",
+        "ready": "true",
+        "moduleMs": "4.5",
+        "setupMs": "179.2",
+        "contextMs": "142.2",
+        "message": "本轮折面 · WebGL2 · 手动对照"
+      },
+      "turns": [
+        {
+          "backend": "webgl2",
+          "comparable": true,
+          "meshDrawP95Ms": 0.4,
+          "meshGapP95Ms": 10.2,
+          "consecutiveMeshIntervals": 153,
+          "fullGapP95Ms": 10.2,
+          "fullDrawP95Ms": 0.3,
+          "synchronousSwitchPreparationMs": 0.4,
+          "cachedArtBuildMs": 1.1,
+          "fullIntervals": 232,
+          "over25Ms": 0
+        },
+        {
+          "backend": "webgl2",
+          "comparable": true,
+          "meshDrawP95Ms": 0.3,
+          "meshGapP95Ms": 10.2,
+          "consecutiveMeshIntervals": 153,
+          "fullGapP95Ms": 10.1,
+          "fullDrawP95Ms": 0.3,
+          "synchronousSwitchPreparationMs": 0.2,
+          "cachedArtBuildMs": 1.1,
+          "fullIntervals": 232,
+          "over25Ms": 0
+        },
+        {
+          "backend": "webgl2",
+          "comparable": true,
+          "meshDrawP95Ms": 0.3,
+          "meshGapP95Ms": 10.1,
+          "consecutiveMeshIntervals": 153,
+          "fullGapP95Ms": 10.1,
+          "fullDrawP95Ms": 0.3,
+          "synchronousSwitchPreparationMs": 0.3,
+          "cachedArtBuildMs": 1.1,
+          "fullIntervals": 231,
+          "over25Ms": 0
+        },
+        {
+          "backend": "webgl2",
+          "comparable": true,
+          "meshDrawP95Ms": 0.4,
+          "meshGapP95Ms": 10.2,
+          "consecutiveMeshIntervals": 153,
+          "fullGapP95Ms": 10.2,
+          "fullDrawP95Ms": 0.3,
+          "synchronousSwitchPreparationMs": 0.2,
+          "cachedArtBuildMs": 1.1,
+          "fullIntervals": 232,
+          "over25Ms": 0
+        }
+      ]
+    },
+    {
+      "profile": "Chrome desk / webgl2",
+      "browser": "156.0.8078.80",
+      "viewport": [
+        1366,
+        850,
+        1
+      ],
+      "cpuThrottling": 1,
+      "hardware": {
+        "devices": [
+          "NVIDIA GeForce RTX 5060 Laptop GPU",
+          "AMD Radeon(TM) 860M Graphics",
+          "Microsoft Basic Render Driver"
+        ],
+        "canvas2d": "enabled",
+        "rasterization": "enabled",
+        "compositing": "enabled",
+        "webgl": "ANGLE (NVIDIA, NVIDIA GeForce RTX 5060 Laptop GPU (0x00002D59) Direct3D11 vs_5_0 ps_5_0, D3D11)"
+      },
+      "paperCssPx": [
+        765,
+        500
+      ],
+      "activeStagePixels": [
+        772,
+        508
+      ],
+      "stockPixels": [
+        [
+          765,
+          500
+        ],
+        [
+          765,
+          500
+        ]
+      ],
+      "renderer": {
+        "backend": "webgl2",
+        "decision": "manual",
+        "ready": "true",
+        "moduleMs": "4.0",
+        "setupMs": "139.1",
+        "contextMs": "102.9",
+        "message": "本轮折面 · WebGL2 · 手动对照"
+      },
+      "turns": [
+        {
+          "backend": "webgl2",
+          "comparable": true,
+          "meshDrawP95Ms": 0.3,
+          "meshGapP95Ms": 10.1,
+          "consecutiveMeshIntervals": 153,
+          "fullGapP95Ms": 10.1,
+          "fullDrawP95Ms": 0.3,
+          "synchronousSwitchPreparationMs": 0.3,
+          "cachedArtBuildMs": 1.5,
+          "fullIntervals": 232,
+          "over25Ms": 0
+        },
+        {
+          "backend": "webgl2",
+          "comparable": true,
+          "meshDrawP95Ms": 0.3,
+          "meshGapP95Ms": 10.1,
+          "consecutiveMeshIntervals": 153,
+          "fullGapP95Ms": 10.1,
+          "fullDrawP95Ms": 0.3,
+          "synchronousSwitchPreparationMs": 0.3,
+          "cachedArtBuildMs": 1.5,
+          "fullIntervals": 232,
+          "over25Ms": 0
+        },
+        {
+          "backend": "webgl2",
+          "comparable": true,
+          "meshDrawP95Ms": 0.3,
+          "meshGapP95Ms": 10.1,
+          "consecutiveMeshIntervals": 153,
+          "fullGapP95Ms": 10.1,
+          "fullDrawP95Ms": 0.3,
+          "synchronousSwitchPreparationMs": 0.1,
+          "cachedArtBuildMs": 1.5,
+          "fullIntervals": 232,
+          "over25Ms": 0
+        },
+        {
+          "backend": "webgl2",
+          "comparable": true,
+          "meshDrawP95Ms": 0.3,
+          "meshGapP95Ms": 10.2,
+          "consecutiveMeshIntervals": 153,
+          "fullGapP95Ms": 10.2,
+          "fullDrawP95Ms": 0.3,
+          "synchronousSwitchPreparationMs": 0.3,
+          "cachedArtBuildMs": 1.5,
+          "fullIntervals": 232,
+          "over25Ms": 0
+        }
+      ]
+    },
+    {
+      "profile": "Chrome desk / 2d",
+      "browser": "156.0.8078.80",
+      "viewport": [
+        1366,
+        850,
+        1
+      ],
+      "cpuThrottling": 1,
+      "hardware": {
+        "devices": [
+          "NVIDIA GeForce RTX 5060 Laptop GPU",
+          "AMD Radeon(TM) 860M Graphics",
+          "Microsoft Basic Render Driver"
+        ],
+        "canvas2d": "enabled",
+        "rasterization": "enabled",
+        "compositing": "enabled"
+      },
+      "paperCssPx": [
+        765,
+        500
+      ],
+      "activeStagePixels": [
+        772,
+        508
+      ],
+      "stockPixels": [
+        [
+          765,
+          500
+        ],
+        [
+          765,
+          500
+        ]
+      ],
+      "renderer": {
+        "backend": "2d",
+        "decision": "manual",
+        "ready": "false",
+        "message": "本轮折面 · Canvas 2D · 手动对照"
+      },
+      "turns": [
+        {
+          "backend": "2d",
+          "comparable": true,
+          "meshDrawP95Ms": 1.0,
+          "meshGapP95Ms": 10.2,
+          "consecutiveMeshIntervals": 153,
+          "fullGapP95Ms": 10.1,
+          "fullDrawP95Ms": 0.9,
+          "synchronousSwitchPreparationMs": 0.4,
+          "cachedArtBuildMs": 1.5,
+          "fullIntervals": 232,
+          "over25Ms": 0
+        },
+        {
+          "backend": "2d",
+          "comparable": true,
+          "meshDrawP95Ms": 1.1,
+          "meshGapP95Ms": 10.2,
+          "consecutiveMeshIntervals": 153,
+          "fullGapP95Ms": 10.2,
+          "fullDrawP95Ms": 1.1,
+          "synchronousSwitchPreparationMs": 0.3,
+          "cachedArtBuildMs": 1.5,
+          "fullIntervals": 232,
+          "over25Ms": 0
+        },
+        {
+          "backend": "2d",
+          "comparable": true,
+          "meshDrawP95Ms": 1.1,
+          "meshGapP95Ms": 10.2,
+          "consecutiveMeshIntervals": 153,
+          "fullGapP95Ms": 10.2,
+          "fullDrawP95Ms": 1.1,
+          "synchronousSwitchPreparationMs": 0.3,
+          "cachedArtBuildMs": 1.5,
+          "fullIntervals": 232,
+          "over25Ms": 0
+        },
+        {
+          "backend": "2d",
+          "comparable": true,
+          "meshDrawP95Ms": 1.1,
+          "meshGapP95Ms": 10.2,
+          "consecutiveMeshIntervals": 153,
+          "fullGapP95Ms": 10.2,
+          "fullDrawP95Ms": 1.0,
+          "synchronousSwitchPreparationMs": 0.3,
+          "cachedArtBuildMs": 1.5,
+          "fullIntervals": 232,
+          "over25Ms": 0
+        }
+      ]
+    },
+    {
+      "profile": "Phone 4x / 2d",
+      "browser": "156.0.8078.80",
+      "viewport": [
+        390,
+        844,
+        3
+      ],
+      "cpuThrottling": 4,
+      "hardware": {
+        "devices": [
+          "NVIDIA GeForce RTX 5060 Laptop GPU",
+          "AMD Radeon(TM) 860M Graphics",
+          "Microsoft Basic Render Driver"
+        ],
+        "canvas2d": "enabled",
+        "rasterization": "enabled",
+        "compositing": "enabled"
+      },
+      "paperCssPx": [
+        234,
+        405
+      ],
+      "activeStagePixels": [
+        360,
+        618
+      ],
+      "stockPixels": [
+        [
+          351,
+          608
+        ],
+        [
+          351,
+          608
+        ]
+      ],
+      "renderer": {
+        "backend": "2d",
+        "decision": "manual",
+        "ready": "false",
+        "message": "本轮折面 · Canvas 2D · 手动对照"
+      },
+      "turns": [
+        {
+          "backend": "2d",
+          "comparable": true,
+          "meshDrawP95Ms": 4.4,
+          "meshGapP95Ms": 10.1,
+          "consecutiveMeshIntervals": 153,
+          "fullGapP95Ms": 10.1,
+          "fullDrawP95Ms": 4.2,
+          "synchronousSwitchPreparationMs": 2.7,
+          "cachedArtBuildMs": 12.0,
+          "fullIntervals": 232,
+          "over25Ms": 0
+        },
+        {
+          "backend": "2d",
+          "comparable": true,
+          "meshDrawP95Ms": 4.2,
+          "meshGapP95Ms": 10.1,
+          "consecutiveMeshIntervals": 153,
+          "fullGapP95Ms": 10.1,
+          "fullDrawP95Ms": 4.1,
+          "synchronousSwitchPreparationMs": 1.4,
+          "cachedArtBuildMs": 12.0,
+          "fullIntervals": 232,
+          "over25Ms": 0
+        },
+        {
+          "backend": "2d",
+          "comparable": true,
+          "meshDrawP95Ms": 4.3,
+          "meshGapP95Ms": 10.1,
+          "consecutiveMeshIntervals": 153,
+          "fullGapP95Ms": 10.1,
+          "fullDrawP95Ms": 4.3,
+          "synchronousSwitchPreparationMs": 1.4,
+          "cachedArtBuildMs": 12.0,
+          "fullIntervals": 232,
+          "over25Ms": 0
+        },
+        {
+          "backend": "2d",
+          "comparable": true,
+          "meshDrawP95Ms": 4.1,
+          "meshGapP95Ms": 10.1,
+          "consecutiveMeshIntervals": 153,
+          "fullGapP95Ms": 10.1,
+          "fullDrawP95Ms": 4.0,
+          "synchronousSwitchPreparationMs": 1.0,
+          "cachedArtBuildMs": 12.0,
+          "fullIntervals": 232,
+          "over25Ms": 0
+        }
+      ]
+    },
+    {
+      "profile": "Phone 4x / webgl2",
+      "browser": "156.0.8078.80",
+      "viewport": [
+        390,
+        844,
+        3
+      ],
+      "cpuThrottling": 4,
+      "hardware": {
+        "devices": [
+          "NVIDIA GeForce RTX 5060 Laptop GPU",
+          "AMD Radeon(TM) 860M Graphics",
+          "Microsoft Basic Render Driver"
+        ],
+        "canvas2d": "enabled",
+        "rasterization": "enabled",
+        "compositing": "enabled",
+        "webgl": "ANGLE (NVIDIA, NVIDIA GeForce RTX 5060 Laptop GPU (0x00002D59) Direct3D11 vs_5_0 ps_5_0, D3D11)"
+      },
+      "paperCssPx": [
+        234,
+        405
+      ],
+      "activeStagePixels": [
+        360,
+        618
+      ],
+      "stockPixels": [
+        [
+          351,
+          608
+        ],
+        [
+          351,
+          608
+        ]
+      ],
+      "renderer": {
+        "backend": "webgl2",
+        "decision": "manual",
+        "ready": "true",
+        "moduleMs": "47.6",
+        "setupMs": "76.7",
+        "contextMs": "37.9",
+        "message": "本轮折面 · WebGL2 · 手动对照"
+      },
+      "turns": [
+        {
+          "backend": "webgl2",
+          "comparable": true,
+          "meshDrawP95Ms": 1.5,
+          "meshGapP95Ms": 10.1,
+          "consecutiveMeshIntervals": 152,
+          "fullGapP95Ms": 10.1,
+          "fullDrawP95Ms": 1.4,
+          "synchronousSwitchPreparationMs": 2.7,
+          "cachedArtBuildMs": 14.7,
+          "fullIntervals": 232,
+          "over25Ms": 0
+        },
+        {
+          "backend": "webgl2",
+          "comparable": true,
+          "meshDrawP95Ms": 1.2,
+          "meshGapP95Ms": 10.2,
+          "consecutiveMeshIntervals": 153,
+          "fullGapP95Ms": 10.2,
+          "fullDrawP95Ms": 1.2,
+          "synchronousSwitchPreparationMs": 1.4,
+          "cachedArtBuildMs": 14.7,
+          "fullIntervals": 231,
+          "over25Ms": 0
+        },
+        {
+          "backend": "webgl2",
+          "comparable": true,
+          "meshDrawP95Ms": 1.1,
+          "meshGapP95Ms": 10.1,
+          "consecutiveMeshIntervals": 153,
+          "fullGapP95Ms": 10.1,
+          "fullDrawP95Ms": 1.1,
+          "synchronousSwitchPreparationMs": 1.0,
+          "cachedArtBuildMs": 14.7,
+          "fullIntervals": 232,
+          "over25Ms": 0
+        },
+        {
+          "backend": "webgl2",
+          "comparable": true,
+          "meshDrawP95Ms": 1.1,
+          "meshGapP95Ms": 10.2,
+          "consecutiveMeshIntervals": 153,
+          "fullGapP95Ms": 10.2,
+          "fullDrawP95Ms": 1.0,
+          "synchronousSwitchPreparationMs": 1.1,
+          "cachedArtBuildMs": 14.7,
+          "fullIntervals": 232,
+          "over25Ms": 0
+        }
+      ]
+    },
+    {
+      "profile": "Phone 4x / webgl2",
+      "browser": "156.0.8078.80",
+      "viewport": [
+        390,
+        844,
+        3
+      ],
+      "cpuThrottling": 4,
+      "hardware": {
+        "devices": [
+          "NVIDIA GeForce RTX 5060 Laptop GPU",
+          "AMD Radeon(TM) 860M Graphics",
+          "Microsoft Basic Render Driver"
+        ],
+        "canvas2d": "enabled",
+        "rasterization": "enabled",
+        "compositing": "enabled",
+        "webgl": "ANGLE (NVIDIA, NVIDIA GeForce RTX 5060 Laptop GPU (0x00002D59) Direct3D11 vs_5_0 ps_5_0, D3D11)"
+      },
+      "paperCssPx": [
+        234,
+        405
+      ],
+      "activeStagePixels": [
+        360,
+        618
+      ],
+      "stockPixels": [
+        [
+          351,
+          608
+        ],
+        [
+          351,
+          608
+        ]
+      ],
+      "renderer": {
+        "backend": "webgl2",
+        "decision": "manual",
+        "ready": "true",
+        "moduleMs": "37.7",
+        "setupMs": "81.8",
+        "contextMs": "34.1",
+        "message": "本轮折面 · WebGL2 · 手动对照"
+      },
+      "turns": [
+        {
+          "backend": "webgl2",
+          "comparable": true,
+          "meshDrawP95Ms": 1.3,
+          "meshGapP95Ms": 10.1,
+          "consecutiveMeshIntervals": 153,
+          "fullGapP95Ms": 10.1,
+          "fullDrawP95Ms": 1.2,
+          "synchronousSwitchPreparationMs": 3.6,
+          "cachedArtBuildMs": 13.0,
+          "fullIntervals": 232,
+          "over25Ms": 0
+        },
+        {
+          "backend": "webgl2",
+          "comparable": true,
+          "meshDrawP95Ms": 1.2,
+          "meshGapP95Ms": 10.1,
+          "consecutiveMeshIntervals": 153,
+          "fullGapP95Ms": 10.1,
+          "fullDrawP95Ms": 1.2,
+          "synchronousSwitchPreparationMs": 1.2,
+          "cachedArtBuildMs": 13.0,
+          "fullIntervals": 232,
+          "over25Ms": 0
+        },
+        {
+          "backend": "webgl2",
+          "comparable": true,
+          "meshDrawP95Ms": 1.2,
+          "meshGapP95Ms": 10.1,
+          "consecutiveMeshIntervals": 153,
+          "fullGapP95Ms": 10.2,
+          "fullDrawP95Ms": 1.2,
+          "synchronousSwitchPreparationMs": 1.4,
+          "cachedArtBuildMs": 13.0,
+          "fullIntervals": 232,
+          "over25Ms": 0
+        },
+        {
+          "backend": "webgl2",
+          "comparable": true,
+          "meshDrawP95Ms": 0.9,
+          "meshGapP95Ms": 10.1,
+          "consecutiveMeshIntervals": 152,
+          "fullGapP95Ms": 10.1,
+          "fullDrawP95Ms": 1.0,
+          "synchronousSwitchPreparationMs": 0.6,
+          "cachedArtBuildMs": 13.0,
+          "fullIntervals": 232,
+          "over25Ms": 0
+        }
+      ]
+    },
+    {
+      "profile": "Phone 4x / 2d",
+      "browser": "156.0.8078.80",
+      "viewport": [
+        390,
+        844,
+        3
+      ],
+      "cpuThrottling": 4,
+      "hardware": {
+        "devices": [
+          "NVIDIA GeForce RTX 5060 Laptop GPU",
+          "AMD Radeon(TM) 860M Graphics",
+          "Microsoft Basic Render Driver"
+        ],
+        "canvas2d": "enabled",
+        "rasterization": "enabled",
+        "compositing": "enabled"
+      },
+      "paperCssPx": [
+        234,
+        405
+      ],
+      "activeStagePixels": [
+        360,
+        618
+      ],
+      "stockPixels": [
+        [
+          351,
+          608
+        ],
+        [
+          351,
+          608
+        ]
+      ],
+      "renderer": {
+        "backend": "2d",
+        "decision": "manual",
+        "ready": "false",
+        "message": "本轮折面 · Canvas 2D · 手动对照"
+      },
+      "turns": [
+        {
+          "backend": "2d",
+          "comparable": true,
+          "meshDrawP95Ms": 3.9,
+          "meshGapP95Ms": 10.2,
+          "consecutiveMeshIntervals": 152,
+          "fullGapP95Ms": 10.2,
+          "fullDrawP95Ms": 3.7,
+          "synchronousSwitchPreparationMs": 3.0,
+          "cachedArtBuildMs": 11.6,
+          "fullIntervals": 230,
+          "over25Ms": 0
+        },
+        {
+          "backend": "2d",
+          "comparable": true,
+          "meshDrawP95Ms": 2.8,
+          "meshGapP95Ms": 10.1,
+          "consecutiveMeshIntervals": 152,
+          "fullGapP95Ms": 10.1,
+          "fullDrawP95Ms": 2.5,
+          "synchronousSwitchPreparationMs": 1.0,
+          "cachedArtBuildMs": 11.6,
+          "fullIntervals": 232,
+          "over25Ms": 0
+        },
+        {
+          "backend": "2d",
+          "comparable": true,
+          "meshDrawP95Ms": 3.2,
+          "meshGapP95Ms": 10.2,
+          "consecutiveMeshIntervals": 153,
+          "fullGapP95Ms": 10.2,
+          "fullDrawP95Ms": 2.7,
+          "synchronousSwitchPreparationMs": 1.0,
+          "cachedArtBuildMs": 11.6,
+          "fullIntervals": 232,
+          "over25Ms": 0
+        },
+        {
+          "backend": "2d",
+          "comparable": true,
+          "meshDrawP95Ms": 3.1,
+          "meshGapP95Ms": 10.2,
+          "consecutiveMeshIntervals": 153,
+          "fullGapP95Ms": 10.2,
+          "fullDrawP95Ms": 3.0,
+          "synchronousSwitchPreparationMs": 1.1,
+          "cachedArtBuildMs": 11.6,
+          "fullIntervals": 232,
+          "over25Ms": 0
+        }
+      ]
+    },
+    {
+      "profile": "Firefox desk / 2d",
+      "browser": "156.0",
+      "viewport": [
+        1366,
+        850,
+        1
+      ],
+      "cpuThrottling": 1,
+      "hardware": {},
+      "paperCssPx": [
+        765,
+        500
+      ],
+      "activeStagePixels": [
+        772,
+        506
+      ],
+      "stockPixels": [
+        [
+          765,
+          500
+        ],
+        [
+          765,
+          500
+        ]
+      ],
+      "renderer": {
+        "backend": "2d",
+        "decision": "manual",
+        "ready": "false",
+        "message": "本轮折面 · Canvas 2D · 手动对照"
+      },
+      "turns": [
+        {
+          "backend": "2d",
+          "comparable": true,
+          "meshDrawP95Ms": 10.0,
+          "meshGapP95Ms": 12.14,
+          "consecutiveMeshIntervals": 152,
+          "fullGapP95Ms": 12.1,
+          "fullDrawP95Ms": 9.0,
+          "synchronousSwitchPreparationMs": 0.0,
+          "cachedArtBuildMs": 8.0,
+          "fullIntervals": 232,
+          "over25Ms": 0
+        },
+        {
+          "backend": "2d",
+          "comparable": true,
+          "meshDrawP95Ms": 9.0,
+          "meshGapP95Ms": 12.12,
+          "consecutiveMeshIntervals": 153,
+          "fullGapP95Ms": 12.1,
+          "fullDrawP95Ms": 9.0,
+          "synchronousSwitchPreparationMs": 0.0,
+          "cachedArtBuildMs": 8.0,
+          "fullIntervals": 232,
+          "over25Ms": 0
+        },
+        {
+          "backend": "2d",
+          "comparable": true,
+          "meshDrawP95Ms": 9.0,
+          "meshGapP95Ms": 12.12,
+          "consecutiveMeshIntervals": 153,
+          "fullGapP95Ms": 12.1,
+          "fullDrawP95Ms": 8.0,
+          "synchronousSwitchPreparationMs": 0.0,
+          "cachedArtBuildMs": 8.0,
+          "fullIntervals": 233,
+          "over25Ms": 0
+        },
+        {
+          "backend": "2d",
+          "comparable": true,
+          "meshDrawP95Ms": 9.0,
+          "meshGapP95Ms": 12.12,
+          "consecutiveMeshIntervals": 153,
+          "fullGapP95Ms": 12.1,
+          "fullDrawP95Ms": 9.0,
+          "synchronousSwitchPreparationMs": 0.0,
+          "cachedArtBuildMs": 8.0,
+          "fullIntervals": 233,
+          "over25Ms": 0
+        }
+      ]
+    },
+    {
+      "profile": "Firefox desk / webgl2",
+      "browser": "156.0",
+      "viewport": [
+        1366,
+        850,
+        1
+      ],
+      "cpuThrottling": 1,
+      "hardware": {
+        "webgl": "ANGLE (NVIDIA, NVIDIA GeForce GTX 980 Direct3D11 vs_5_0 ps_5_0), or similar"
+      },
+      "paperCssPx": [
+        765,
+        500
+      ],
+      "activeStagePixels": [
+        772,
+        506
+      ],
+      "stockPixels": [
+        [
+          765,
+          500
+        ],
+        [
+          765,
+          500
+        ]
+      ],
+      "renderer": {
+        "backend": "webgl2",
+        "decision": "manual",
+        "ready": "true",
+        "moduleMs": "13.0",
+        "setupMs": "169.0",
+        "contextMs": "157.0",
+        "message": "本轮折面 · WebGL2 · 手动对照"
+      },
+      "turns": [
+        {
+          "backend": "webgl2",
+          "comparable": true,
+          "meshDrawP95Ms": 1.0,
+          "meshGapP95Ms": 12.12,
+          "consecutiveMeshIntervals": 152,
+          "fullGapP95Ms": 12.1,
+          "fullDrawP95Ms": 1.0,
+          "synchronousSwitchPreparationMs": 0.0,
+          "cachedArtBuildMs": 11.0,
+          "fullIntervals": 233,
+          "over25Ms": 0
+        },
+        {
+          "backend": "webgl2",
+          "comparable": true,
+          "meshDrawP95Ms": 1.0,
+          "meshGapP95Ms": 12.12,
+          "consecutiveMeshIntervals": 152,
+          "fullGapP95Ms": 12.1,
+          "fullDrawP95Ms": 1.0,
+          "synchronousSwitchPreparationMs": 0.0,
+          "cachedArtBuildMs": 11.0,
+          "fullIntervals": 233,
+          "over25Ms": 0
+        },
+        {
+          "backend": "webgl2",
+          "comparable": true,
+          "meshDrawP95Ms": 1.0,
+          "meshGapP95Ms": 12.12,
+          "consecutiveMeshIntervals": 152,
+          "fullGapP95Ms": 12.1,
+          "fullDrawP95Ms": 1.0,
+          "synchronousSwitchPreparationMs": 0.0,
+          "cachedArtBuildMs": 11.0,
+          "fullIntervals": 233,
+          "over25Ms": 0
+        },
+        {
+          "backend": "webgl2",
+          "comparable": true,
+          "meshDrawP95Ms": 1.0,
+          "meshGapP95Ms": 12.12,
+          "consecutiveMeshIntervals": 153,
+          "fullGapP95Ms": 12.1,
+          "fullDrawP95Ms": 1.0,
+          "synchronousSwitchPreparationMs": 0.0,
+          "cachedArtBuildMs": 11.0,
+          "fullIntervals": 234,
+          "over25Ms": 0
+        }
+      ]
+    },
+    {
+      "profile": "Firefox desk / webgl2",
+      "browser": "156.0",
+      "viewport": [
+        1366,
+        850,
+        1
+      ],
+      "cpuThrottling": 1,
+      "hardware": {
+        "webgl": "ANGLE (NVIDIA, NVIDIA GeForce GTX 980 Direct3D11 vs_5_0 ps_5_0), or similar"
+      },
+      "paperCssPx": [
+        765,
+        500
+      ],
+      "activeStagePixels": [
+        772,
+        506
+      ],
+      "stockPixels": [
+        [
+          765,
+          500
+        ],
+        [
+          765,
+          500
+        ]
+      ],
+      "renderer": {
+        "backend": "webgl2",
+        "decision": "manual",
+        "ready": "true",
+        "moduleMs": "23.0",
+        "setupMs": "153.0",
+        "contextMs": "135.0",
+        "message": "本轮折面 · WebGL2 · 手动对照"
+      },
+      "turns": [
+        {
+          "backend": "webgl2",
+          "comparable": true,
+          "meshDrawP95Ms": 1.0,
+          "meshGapP95Ms": 12.12,
+          "consecutiveMeshIntervals": 153,
+          "fullGapP95Ms": 12.1,
+          "fullDrawP95Ms": 1.0,
+          "synchronousSwitchPreparationMs": 1.0,
+          "cachedArtBuildMs": 10.0,
+          "fullIntervals": 234,
+          "over25Ms": 0
+        },
+        {
+          "backend": "webgl2",
+          "comparable": true,
+          "meshDrawP95Ms": 1.0,
+          "meshGapP95Ms": 12.12,
+          "consecutiveMeshIntervals": 152,
+          "fullGapP95Ms": 12.1,
+          "fullDrawP95Ms": 1.0,
+          "synchronousSwitchPreparationMs": 0.0,
+          "cachedArtBuildMs": 10.0,
+          "fullIntervals": 234,
+          "over25Ms": 0
+        },
+        {
+          "backend": "webgl2",
+          "comparable": true,
+          "meshDrawP95Ms": 1.0,
+          "meshGapP95Ms": 12.12,
+          "consecutiveMeshIntervals": 152,
+          "fullGapP95Ms": 12.1,
+          "fullDrawP95Ms": 1.0,
+          "synchronousSwitchPreparationMs": 0.0,
+          "cachedArtBuildMs": 10.0,
+          "fullIntervals": 233,
+          "over25Ms": 0
+        },
+        {
+          "backend": "webgl2",
+          "comparable": true,
+          "meshDrawP95Ms": 1.0,
+          "meshGapP95Ms": 12.14,
+          "consecutiveMeshIntervals": 152,
+          "fullGapP95Ms": 12.1,
+          "fullDrawP95Ms": 1.0,
+          "synchronousSwitchPreparationMs": 0.0,
+          "cachedArtBuildMs": 10.0,
+          "fullIntervals": 233,
+          "over25Ms": 0
+        }
+      ]
+    },
+    {
+      "profile": "Firefox desk / 2d",
+      "browser": "156.0",
+      "viewport": [
+        1366,
+        850,
+        1
+      ],
+      "cpuThrottling": 1,
+      "hardware": {},
+      "paperCssPx": [
+        765,
+        500
+      ],
+      "activeStagePixels": [
+        781,
+        529
+      ],
+      "stockPixels": [
+        [
+          765,
+          500
+        ],
+        [
+          765,
+          500
+        ]
+      ],
+      "renderer": {
+        "backend": "2d",
+        "decision": "manual",
+        "ready": "false",
+        "message": "本轮折面 · Canvas 2D · 手动对照"
+      },
+      "turns": [
+        {
+          "backend": "2d",
+          "comparable": true,
+          "meshDrawP95Ms": 10.0,
+          "meshGapP95Ms": 12.12,
+          "consecutiveMeshIntervals": 151,
+          "fullGapP95Ms": 12.1,
+          "fullDrawP95Ms": 9.0,
+          "synchronousSwitchPreparationMs": 0.0,
+          "cachedArtBuildMs": 8.0,
+          "fullIntervals": 232,
+          "over25Ms": 0
+        },
+        {
+          "backend": "2d",
+          "comparable": true,
+          "meshDrawP95Ms": 10.0,
+          "meshGapP95Ms": 12.14,
+          "consecutiveMeshIntervals": 151,
+          "fullGapP95Ms": 12.1,
+          "fullDrawP95Ms": 9.0,
+          "synchronousSwitchPreparationMs": 1.0,
+          "cachedArtBuildMs": 8.0,
+          "fullIntervals": 232,
+          "over25Ms": 0
+        },
+        {
+          "backend": "2d",
+          "comparable": true,
+          "meshDrawP95Ms": 9.0,
+          "meshGapP95Ms": 12.12,
+          "consecutiveMeshIntervals": 152,
+          "fullGapP95Ms": 12.1,
+          "fullDrawP95Ms": 9.0,
+          "synchronousSwitchPreparationMs": 1.0,
+          "cachedArtBuildMs": 8.0,
+          "fullIntervals": 232,
+          "over25Ms": 0
+        },
+        {
+          "backend": "2d",
+          "comparable": true,
+          "meshDrawP95Ms": 9.0,
+          "meshGapP95Ms": 12.12,
+          "consecutiveMeshIntervals": 153,
+          "fullGapP95Ms": 12.1,
+          "fullDrawP95Ms": 9.0,
+          "synchronousSwitchPreparationMs": 0.0,
+          "cachedArtBuildMs": 8.0,
+          "fullIntervals": 234,
+          "over25Ms": 0
+        }
+      ]
+    },
+    {
+      "profile": "WebKit narrow / 2d",
+      "browser": "26.6",
+      "viewport": [
+        390,
+        844,
+        3
+      ],
+      "cpuThrottling": 1,
+      "hardware": {},
+      "paperCssPx": [
+        234,
+        405
+      ],
+      "activeStagePixels": [
+        360,
+        618
+      ],
+      "stockPixels": [
+        [
+          351,
+          608
+        ],
+        [
+          351,
+          608
+        ]
+      ],
+      "renderer": {
+        "backend": "2d",
+        "decision": "manual",
+        "ready": "false",
+        "message": "本轮折面 · Canvas 2D · 手动对照"
+      },
+      "turns": [
+        {
+          "backend": "2d",
+          "comparable": true,
+          "meshDrawP95Ms": 1.0,
+          "meshGapP95Ms": 26.0,
+          "consecutiveMeshIntervals": 163,
+          "fullGapP95Ms": 34.0,
+          "fullDrawP95Ms": 1.0,
+          "synchronousSwitchPreparationMs": 1.0,
+          "cachedArtBuildMs": 4.0,
+          "fullIntervals": 204,
+          "over25Ms": 22
+        },
+        {
+          "backend": "2d",
+          "comparable": true,
+          "meshDrawP95Ms": 1.0,
+          "meshGapP95Ms": 30.0,
+          "consecutiveMeshIntervals": 160,
+          "fullGapP95Ms": 35.0,
+          "fullDrawP95Ms": 1.0,
+          "synchronousSwitchPreparationMs": 0.0,
+          "cachedArtBuildMs": 4.0,
+          "fullIntervals": 202,
+          "over25Ms": 20
+        },
+        {
+          "backend": "2d",
+          "comparable": true,
+          "meshDrawP95Ms": 1.0,
+          "meshGapP95Ms": 28.0,
+          "consecutiveMeshIntervals": 164,
+          "fullGapP95Ms": 34.0,
+          "fullDrawP95Ms": 1.0,
+          "synchronousSwitchPreparationMs": 0.0,
+          "cachedArtBuildMs": 4.0,
+          "fullIntervals": 205,
+          "over25Ms": 23
+        },
+        {
+          "backend": "2d",
+          "comparable": true,
+          "meshDrawP95Ms": 1.0,
+          "meshGapP95Ms": 32.0,
+          "consecutiveMeshIntervals": 149,
+          "fullGapP95Ms": 35.0,
+          "fullDrawP95Ms": 1.0,
+          "synchronousSwitchPreparationMs": 1.0,
+          "cachedArtBuildMs": 4.0,
+          "fullIntervals": 189,
+          "over25Ms": 21
+        }
+      ]
+    },
+    {
+      "profile": "WebKit narrow / webgl2",
+      "browser": "26.6",
+      "viewport": [
+        390,
+        844,
+        3
+      ],
+      "cpuThrottling": 1,
+      "hardware": {
+        "webgl": "Apple GPU"
+      },
+      "paperCssPx": [
+        234,
+        405
+      ],
+      "activeStagePixels": [
+        360,
+        618
+      ],
+      "stockPixels": [
+        [
+          351,
+          608
+        ],
+        [
+          351,
+          608
+        ]
+      ],
+      "renderer": {
+        "backend": "webgl2",
+        "decision": "manual",
+        "ready": "true",
+        "moduleMs": "16.0",
+        "setupMs": "232.0",
+        "contextMs": "217.0",
+        "message": "本轮折面 · WebGL2 · 手动对照"
+      },
+      "turns": [
+        {
+          "backend": "webgl2",
+          "comparable": true,
+          "meshDrawP95Ms": 1.0,
+          "meshGapP95Ms": 34.0,
+          "consecutiveMeshIntervals": 64,
+          "fullGapP95Ms": 41.0,
+          "fullDrawP95Ms": 1.0,
+          "synchronousSwitchPreparationMs": 2.0,
+          "cachedArtBuildMs": 4.0,
+          "fullIntervals": 103,
+          "over25Ms": 16
+        },
+        {
+          "backend": "webgl2",
+          "comparable": true,
+          "meshDrawP95Ms": 1.0,
+          "meshGapP95Ms": 33.0,
+          "consecutiveMeshIntervals": 65,
+          "fullGapP95Ms": 39.0,
+          "fullDrawP95Ms": 1.0,
+          "synchronousSwitchPreparationMs": 0.0,
+          "cachedArtBuildMs": 4.0,
+          "fullIntervals": 105,
+          "over25Ms": 15
+        },
+        {
+          "backend": "webgl2",
+          "comparable": true,
+          "meshDrawP95Ms": 1.0,
+          "meshGapP95Ms": 33.0,
+          "consecutiveMeshIntervals": 66,
+          "fullGapP95Ms": 39.0,
+          "fullDrawP95Ms": 1.0,
+          "synchronousSwitchPreparationMs": 1.0,
+          "cachedArtBuildMs": 4.0,
+          "fullIntervals": 104,
+          "over25Ms": 17
+        },
+        {
+          "backend": "webgl2",
+          "comparable": true,
+          "meshDrawP95Ms": 1.0,
+          "meshGapP95Ms": 35.0,
+          "consecutiveMeshIntervals": 65,
+          "fullGapP95Ms": 39.0,
+          "fullDrawP95Ms": 1.0,
+          "synchronousSwitchPreparationMs": 0.0,
+          "cachedArtBuildMs": 4.0,
+          "fullIntervals": 104,
+          "over25Ms": 17
+        }
+      ]
+    },
+    {
+      "profile": "WebKit narrow / webgl2",
+      "browser": "26.6",
+      "viewport": [
+        390,
+        844,
+        3
+      ],
+      "cpuThrottling": 1,
+      "hardware": {
+        "webgl": "Apple GPU"
+      },
+      "paperCssPx": [
+        234,
+        405
+      ],
+      "activeStagePixels": [
+        360,
+        618
+      ],
+      "stockPixels": [
+        [
+          351,
+          608
+        ],
+        [
+          351,
+          608
+        ]
+      ],
+      "renderer": {
+        "backend": "webgl2",
+        "decision": "manual",
+        "ready": "true",
+        "moduleMs": "15.0",
+        "setupMs": "237.0",
+        "contextMs": "223.0",
+        "message": "本轮折面 · WebGL2 · 手动对照"
+      },
+      "turns": [
+        {
+          "backend": "webgl2",
+          "comparable": true,
+          "meshDrawP95Ms": 1.0,
+          "meshGapP95Ms": 34.0,
+          "consecutiveMeshIntervals": 64,
+          "fullGapP95Ms": 41.0,
+          "fullDrawP95Ms": 1.0,
+          "synchronousSwitchPreparationMs": 2.0,
+          "cachedArtBuildMs": 3.0,
+          "fullIntervals": 103,
+          "over25Ms": 14
+        },
+        {
+          "backend": "webgl2",
+          "comparable": true,
+          "meshDrawP95Ms": 1.0,
+          "meshGapP95Ms": 35.0,
+          "consecutiveMeshIntervals": 64,
+          "fullGapP95Ms": 39.0,
+          "fullDrawP95Ms": 1.0,
+          "synchronousSwitchPreparationMs": 0.0,
+          "cachedArtBuildMs": 3.0,
+          "fullIntervals": 103,
+          "over25Ms": 18
+        },
+        {
+          "backend": "webgl2",
+          "comparable": true,
+          "meshDrawP95Ms": 1.0,
+          "meshGapP95Ms": 35.0,
+          "consecutiveMeshIntervals": 64,
+          "fullGapP95Ms": 39.0,
+          "fullDrawP95Ms": 1.0,
+          "synchronousSwitchPreparationMs": 1.0,
+          "cachedArtBuildMs": 3.0,
+          "fullIntervals": 104,
+          "over25Ms": 19
+        },
+        {
+          "backend": "webgl2",
+          "comparable": true,
+          "meshDrawP95Ms": 1.0,
+          "meshGapP95Ms": 34.0,
+          "consecutiveMeshIntervals": 64,
+          "fullGapP95Ms": 39.0,
+          "fullDrawP95Ms": 1.0,
+          "synchronousSwitchPreparationMs": 1.0,
+          "cachedArtBuildMs": 3.0,
+          "fullIntervals": 104,
+          "over25Ms": 17
+        }
+      ]
+    },
+    {
+      "profile": "WebKit narrow / 2d",
+      "browser": "26.6",
+      "viewport": [
+        390,
+        844,
+        3
+      ],
+      "cpuThrottling": 1,
+      "hardware": {},
+      "paperCssPx": [
+        234,
+        405
+      ],
+      "activeStagePixels": [
+        360,
+        618
+      ],
+      "stockPixels": [
+        [
+          351,
+          608
+        ],
+        [
+          351,
+          608
+        ]
+      ],
+      "renderer": {
+        "backend": "2d",
+        "decision": "manual",
+        "ready": "false",
+        "message": "本轮折面 · Canvas 2D · 手动对照"
+      },
+      "turns": [
+        {
+          "backend": "2d",
+          "comparable": true,
+          "meshDrawP95Ms": 1.0,
+          "meshGapP95Ms": 27.0,
+          "consecutiveMeshIntervals": 165,
+          "fullGapP95Ms": 36.0,
+          "fullDrawP95Ms": 1.0,
+          "synchronousSwitchPreparationMs": 2.0,
+          "cachedArtBuildMs": 4.0,
+          "fullIntervals": 207,
+          "over25Ms": 21
+        },
+        {
+          "backend": "2d",
+          "comparable": true,
+          "meshDrawP95Ms": 1.0,
+          "meshGapP95Ms": 27.0,
+          "consecutiveMeshIntervals": 167,
+          "fullGapP95Ms": 35.0,
+          "fullDrawP95Ms": 1.0,
+          "synchronousSwitchPreparationMs": 0.0,
+          "cachedArtBuildMs": 4.0,
+          "fullIntervals": 208,
+          "over25Ms": 20
+        },
+        {
+          "backend": "2d",
+          "comparable": true,
+          "meshDrawP95Ms": 1.0,
+          "meshGapP95Ms": 29.0,
+          "consecutiveMeshIntervals": 165,
+          "fullGapP95Ms": 33.0,
+          "fullDrawP95Ms": 1.0,
+          "synchronousSwitchPreparationMs": 0.0,
+          "cachedArtBuildMs": 4.0,
+          "fullIntervals": 205,
+          "over25Ms": 21
+        },
+        {
+          "backend": "2d",
+          "comparable": true,
+          "meshDrawP95Ms": 1.0,
+          "meshGapP95Ms": 30.0,
+          "consecutiveMeshIntervals": 166,
+          "fullGapP95Ms": 32.0,
+          "fullDrawP95Ms": 1.0,
+          "synchronousSwitchPreparationMs": 0.0,
+          "cachedArtBuildMs": 4.0,
+          "fullIntervals": 207,
+          "over25Ms": 23
+        }
+      ]
+    },
+    {
+      "profile": "Edge desk / 2d",
+      "browser": "156.0.4314.58",
+      "viewport": [
+        1366,
+        850,
+        1
+      ],
+      "cpuThrottling": 1,
+      "hardware": {
+        "devices": [
+          "NVIDIA GeForce RTX 5060 Laptop GPU",
+          "AMD Radeon(TM) 860M Graphics",
+          "Microsoft Basic Render Driver"
+        ],
+        "canvas2d": "enabled",
+        "rasterization": "enabled",
+        "compositing": "enabled"
+      },
+      "paperCssPx": [
+        765,
+        500
+      ],
+      "activeStagePixels": [
+        772,
+        508
+      ],
+      "stockPixels": [
+        [
+          765,
+          500
+        ],
+        [
+          765,
+          500
+        ]
+      ],
+      "renderer": {
+        "backend": "2d",
+        "decision": "manual",
+        "ready": "false",
+        "message": "本轮折面 · Canvas 2D · 手动对照"
+      },
+      "turns": [
+        {
+          "backend": "2d",
+          "comparable": true,
+          "meshDrawP95Ms": 1.0,
+          "meshGapP95Ms": 10.1,
+          "consecutiveMeshIntervals": 153,
+          "fullGapP95Ms": 10.1,
+          "fullDrawP95Ms": 0.9,
+          "synchronousSwitchPreparationMs": 0.4,
+          "cachedArtBuildMs": 2.9,
+          "fullIntervals": 232,
+          "over25Ms": 0
+        },
+        {
+          "backend": "2d",
+          "comparable": true,
+          "meshDrawP95Ms": 1.2,
+          "meshGapP95Ms": 10.2,
+          "consecutiveMeshIntervals": 152,
+          "fullGapP95Ms": 10.2,
+          "fullDrawP95Ms": 1.1,
+          "synchronousSwitchPreparationMs": 0.2,
+          "cachedArtBuildMs": 2.9,
+          "fullIntervals": 232,
+          "over25Ms": 0
+        },
+        {
+          "backend": "2d",
+          "comparable": true,
+          "meshDrawP95Ms": 1.2,
+          "meshGapP95Ms": 10.1,
+          "consecutiveMeshIntervals": 153,
+          "fullGapP95Ms": 10.2,
+          "fullDrawP95Ms": 1.1,
+          "synchronousSwitchPreparationMs": 0.3,
+          "cachedArtBuildMs": 2.9,
+          "fullIntervals": 232,
+          "over25Ms": 0
+        },
+        {
+          "backend": "2d",
+          "comparable": true,
+          "meshDrawP95Ms": 1.1,
+          "meshGapP95Ms": 10.1,
+          "consecutiveMeshIntervals": 153,
+          "fullGapP95Ms": 10.1,
+          "fullDrawP95Ms": 1.0,
+          "synchronousSwitchPreparationMs": 0.2,
+          "cachedArtBuildMs": 2.9,
+          "fullIntervals": 232,
+          "over25Ms": 0
+        }
+      ]
+    },
+    {
+      "profile": "Edge desk / webgl2",
+      "browser": "156.0.4314.58",
+      "viewport": [
+        1366,
+        850,
+        1
+      ],
+      "cpuThrottling": 1,
+      "hardware": {
+        "devices": [
+          "NVIDIA GeForce RTX 5060 Laptop GPU",
+          "AMD Radeon(TM) 860M Graphics",
+          "Microsoft Basic Render Driver"
+        ],
+        "canvas2d": "enabled",
+        "rasterization": "enabled",
+        "compositing": "enabled",
+        "webgl": "ANGLE (NVIDIA, NVIDIA GeForce RTX 5060 Laptop GPU (0x00002D59) Direct3D11 vs_5_0 ps_5_0, D3D11)"
+      },
+      "paperCssPx": [
+        765,
+        500
+      ],
+      "activeStagePixels": [
+        772,
+        508
+      ],
+      "stockPixels": [
+        [
+          765,
+          500
+        ],
+        [
+          765,
+          500
+        ]
+      ],
+      "renderer": {
+        "backend": "webgl2",
+        "decision": "manual",
+        "ready": "true",
+        "moduleMs": "4.6",
+        "setupMs": "155.7",
+        "contextMs": "120.5",
+        "message": "本轮折面 · WebGL2 · 手动对照"
+      },
+      "turns": [
+        {
+          "backend": "webgl2",
+          "comparable": true,
+          "meshDrawP95Ms": 0.5,
+          "meshGapP95Ms": 10.1,
+          "consecutiveMeshIntervals": 152,
+          "fullGapP95Ms": 10.1,
+          "fullDrawP95Ms": 0.3,
+          "synchronousSwitchPreparationMs": 0.5,
+          "cachedArtBuildMs": 2.2,
+          "fullIntervals": 232,
+          "over25Ms": 0
+        },
+        {
+          "backend": "webgl2",
+          "comparable": true,
+          "meshDrawP95Ms": 0.4,
+          "meshGapP95Ms": 10.2,
+          "consecutiveMeshIntervals": 153,
+          "fullGapP95Ms": 10.2,
+          "fullDrawP95Ms": 0.3,
+          "synchronousSwitchPreparationMs": 0.3,
+          "cachedArtBuildMs": 2.2,
+          "fullIntervals": 232,
+          "over25Ms": 0
+        },
+        {
+          "backend": "webgl2",
+          "comparable": true,
+          "meshDrawP95Ms": 0.3,
+          "meshGapP95Ms": 10.2,
+          "consecutiveMeshIntervals": 153,
+          "fullGapP95Ms": 10.2,
+          "fullDrawP95Ms": 0.3,
+          "synchronousSwitchPreparationMs": 0.2,
+          "cachedArtBuildMs": 2.2,
+          "fullIntervals": 232,
+          "over25Ms": 0
+        },
+        {
+          "backend": "webgl2",
+          "comparable": true,
+          "meshDrawP95Ms": 0.3,
+          "meshGapP95Ms": 10.1,
+          "consecutiveMeshIntervals": 153,
+          "fullGapP95Ms": 10.1,
+          "fullDrawP95Ms": 0.3,
+          "synchronousSwitchPreparationMs": 0.2,
+          "cachedArtBuildMs": 2.2,
+          "fullIntervals": 232,
+          "over25Ms": 0
+        }
+      ]
+    },
+    {
+      "profile": "Edge desk / webgl2",
+      "browser": "156.0.4314.58",
+      "viewport": [
+        1366,
+        850,
+        1
+      ],
+      "cpuThrottling": 1,
+      "hardware": {
+        "devices": [
+          "NVIDIA GeForce RTX 5060 Laptop GPU",
+          "AMD Radeon(TM) 860M Graphics",
+          "Microsoft Basic Render Driver"
+        ],
+        "canvas2d": "enabled",
+        "rasterization": "enabled",
+        "compositing": "enabled",
+        "webgl": "ANGLE (NVIDIA, NVIDIA GeForce RTX 5060 Laptop GPU (0x00002D59) Direct3D11 vs_5_0 ps_5_0, D3D11)"
+      },
+      "paperCssPx": [
+        765,
+        500
+      ],
+      "activeStagePixels": [
+        772,
+        508
+      ],
+      "stockPixels": [
+        [
+          765,
+          500
+        ],
+        [
+          765,
+          500
+        ]
+      ],
+      "renderer": {
+        "backend": "webgl2",
+        "decision": "manual",
+        "ready": "true",
+        "moduleMs": "4.9",
+        "setupMs": "168.0",
+        "contextMs": "133.6",
+        "message": "本轮折面 · WebGL2 · 手动对照"
+      },
+      "turns": [
+        {
+          "backend": "webgl2",
+          "comparable": true,
+          "meshDrawP95Ms": 0.3,
+          "meshGapP95Ms": 10.1,
+          "consecutiveMeshIntervals": 153,
+          "fullGapP95Ms": 10.1,
+          "fullDrawP95Ms": 0.3,
+          "synchronousSwitchPreparationMs": 0.4,
+          "cachedArtBuildMs": 3.6,
+          "fullIntervals": 232,
+          "over25Ms": 0
+        },
+        {
+          "backend": "webgl2",
+          "comparable": true,
+          "meshDrawP95Ms": 0.4,
+          "meshGapP95Ms": 10.2,
+          "consecutiveMeshIntervals": 153,
+          "fullGapP95Ms": 10.2,
+          "fullDrawP95Ms": 0.3,
+          "synchronousSwitchPreparationMs": 0.4,
+          "cachedArtBuildMs": 3.6,
+          "fullIntervals": 232,
+          "over25Ms": 0
+        },
+        {
+          "backend": "webgl2",
+          "comparable": true,
+          "meshDrawP95Ms": 0.3,
+          "meshGapP95Ms": 10.1,
+          "consecutiveMeshIntervals": 153,
+          "fullGapP95Ms": 10.2,
+          "fullDrawP95Ms": 0.3,
+          "synchronousSwitchPreparationMs": 0.2,
+          "cachedArtBuildMs": 3.6,
+          "fullIntervals": 232,
+          "over25Ms": 0
+        },
+        {
+          "backend": "webgl2",
+          "comparable": true,
+          "meshDrawP95Ms": 0.3,
+          "meshGapP95Ms": 10.1,
+          "consecutiveMeshIntervals": 153,
+          "fullGapP95Ms": 10.1,
+          "fullDrawP95Ms": 0.3,
+          "synchronousSwitchPreparationMs": 0.2,
+          "cachedArtBuildMs": 3.6,
+          "fullIntervals": 232,
+          "over25Ms": 0
+        }
+      ]
+    },
+    {
+      "profile": "Edge desk / 2d",
+      "browser": "156.0.4314.58",
+      "viewport": [
+        1366,
+        850,
+        1
+      ],
+      "cpuThrottling": 1,
+      "hardware": {
+        "devices": [
+          "NVIDIA GeForce RTX 5060 Laptop GPU",
+          "AMD Radeon(TM) 860M Graphics",
+          "Microsoft Basic Render Driver"
+        ],
+        "canvas2d": "enabled",
+        "rasterization": "enabled",
+        "compositing": "enabled"
+      },
+      "paperCssPx": [
+        765,
+        500
+      ],
+      "activeStagePixels": [
+        772,
+        508
+      ],
+      "stockPixels": [
+        [
+          765,
+          500
+        ],
+        [
+          765,
+          500
+        ]
+      ],
+      "renderer": {
+        "backend": "2d",
+        "decision": "manual",
+        "ready": "false",
+        "message": "本轮折面 · Canvas 2D · 手动对照"
+      },
+      "turns": [
+        {
+          "backend": "2d",
+          "comparable": true,
+          "meshDrawP95Ms": 0.9,
+          "meshGapP95Ms": 10.1,
+          "consecutiveMeshIntervals": 153,
+          "fullGapP95Ms": 10.1,
+          "fullDrawP95Ms": 0.9,
+          "synchronousSwitchPreparationMs": 0.4,
+          "cachedArtBuildMs": 1.6,
+          "fullIntervals": 232,
+          "over25Ms": 0
+        },
+        {
+          "backend": "2d",
+          "comparable": true,
+          "meshDrawP95Ms": 0.8,
+          "meshGapP95Ms": 10.1,
+          "consecutiveMeshIntervals": 153,
+          "fullGapP95Ms": 10.1,
+          "fullDrawP95Ms": 0.8,
+          "synchronousSwitchPreparationMs": 0.3,
+          "cachedArtBuildMs": 1.6,
+          "fullIntervals": 232,
+          "over25Ms": 0
+        },
+        {
+          "backend": "2d",
+          "comparable": true,
+          "meshDrawP95Ms": 0.8,
+          "meshGapP95Ms": 10.1,
+          "consecutiveMeshIntervals": 153,
+          "fullGapP95Ms": 10.2,
+          "fullDrawP95Ms": 0.8,
+          "synchronousSwitchPreparationMs": 0.1,
+          "cachedArtBuildMs": 1.6,
+          "fullIntervals": 232,
+          "over25Ms": 0
+        },
+        {
+          "backend": "2d",
+          "comparable": true,
+          "meshDrawP95Ms": 0.8,
+          "meshGapP95Ms": 10.1,
+          "consecutiveMeshIntervals": 153,
+          "fullGapP95Ms": 10.1,
+          "fullDrawP95Ms": 0.8,
+          "synchronousSwitchPreparationMs": 0.2,
+          "cachedArtBuildMs": 1.6,
+          "fullIntervals": 232,
+          "over25Ms": 0
+        }
+      ]
+    }
+  ],
+  "automaticSelection": [
+    {
+      "backend": "2d",
+      "decision": "trial",
+      "meshDrawP95Ms": 0.8,
+      "meshGapP95Ms": 10.2,
+      "initMs": {}
+    },
+    {
+      "backend": "webgl2",
+      "decision": "webgl2",
+      "meshDrawP95Ms": 0.3,
+      "meshGapP95Ms": 10.2,
+      "initMs": {
+        "module": 3.7,
+        "setup": 42.2,
+        "context": 3.2
+      }
+    },
+    {
+      "backend": "webgl2",
+      "decision": "webgl2",
+      "meshDrawP95Ms": 0.3,
+      "meshGapP95Ms": 10.2,
+      "initMs": {
+        "module": 3.7,
+        "setup": 42.2,
+        "context": 3.2
+      }
+    }
+  ],
+  "automaticAcrossEngines": {
+    "webkit": {
+      "initialGpuRequests": 0,
+      "afterThreeSwitches": 1,
+      "changes": [
+        {
+          "renderer": {
+            "backend": "2d",
+            "decision": "trial",
+            "ready": "false"
+          },
+          "mesh": {
+            "backend": "2d",
+            "draw": "1",
+            "gap": "27",
+            "count": "163",
+            "comparable": "true"
+          }
+        },
+        {
+          "renderer": {
+            "backend": "webgl2",
+            "decision": "2d",
+            "ready": "false",
+            "moduleMs": "3010.0",
+            "setupMs": "313.0",
+            "contextMs": "293.0"
+          },
+          "mesh": {
+            "backend": "webgl2",
+            "draw": "1",
+            "gap": "33",
+            "count": "63",
+            "comparable": "true"
+          }
+        },
+        {
+          "renderer": {
+            "backend": "2d",
+            "decision": "2d",
+            "ready": "false",
+            "moduleMs": "3010.0",
+            "setupMs": "313.0",
+            "contextMs": "293.0"
+          },
+          "mesh": {
+            "backend": "2d",
+            "draw": "1",
+            "gap": "29",
+            "count": "169",
+            "comparable": "true"
+          }
+        }
+      ],
+      "errors": []
+    },
+    "firefox": {
+      "initialGpuRequests": 0,
+      "afterThreeSwitches": 1,
+      "changes": [
+        {
+          "renderer": {
+            "backend": "2d",
+            "decision": "trial",
+            "ready": "false"
+          },
+          "mesh": {
+            "backend": "2d",
+            "draw": "9",
+            "gap": "12.120000000000346",
+            "count": "151",
+            "comparable": "true"
+          }
+        },
+        {
+          "renderer": {
+            "backend": "webgl2",
+            "decision": "webgl2",
+            "ready": "true",
+            "moduleMs": "7.0",
+            "setupMs": "231.0",
+            "contextMs": "213.0"
+          },
+          "mesh": {
+            "backend": "webgl2",
+            "draw": "1",
+            "gap": "12.1200000000008",
+            "count": "152",
+            "comparable": "true"
+          }
+        },
+        {
+          "renderer": {
+            "backend": "webgl2",
+            "decision": "webgl2",
+            "ready": "true",
+            "moduleMs": "7.0",
+            "setupMs": "231.0",
+            "contextMs": "213.0"
+          },
+          "mesh": {
+            "backend": "webgl2",
+            "draw": "1",
+            "gap": "12.139999999999418",
+            "count": "152",
+            "comparable": "true"
+          }
+        }
+      ],
+      "errors": []
+    },
+    "chrome": {
+      "initialGpuRequests": 0,
+      "afterThreeSwitches": 1,
+      "changes": [
+        {
+          "renderer": {
+            "backend": "2d",
+            "decision": "trial",
+            "ready": "false"
+          },
+          "mesh": {
+            "backend": "2d",
+            "draw": "0.900000000372529",
+            "gap": "10.100000000000136",
+            "count": "153",
+            "comparable": "true"
+          }
+        },
+        {
+          "renderer": {
+            "backend": "webgl2",
+            "decision": "webgl2",
+            "ready": "true",
+            "moduleMs": "4.6",
+            "setupMs": "52.5",
+            "contextMs": "8.8"
+          },
+          "mesh": {
+            "backend": "webgl2",
+            "draw": "0.3999999985098839",
+            "gap": "10.100000000000364",
+            "count": "153",
+            "comparable": "true"
+          }
+        },
+        {
+          "renderer": {
+            "backend": "webgl2",
+            "decision": "webgl2",
+            "ready": "true",
+            "moduleMs": "4.6",
+            "setupMs": "52.5",
+            "contextMs": "8.8"
+          },
+          "mesh": {
+            "backend": "webgl2",
+            "draw": "0.30000000074505806",
+            "gap": "10.100000000000364",
+            "count": "152",
+            "comparable": "true"
+          }
+        }
+      ],
+      "errors": []
+    },
+    "manual2d": {
+      "gpuModuleRequests": 0,
+      "article": "河岸余晖。",
+      "readout": "本轮折面 · Canvas 2D · 手动对照"
+    },
+    "reduced": {
+      "gpuModuleRequests": 0,
+      "article": "河岸余晖。",
+      "readout": "减少动态效果 · 直接显示文章"
+    }
+  },
+  "desktopWebGLDrawTimer": {
+    "method": "EXT_disjoint_timer_query_webgl2, around drawElements every 8th call. Asynchronous collection; disjoint samples excluded. No buffer/texture uploads, browser composition or display timing in this interval.",
+    "samples": 78,
+    "medianMs": 0.007504,
+    "p95Ms": 0.077152,
+    "maxMs": 0.608032,
+    "runs": [
+      {
+        "supported": true,
+        "disjoint": false,
+        "ms": [
+          0.608032,
+          0.008768,
+          0.010496,
+          0.00688,
+          0.0064,
+          0.006944,
+          0.007776,
+          0.006272,
+          0.005984,
+          0.004448,
+          0.004288,
+          0.005952,
+          0.007456,
+          0.006208,
+          0.006784,
+          0.006976,
+          0.007776,
+          0.009056,
+          0.014816,
+          0.015136
+        ]
+      },
+      {
+        "supported": true,
+        "disjoint": false,
+        "ms": [
+          0.014624,
+          0.006944,
+          0.599648,
+          0.01456,
+          0.005824,
+          0.009312,
+          0.023008,
+          0.024832,
+          0.006464,
+          0.038912,
+          0.00448,
+          0.002432,
+          0.017696,
+          0.062592,
+          0.008096,
+          0.01408,
+          0.077152,
+          0.085504,
+          0.015968
+        ]
+      },
+      {
+        "supported": true,
+        "disjoint": false,
+        "ms": [
+          0.061824,
+          0.01168,
+          0.008512,
+          0.006944,
+          0.006304,
+          0.006208,
+          0.00608,
+          0.005152,
+          0.005792,
+          0.004352,
+          0.004416,
+          0.007296,
+          0.006176,
+          0.006048,
+          0.007232,
+          0.007552,
+          0.007584,
+          0.010752,
+          0.010656,
+          0.014464
+        ]
+      },
+      {
+        "supported": true,
+        "disjoint": false,
+        "ms": [
+          0.00784,
+          0.011072,
+          0.00816,
+          0.00656,
+          0.006912,
+          0.006368,
+          0.0064,
+          0.006464,
+          0.00576,
+          0.004256,
+          0.006048,
+          0.00592,
+          0.01072,
+          0.007552,
+          0.005088,
+          0.007552,
+          0.030944,
+          0.012448,
+          0.0152
+        ]
+      }
+    ]
+  },
+  "imageCheck": {
+    "method": "Fixed pose screenshots at 1080x740 CSS px, DPR 1. Compare all x and 128 <= y < 625. Silhouette mask = max RGB channel difference vs hidden-canvas background >4. RGB differences calculated on shared ink/paper mask. Printed-stock control disables the sampled texture's opacity and otherwise draws the same GPU pose. Ink changed if any channel differs by at least 3.",
+    "poses": [
+      {
+        "timeMs": 272,
+        "fold": 0.310814,
+        "scale": 0.819605,
+        "maskIoU": 0.9807,
+        "meanAbsRGBShared": 0.392,
+        "gpuInkChangedPercent": 10.94
+      },
+      {
+        "timeMs": 464,
+        "fold": 0.71726,
+        "scale": 0.501406,
+        "maskIoU": 0.9761,
+        "meanAbsRGBShared": 1.859,
+        "gpuInkChangedPercent": 9.47
+      },
+      {
+        "timeMs": 720,
+        "fold": 1,
+        "scale": 0.35,
+        "maskIoU": 0.9138,
+        "meanAbsRGBShared": 4.256,
+        "gpuInkChangedPercent": 12.72
+      },
+      {
+        "timeMs": 1856,
+        "fold": 0.793067,
+        "scale": 0.446118,
+        "maskIoU": 0.9632,
+        "meanAbsRGBShared": 2.249,
+        "gpuInkChangedPercent": 20.06
+      },
+      {
+        "timeMs": 2048,
+        "fold": 0.394195,
+        "scale": 0.754519,
+        "maskIoU": 0.9759,
+        "meanAbsRGBShared": 0.612,
+        "gpuInkChangedPercent": 23.61
+      }
+    ]
+  },
+  "behavior": {
+    "contextLoss": {
+      "decision": "unavailable",
+      "source": "2d",
+      "ready": "false",
+      "msg": "本轮折面 · Canvas 2D · WebGL2 上下文丢失，已回退"
+    },
+    "missing": {
+      "decision": "unavailable",
+      "source": "2d",
+      "ready": "false",
+      "msg": "本轮折面 · Canvas 2D · 没有可用的 WebGL2 上下文",
+      "probes": 1,
+      "article": "河岸余晖。"
+    },
+    "moduleError": {
+      "decision": "unavailable",
+      "source": "2d",
+      "ready": "false",
+      "msg": "本轮折面 · Canvas 2D · GPU 模块加载失败，已回退",
+      "probes": 0,
+      "article": "河岸余晖。"
+    },
+    "badShader": {
+      "decision": "unavailable",
+      "source": "2d",
+      "ready": "false",
+      "msg": "本轮折面 · Canvas 2D · 着色器链接失败",
+      "probes": 1,
+      "article": "河岸余晖。"
+    },
+    "upload": {
+      "decision": "unavailable",
+      "source": "2d",
+      "ready": "false",
+      "msg": "本轮折面 · Canvas 2D · 试验纹理上传失败",
+      "probes": 1,
+      "article": "河岸余晖。"
+    },
+    "no2d": {
+      "decision": "unavailable",
+      "ready": "false",
+      "msg": "HTML 文字阅读模式",
+      "probes": 0,
+      "article": "河岸余晖。"
+    },
+    "partial2d": {
+      "decision": "unavailable",
+      "ready": "false",
+      "msg": "HTML 文字阅读模式",
+      "probes": 0,
+      "article": "河岸余晖。"
+    },
+    "reduced": {
+      "decision": "reduced",
+      "ready": "false",
+      "msg": "减少动态效果 · 直接显示文章",
+      "probes": 0,
+      "article": "河岸余晖。"
+    },
+    "slowTrial": [
+      {
+        "decision": "trial",
+        "source": "2d",
+        "ready": "true",
+        "msg": "本轮折面 · Canvas 2D · 下次切换对照 WebGL2"
+      },
+      {
+        "decision": "2d",
+        "source": "webgl2",
+        "ready": "false",
+        "msg": "本轮折面 · WebGL2 · 实测保留 Canvas 2D"
+      },
+      {
+        "decision": "2d",
+        "source": "2d",
+        "ready": "false",
+        "msg": "本轮折面 · Canvas 2D · 实测保留 Canvas 2D"
+      }
+    ],
+    "noJS": {
+      "status": 200,
+      "serverArticleCount": 2,
+      "requests": [
+        "http://127.0.0.1:4173/"
+      ],
+      "title": "纸上生风 · 折间 Fold Journal",
+      "canonical": null,
+      "articles": [
+        {
+          "id": "article-wind",
+          "title": "纸上生风。",
+          "paragraph": "午后折了一只纸鹤。拇指压住翼根，轻轻提起纸尖，桌面上便多了一道细长的影子。",
+          "visibility": "visible",
+          "inert": false
+        },
+        {
+          "id": "article-river",
+          "title": "河岸余晖。",
+          "paragraph": "走到桥下，太阳只剩半枚。对岸的树影铺上水面，一艘小船经过，把银灰色的天光分成两行。",
+          "visibility": "hidden",
+          "inert": true
+        }
+      ],
+      "paths": [
+        "#wind",
+        "#river"
+      ],
+      "hash": "#river",
+      "deepLinkStatus": 404
+    },
+    "late2dLoss": {
+      "textMode": true,
+      "page": "article-wind"
+    },
+    "pointer": {
+      "pointers": [
+        "none",
+        "none",
+        "none"
+      ],
+      "anchor": "wind",
+      "retarget": "article-wind"
+    },
+    "file": {
+      "decision": "manual",
+      "source": "webgl2",
+      "ready": "true",
+      "msg": "本轮折面 · WebGL2 · 手动对照"
+    },
+    "firefox": {
+      "decision": "manual",
+      "source": "webgl2",
+      "ready": "true",
+      "msg": "本轮折面 · WebGL2 · 手动对照"
+    },
+    "webkit": {
+      "decision": "manual",
+      "source": "webgl2",
+      "ready": "true",
+      "msg": "本轮折面 · WebGL2 · 手动对照"
+    },
+    "errors": []
+  },
+  "frameworkFixtures": {
+    "hexoVersion": "8.1.2",
+    "hexo": {
+      "status": 200,
+      "genuine": "/blog/posts/river/",
+      "h1": "河岸余晖",
+      "canonical": "https://example.invalid/blog/posts/river/",
+      "missing": 404,
+      "h1Count": 1,
+      "text": "走到桥下，太阳只剩半枚。"
+    },
+    "hugoVersion": "hugo v0.169.0-1da10fc44701c566b1669cdb2d12638f155138bd windows/amd64 BuildDate=2026-10-27T14:52:20Z VendorInfo=gohugoio",
+    "hugo": {
+      "status": 200,
+      "genuine": "/blog/posts/river/",
+      "h1": "河岸余晖",
+      "canonical": "https://example.invalid/blog/posts/river/",
+      "missing": 404,
+      "h1Count": 1,
+      "text": "走到桥下，太阳只剩半枚。"
+    },
+    "viteRawCSR": {
+      "rootEmpty": true,
+      "hasArticle": false
+    },
+    "vite": [
+      "19.3.0",
+      "8.3.3",
+      "6.0.3"
+    ],
+    "reactSSG": {
+      "status": 200,
+      "genuine": "/blog/posts/river/",
+      "h1": "河岸余晖",
+      "canonical": "https://example.invalid/blog/posts/river/",
+      "missing": 404,
+      "h1Count": 1,
+      "text": "走到桥下，太阳只剩半枚。",
+      "hydrationErrors": []
+    }
+  },
+  "sixSharedCraneSmoke": {
+    "profile": "Chrome same crane x6",
+    "browser": "156.0.8078.80",
+    "viewport": [
+      1366,
+      850,
+      1
+    ],
+    "cpuThrottling": 1,
+    "hardware": {},
+    "paperCssPx": [
+      765,
+      500
+    ],
+    "activeStagePixels": [
+      772,
+      508
+    ],
+    "stockPixels": [
+      [
+        765,
+        500
+      ],
+      [
+        1,
+        1
+      ],
+      [
+        1,
+        1
+      ],
+      [
+        1,
+        1
+      ],
+      [
+        1,
+        1
+      ],
+      [
+        765,
+        500
+      ]
+    ],
+    "renderer": {
+      "backend": "webgl2",
+      "decision": "webgl2",
+      "ready": "true",
+      "moduleMs": "8.2",
+      "setupMs": "40.5",
+      "contextMs": "4.9",
+      "message": "本轮折面 · WebGL2 · 实测采用 WebGL2"
+    },
+    "turns": [
+      {
+        "backend": "2d",
+        "comparable": true,
+        "meshDrawP95Ms": 1.0,
+        "meshGapP95Ms": 10.1,
+        "consecutiveMeshIntervals": 153,
+        "fullGapP95Ms": 10.1,
+        "fullDrawP95Ms": 0.9,
+        "synchronousSwitchPreparationMs": 0.4,
+        "cachedArtBuildMs": 1.8,
+        "fullIntervals": 232,
+        "over25Ms": 0
+      },
+      {
+        "backend": "webgl2",
+        "comparable": true,
+        "meshDrawP95Ms": 0.4,
+        "meshGapP95Ms": 10.2,
+        "consecutiveMeshIntervals": 153,
+        "fullGapP95Ms": 10.1,
+        "fullDrawP95Ms": 0.3,
+        "synchronousSwitchPreparationMs": 1.9,
+        "cachedArtBuildMs": 2.5,
+        "fullIntervals": 232,
+        "over25Ms": 0
+      },
+      {
+        "backend": "2d",
+        "comparable": true,
+        "meshDrawP95Ms": 1.2,
+        "meshGapP95Ms": 10.2,
+        "consecutiveMeshIntervals": 152,
+        "fullGapP95Ms": 10.1,
+        "fullDrawP95Ms": 1.1,
+        "synchronousSwitchPreparationMs": 1.8,
+        "cachedArtBuildMs": 2.8,
+        "fullIntervals": 232,
+        "over25Ms": 0
+      },
+      {
+        "backend": "2d",
+        "comparable": true,
+        "meshDrawP95Ms": 1.0,
+        "meshGapP95Ms": 10.1,
+        "consecutiveMeshIntervals": 153,
+        "fullGapP95Ms": 10.1,
+        "fullDrawP95Ms": 1.0,
+        "synchronousSwitchPreparationMs": 1.9,
+        "cachedArtBuildMs": 2.9,
+        "fullIntervals": 232,
+        "over25Ms": 0
+      },
+      {
+        "backend": "webgl2",
+        "comparable": true,
+        "meshDrawP95Ms": 0.4,
+        "meshGapP95Ms": 10.1,
+        "consecutiveMeshIntervals": 153,
+        "fullGapP95Ms": 10.1,
+        "fullDrawP95Ms": 0.3,
+        "synchronousSwitchPreparationMs": 1.8,
+        "cachedArtBuildMs": 2.9,
+        "fullIntervals": 232,
+        "over25Ms": 0
+      }
+    ]
+  }
+}
