@@ -9,7 +9,7 @@ export const categoryURL = (name: string) => href("categories/" + encodeURICompo
 export const isoDate = (date: Date) => date.toISOString().slice(0, 10);
 export const printedDate = (date: Date) => isoDate(date).replaceAll("-", ".");
 export const artwork = {
-  crane: { file: "crane.webp", alt: "一只银灰色的折纸鹤，双翼斜展，在纸面上投下轻轻的阴影", caption: "千纸鹤", english: "Paper crane" },
+  crane: { file: "crane.webp", alt: "一只赤陶色的折纸鹤，双翼斜展，在纸面上投下轻轻的阴影", caption: "千纸鹤", english: "Paper crane" },
   river: { file: "river.webp", alt: "暮色中的河岸，淡紫色夕阳映在层叠的山影和水面上", caption: "河岸余晖", english: "Along the river" },
 };
 

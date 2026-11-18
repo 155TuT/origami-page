@@ -1,0 +1,46 @@
+---
+import { href } from "../../lib/blog";
+
+const image = import.meta.env.PUBLIC_DESK_IMAGE_URL?.trim();
+const src = image && (/^(?:https?:)?\/\//i.test(image) ? image : href(image));
+---
+<div class="desk-backdrop" aria-hidden="true" transition:persist="desk-backdrop">
+  <div class="desk-overlay" style={src && { "--bg-overlay-image": `url(${JSON.stringify(src)})` }}></div>
+</div>
+
+<style>
+  .desk-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background: var(--bg-surface);
+  }
+  @supports (mask-image: linear-gradient(black, white)) or (-webkit-mask-image: linear-gradient(black, white)) {
+    .desk-backdrop::before, .desk-backdrop::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      -webkit-mask: var(--fiber-mask) repeat;
+      mask: var(--fiber-mask) repeat;
+    }
+    .desk-backdrop::before {
+      --fiber-mask: url("../../assets/paper/fiber-strong.webp");
+      background: var(--bg-strong-fiber);
+    }
+    .desk-backdrop::after {
+      --fiber-mask: url("../../assets/paper/fiber-lite.webp");
+      background: var(--bg-lite-fiber);
+    }
+  }
+  .desk-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background-image: var(--bg-overlay-image);
+    background-position: center;
+    background-size: var(--bg-overlay-size);
+    background-repeat: var(--bg-overlay-repeat);
+    opacity: var(--bg-overlay-opacity);
+  }
+</style>

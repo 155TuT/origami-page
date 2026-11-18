@@ -16,8 +16,21 @@ const paperTop = page => page.locator("#content").evaluate(paper => paper.scroll
 async function checkLayout(page) {
   const layout = await page.evaluate(() => {
     const rect = selector => document.querySelector(selector).getBoundingClientRect();
+    const sheet = document.querySelector("#content");
+    const originalTop = sheet.scrollTop;
+    sheet.scrollTop = 0;
     const paper = rect("#content"), header = rect(".site-header"), desk = rect(".desk-backdrop");
+    const content = rect(".sheet-content");
+    const inset = content.left - paper.left;
     const nav = [...document.querySelectorAll(".site-nav a")].map(link => link.getBoundingClientRect());
+    const footer = sheet.querySelector("footer");
+    sheet.scrollTop = sheet.scrollHeight / 2;
+    const inMargin = y => document.elementFromPoint(paper.left + paper.width / 2, y) === sheet;
+    const clearMargins = inMargin(paper.top + inset / 2) && inMargin(paper.bottom - inset / 2);
+    sheet.scrollTop = sheet.scrollHeight;
+    const bottomInset = paper.bottom - footer.getBoundingClientRect().bottom;
+    const fixed = rect(".site-header").bottom === header.bottom && rect(".desk-backdrop").top === desk.top;
+    sheet.scrollTop = originalTop;
     return {
       width: window.innerWidth, sheetWidth: paper.width, sheetLeft: paper.left,
       brand: rect(".wordmark").left - paper.left, menu: nav.at(-1).right - paper.right,
@@ -27,15 +40,18 @@ async function checkLayout(page) {
       seam: paper.top - header.bottom, rootY: window.scrollY, deskTop: desk.top,
       deskHeight: desk.height - window.innerHeight,
       bottom: paper.bottom - window.innerHeight,
-      trailingSpace: document.querySelector("#content").scrollHeight -
-        Math.max(document.querySelector("#content").clientHeight, document.querySelector(".sheet-ink").offsetHeight),
-      footer: !!document.querySelector("footer"),
+      inset, topInset: content.top - paper.top, rightInset: paper.right - content.right, bottomInset,
+      clearMargins, fixed, overflowX: sheet.scrollWidth - sheet.clientWidth,
+      footer: document.querySelectorAll("footer").length === 1 && footer.textContent.includes("闽ICP备")
+        && footer.textContent.includes("闽公网安备"),
     };
   });
   for (const error of [layout.sheetWidth - layout.width * .6, layout.sheetLeft - layout.width * .2,
     layout.brand, layout.menu, layout.wordmark, layout.seam, layout.rootY, layout.deskTop, layout.deskHeight,
-    layout.trailingSpace, layout.bottom]) assert.ok(Math.abs(error) <= 1, JSON.stringify(layout));
-  assert.ok(layout.menuFits && layout.settingsFits && !layout.footer, JSON.stringify(layout));
+    layout.bottom, layout.topInset - layout.inset, layout.rightInset - layout.inset,
+    layout.bottomInset - layout.inset, layout.overflowX]) assert.ok(Math.abs(error) <= 1, JSON.stringify(layout));
+  assert.ok(layout.inset >= 10 && layout.menuFits && layout.settingsFits && layout.footer &&
+    layout.clearMargins && layout.fixed, JSON.stringify(layout));
 }
 
 async function delayedTurn(page, link, parallel) {
@@ -80,10 +96,11 @@ async function delayedTurn(page, link, parallel) {
 }
 
 async function run() {
-  const browserType = { chrome: chromium, chromium, firefox, webkit }[engine];
-  assert.ok(browserType, "choose chrome, chromium, firefox or webkit");
+  const browserType = { chrome: chromium, edge: chromium, chromium, firefox, webkit }[engine];
+  assert.ok(browserType, "choose chrome, edge, chromium, firefox or webkit");
   const browser = await browserType.launch({
-    channel: engine === "chrome" ? "chrome" : undefined,
+    channel: { chrome: "chrome", edge: "msedge" }[engine],
+    ignoreDefaultArgs: ["--hide-scrollbars"],
     executablePath: process.env.ORIGAMI_BROWSER_BIN || undefined,
   });
   try {
@@ -128,7 +145,10 @@ async function run() {
     assert.equal(await page.locator(".site-nav a > [data-fold-dock]:first-child").count(), 4);
     assert.equal(await page.locator("[data-fold-paper]").count(), 1);
     await checkLayout(page);
-    await delayedTurn(page, page.locator(".read-button").first(), false);
+    const backdrop = await page.locator(".desk-backdrop").elementHandle();
+    await delayedTurn(page, page.getByRole("link", { name: "阅读全文", exact: true }), false);
+    assert.ok(await backdrop.evaluate(node => node === document.querySelector(".desk-backdrop")),
+      "folding to another page must keep the same textured backdrop");
     const first = { path: new URL(page.url()).pathname, title: await page.title() };
     await page.locator("[data-settings] summary").click();
     await page.getByRole("switch", { name: "并行取文与收纸" }).check();
@@ -158,7 +178,8 @@ async function run() {
     assert.equal(await page.title(), second.title);
     assert.equal(await page.locator("main article h1").count(), 1);
     await page.waitForFunction(top => Math.abs(document.getElementById("content").scrollTop - top) <= 2, forwardScroll);
-    const toc = page.locator('.article-aside a[href^="#"]').first();
+    const tocLinks = page.getByRole("navigation", { name: "本篇目录" }).getByRole("link");
+    const toc = tocLinks.first();
     const beforeHash = await paperTop(page);
     await toc.click();
     await page.waitForFunction(() => !!location.hash);
@@ -168,7 +189,7 @@ async function run() {
     await page.waitForFunction(top => !location.hash && Math.abs(document.getElementById("content").scrollTop - top) <= 2, beforeHash);
     await page.evaluate(() => history.forward());
     await page.waitForFunction(top => location.hash && Math.abs(document.getElementById("content").scrollTop - top) <= 2, atHash);
-    const lastHeading = await page.locator('.article-aside a[href^="#"]').last().getAttribute("href");
+    const lastHeading = await tocLinks.last().getAttribute("href");
     await page.goto(new URL(lastHeading, page.url()).href);
     await page.locator("#content").evaluate(paper => { paper.scrollTop = 110; });
     await page.reload();
@@ -178,6 +199,15 @@ async function run() {
     await checkLayout(page);
     assert.ok(await page.locator("#content").evaluate(paper => paper.scrollHeight === paper.clientHeight),
       "a short page must fill the same frame without adding a scrollable tail");
+    for (const viewport of [{ width: 1440, height: 900 }, { width: 390, height: 844 }, { width: 320, height: 568 }]) {
+      await page.setViewportSize(viewport);
+      await page.goto(new URL(first.path, base).href);
+      await checkLayout(page);
+      await page.goto(new URL("404.html", base).href);
+      await checkLayout(page);
+      assert.equal(await page.locator("#content").evaluate(paper => paper.scrollHeight - paper.clientHeight), 0,
+        "a short page pins its footer inside the bottom paper margin");
+    }
     assert.deepEqual(errors, []);
     console.log(engine, "passed", first.path, second.path);
   } finally {

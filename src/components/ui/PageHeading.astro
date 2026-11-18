@@ -1,0 +1,29 @@
+---
+interface Props {
+  title: string;
+  eyebrow: string;
+  eyebrowHref?: string;
+  description?: string;
+  ruled?: boolean;
+}
+const { title, eyebrow, eyebrowHref, description, ruled = true } = Astro.props;
+---
+<header class:list={["page-heading", { ruled }]}>
+  {eyebrowHref ? <a class="eyebrow" href={eyebrowHref}>{eyebrow}</a> : <p class="eyebrow">{eyebrow}</p>}
+  <h1>{title}</h1>
+  {description && <p class="description">{description}</p>}
+  <slot />
+</header>
+
+<style>
+  .ruled { padding-block-end: var(--space-6); border-block-end: 1px solid var(--line-dark); }
+  .eyebrow { color: var(--accent); font: var(--type-eyebrow); letter-spacing: .1em; }
+  a.eyebrow:hover { text-decoration: underline; text-underline-offset: .23em; }
+  h1 {
+    margin: var(--space-2) 0;
+    font: var(--weight-bold) var(--text-title)/1.2 var(--serif);
+    letter-spacing: -.055em;
+    overflow-wrap: anywhere;
+  }
+  .description { color: var(--muted); font-size: var(--text-ui); }
+</style>

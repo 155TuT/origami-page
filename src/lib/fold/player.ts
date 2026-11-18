@@ -81,8 +81,8 @@ export class FoldPlayer {
   }
 
   private stock(box: Box, ruling: string) {
-    const dark = document.documentElement.dataset.theme === "dark";
-    const key = [Math.round(box.width), Math.round(box.height), devicePixelRatio, ruling, dark].join("/");
+    const material = Paper.readMaterial();
+    const key = [Math.round(box.width), Math.round(box.height), devicePixelRatio, ruling, material.key].join("/");
     let surface = this.stocks.get(key);
     if (surface) this.stocks.delete(key);
     else {
@@ -94,7 +94,7 @@ export class FoldPlayer {
       }
       const canvas = document.createElement("canvas");
       canvas.dataset.ruling = ruling;
-      surface = Paper.drawStock(canvas, box, dark);
+      surface = Paper.drawStock(canvas, box, material);
     }
     this.stocks.set(key, surface);
     if (this.flat.firstChild !== surface.stock) this.flat.replaceChildren(surface.stock);

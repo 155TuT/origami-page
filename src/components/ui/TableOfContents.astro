@@ -1,0 +1,26 @@
+---
+import type { MarkdownHeading } from "astro";
+import { href } from "../../lib/blog";
+import ActionLink from "./ActionLink.astro";
+import Sidebar from "./Sidebar.astro";
+
+interface Props { headings: MarkdownHeading[]; }
+const contents = Astro.props.headings.filter(h => h.depth === 2 || h.depth === 3);
+---
+<Sidebar label="文章导航" sticky>
+  {contents.length > 0 && <nav aria-label="本篇目录">
+    <h2>本篇目录</h2>
+    <ol>{contents.map(h => (
+      <li class:list={{ subhead: h.depth === 3 }}><a href={"#" + h.slug}>{h.text}</a></li>
+    ))}</ol>
+  </nav>}
+  <ActionLink href={href("archives/")} arrow="↗">返回归档</ActionLink>
+</Sidebar>
+
+<style>
+  ol { padding-inline-start: 1.4em; font-size: var(--text-small); color: var(--muted); line-height: 1.8; }
+  li { padding-block: 3px; }
+  li::marker { color: var(--faint); font: var(--text-caption) var(--mono); }
+  li a:hover { color: var(--accent); }
+  .subhead { margin-inline-start: 1em; }
+</style>

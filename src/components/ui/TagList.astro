@@ -1,0 +1,44 @@
+---
+import { tagURL } from "../../lib/blog";
+
+interface Props {
+  tags: { name: string; count?: number }[];
+  variant?: "index" | "article";
+}
+const { tags, variant = "index" } = Astro.props;
+---
+{tags.length > 0 && (
+  <ul class:list={["tag-list", variant]} aria-label={variant === "article" ? "文章标签" : "全部标签"}>
+    {tags.map(({ name, count }) => (
+      <li><a href={tagURL(name)}>
+        <span>{variant === "article" && "# "}{name}</span>
+        {count !== undefined && <small>{count} 篇</small>}
+      </a></li>
+    ))}
+  </ul>
+)}
+
+<style>
+  .tag-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    list-style: none;
+    margin: var(--space-8) 0 0;
+    padding: 0;
+  }
+  li { max-width: 100%; }
+  a {
+    display: inline-flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    padding: var(--space-2) var(--space-3);
+    border: 1px solid var(--line);
+    background: var(--surface);
+    overflow-wrap: anywhere;
+  }
+  a:hover { border-color: var(--accent); }
+  small { color: var(--faint); font: var(--type-count); }
+  .article a { padding: 3px var(--space-2); color: var(--accent); font-size: var(--text-meta); }
+</style>

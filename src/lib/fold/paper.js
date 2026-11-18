@@ -11,11 +11,9 @@ export const Paper = (() => {
   const clamp = v => Math.min(1, Math.max(0, v));
   const mix = (a, b, t) => a + (b - a) * t;
   function ease(v) { const t = clamp(v); return t * t * (3 - 2 * t); }
-  const paperRGB = [246, 249, 251];
-  const shadowRGB = [65, 85, 104];
   const stockStyles = {
-    ruled: {step: 24, width: .85, ink: 'rgba(87,127,155,.31)'},
-    grid:  {step: 18, width: .8,  ink: 'rgba(85,123,149,.28)'}
+    ruled: {step: 24, width: .85},
+    grid:  {step: 18, width: .8}
   };
   const uv = Array.from({ length: vertexCount }, (_, i) => [(vertices[3*i]+1)/2, (vertices[3*i+1]+1)/2]);
 
@@ -51,19 +49,38 @@ export const Paper = (() => {
     return points.map(p => [x+(p[0]-bounds.x*anchor)*sx, y+(p[1]-bounds.y*anchor)*sy, p[2]*sz]);
   }
 
-  // At the dock, both themes meet the same silver crane. A dark reading sheet
-  // gradually picks up this light as it lifts, in both rendering backends.
-  const palettes = new Map();
-  function palette(fold, dark = false) {
-    const key = dark ? Math.round(ease(fold) * 24) : 24;
-    if (!palettes.has(key)) {
-      const paper = paperRGB.map((c, i) => mix([41,59,57][i], c, key/24));
-      const shadow = shadowRGB.map((c, i) => mix([15,27,26][i], c, key/24));
-      const shades = Array.from({length:121}, (_,i) =>
-        'rgb(' + paper.map((c,j) => Math.round(mix(c,shadow[j],i/120))).join(',') + ')');
-      palettes.set(key, {shades, paper:paper.map(c => c/255), shadow:shadow.map(c => c/255)});
+  // Both renderers and the static artwork sample the same sRGB pigment endpoints.
+  // Resolve CSS colors once when the material changes, outside the animation loop.
+  let lastMaterial;
+  function readMaterial() {
+    const styles = getComputedStyle(document.documentElement);
+    const token = name => styles.getPropertyValue(name).trim();
+    const pigments = ['--surface', '--fold-shadow', '--crane-paper', '--crane-shadow'].map(token);
+    const [rule, grid, score, highlight] = ['--fold-rule', '--fold-grid', '--fold-score', '--fold-highlight'].map(token);
+    const key = [...pigments, rule, grid, score, highlight].join('/');
+    if (lastMaterial?.key === key) return lastMaterial;
+
+    const sample = document.createElement('canvas');
+    sample.width = pigments.length;
+    sample.height = 1;
+    const ctx = context2D(sample);
+    pigments.forEach((color, i) => { ctx.fillStyle = color; ctx.fillRect(i, 0, 1, 1); });
+    const bytes = ctx.getImageData(0, 0, sample.width, 1).data;
+    const [sheet, sheetShade, crane, craneShade] = pigments.map((_, i) => Array.from(bytes.slice(4*i, 4*i+3)));
+    const palettes = new Map();
+    function palette(fold) {
+      const step = Math.round(ease(fold) * 24);
+      if (!palettes.has(step)) {
+        const paper = sheet.map((c, i) => mix(c, crane[i], step/24));
+        const shadow = sheetShade.map((c, i) => mix(c, craneShade[i], step/24));
+        const shades = Array.from({length:121}, (_, i) =>
+          'rgb(' + paper.map((c, j) => Math.round(mix(c, shadow[j], i/120))).join(',') + ')');
+        palettes.set(step, {shades, paper:paper.map(c => c/255), shadow:shadow.map(c => c/255)});
+      }
+      return palettes.get(step);
     }
-    return palettes.get(key);
+    lastMaterial = {key, rule, grid, score, highlight, palette};
+    return lastMaterial;
   }
 
   // The inverse of each triangle's REST UV basis is constant across all poses.
@@ -85,7 +102,7 @@ export const Paper = (() => {
   }
   function drawMesh(ctx, points, fold, surface, rulingAmount=0, detail=false) {
     const relief = ease(fold/.48);
-    const {shades} = palette(fold, surface?.dark);
+    const {shades} = (surface?.material ?? readMaterial()).palette(fold);
     const shade = amount => shades[Math.round(clamp(amount)*120)];
     ctx.lineJoin = 'round';
     for (const face of orderedFaces(points)) {
@@ -151,7 +168,7 @@ export const Paper = (() => {
   }
   // This transparent bitmap is both the live HTML underlay and the material
   // wrapped around the mesh. Draw the whole sheet once in CSS-pixel units.
-  function drawStock(el, rect=el.getBoundingClientRect(), dark=false) {
+  function drawStock(el, rect=el.getBoundingClientRect(), material=readMaterial()) {
     const {ctx,w,h}=prepareCanvas(el,Math.min(devicePixelRatio || 1,1.5),rect);
     const grid=el.dataset.ruling==='grid', style=stockStyles[el.dataset.ruling];
     const step=style.step, origin=step/2;
@@ -160,15 +177,15 @@ export const Paper = (() => {
     if (grid) {
       for (let x=origin+.5;x<w;x+=step) { ctx.moveTo(x,0); ctx.lineTo(x,h); }
     }
-    ctx.strokeStyle=dark?'rgba(166,197,191,.29)':style.ink; ctx.lineWidth=style.width; ctx.stroke();
+    ctx.strokeStyle=grid ? material.grid : material.rule; ctx.lineWidth=style.width; ctx.stroke();
     // Only long scores from the source pattern, never triangulation diagonals.
     ctx.beginPath();
     for (const [i,j] of CraneClip.scores) {
       ctx.moveTo(uv[i][0]*w,uv[i][1]*h);
       ctx.lineTo(uv[j][0]*w,uv[j][1]*h);
     }
-    ctx.lineWidth=.65; ctx.strokeStyle='rgba(84,107,130,.16)'; ctx.stroke();
-    ctx.translate(.55,.65); ctx.strokeStyle='rgba(255,255,255,.65)';
+    ctx.lineWidth=.65; ctx.strokeStyle=material.score; ctx.stroke();
+    ctx.translate(.55,.65); ctx.strokeStyle=material.highlight;
     // Canvas paths capture transforms at construction; offset the highlight
     // in the sheet's coordinates so it projects with the groove.
     ctx.beginPath();
@@ -183,7 +200,7 @@ export const Paper = (() => {
       return {x,y,w:Math.min(el.width,Math.ceil(face.maxU*el.width)+1)-x,
         h:Math.min(el.height,Math.ceil(face.maxV*el.height)+1)-y};
     });
-    return {stock:el, grid, dark, outputDpr:1, patches, stepX:step*el.width/w, stepY:step*el.height/h};
+    return {stock:el, grid, material, outputDpr:1, patches, stepX:step*el.width/w, stepY:step*el.height/h};
   }
   function poly(ctx, color, pts) {
     ctx.fillStyle=color; ctx.beginPath(); ctx.moveTo(...pts[0]);
@@ -257,5 +274,5 @@ export const Paper = (() => {
     drawMesh(ctx,shape.points,state.fold,surface,state.ruling);
   }
   return {drawIcon,drawPlate,drawStock,foldShape,drawFold,craneWidth,fullWidth,ease,mix,
-    uv,orderedFaces,palette,context2D};
+    uv,orderedFaces,readMaterial,drawCrane:bird,context2D};
 })();

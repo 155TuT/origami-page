@@ -1,29 +1,19 @@
 ---
 import Site from "../layouts/Site.astro";
-import Plate from "../components/Plate.astro";
-import PostList from "../components/PostList.astro";
-import JournalAside from "../components/JournalAside.astro";
-import { allPosts, href, isoDate, postURL, printedDate } from "../lib/blog";
+import { ActionLink, ContentColumns, FeaturedPost, JournalAside, PostList, SectionHeading } from "../components/ui";
+import { allPosts, href } from "../lib/blog";
 const posts = await allPosts();
 const [lead, ...more] = posts;
 ---
 <Site current="home" ruling={lead?.data.ruling}>
-  {lead && <section class="cover">
-    <div class="cover-grid">
-      <div class="cover-copy">
-        <p class="cover-label"><span class="label-rule"></span>最新手记</p>
-        <h1><a href={postURL(lead)}>{lead.data.title}<em aria-hidden="true">。</em></a></h1>
-        <p class="cover-description">{lead.data.description}</p>
-        <div class="cover-bottom"><a class="read-button" href={postURL(lead)}>阅读全文 <span aria-hidden="true">↗</span></a><div class="cover-meta"><span>{lead.data.category}</span><time datetime={isoDate(lead.data.date)}>{printedDate(lead.data.date)}</time></div></div>
-      </div>
-      <Plate art={lead.data.art ?? "crane"} />
-    </div>
-  </section>}
-  <div class="home-lower">
-    <section class="recent-section">
-      <div class="section-heading"><h2>近期文章</h2><a class="text-link" href={href("archives/")}>全部归档 <span aria-hidden="true">→</span></a></div>
+  {lead && <FeaturedPost post={lead} />}
+  <ContentColumns>
+    <section>
+      <SectionHeading title="近期文章">
+        <ActionLink href={href("archives/")} arrow="→">全部归档</ActionLink>
+      </SectionHeading>
       <PostList posts={more.slice(0, 5)} />
     </section>
-    <JournalAside posts={posts} />
-  </div>
+    <JournalAside slot="aside" posts={posts} />
+  </ContentColumns>
 </Site>

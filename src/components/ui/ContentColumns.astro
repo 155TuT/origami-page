@@ -1,0 +1,17 @@
+<div class="content-columns">
+  <div class="primary"><slot /></div>
+  <slot name="aside" />
+</div>
+
+<style>
+  .content-columns {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(130px, .31fr);
+    gap: var(--column-gap);
+    align-items: start;
+  }
+  .primary { min-width: 0; }
+  @media (max-width: 1084px) {
+    .content-columns { grid-template-columns: minmax(0, 1fr); }
+  }
+</style>

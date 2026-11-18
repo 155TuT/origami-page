@@ -1,0 +1,32 @@
+---
+import { postURL, type Post } from "../../lib/blog";
+
+interface Props { newer?: Post; older?: Post; }
+const { newer, older } = Astro.props;
+---
+{(newer || older) && (
+  <nav class="post-neighbors" aria-label="相邻文章">
+    {newer && <a rel="prev" href={postURL(newer)}><small>← 上一篇</small><strong>{newer.data.title}</strong></a>}
+    {older && <a rel="next" href={postURL(older)}><small>下一篇 →</small><strong>{older.data.title}</strong></a>}
+  </nav>
+)}
+
+<style>
+  .post-neighbors {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-4);
+    margin-block-start: var(--space-8);
+    padding-block: var(--space-5);
+    border-block: 1px solid var(--line-dark);
+  }
+  a { display: grid; gap: var(--space-1); color: var(--ink); }
+  small { color: var(--muted); font-size: var(--text-meta); }
+  strong { font: var(--weight-semibold) var(--text-neighbor)/1.5 var(--serif); overflow-wrap: anywhere; }
+  a:hover strong { color: var(--accent); }
+  [rel="next"] { grid-column: 2; text-align: right; }
+  @media (max-width: 567px) {
+    .post-neighbors { grid-template-columns: minmax(0, 1fr); }
+    [rel="next"] { grid-column: 1; }
+  }
+</style>

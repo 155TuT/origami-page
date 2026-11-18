@@ -1,0 +1,29 @@
+---
+import { siteName } from "../../lib/blog";
+
+const year = new Date().getFullYear();
+---
+<footer class="paper-footer" aria-label="版权与备案">
+  <span>© {year} {siteName}</span>
+  <div class="filings">
+    <span>闽ICP备（待填写）</span>
+    <span>闽公网安备（待填写）</span>
+  </div>
+</footer>
+
+<style>
+  .paper-footer {
+    margin-block-start: auto;
+    padding-block-start: var(--space-4);
+    border-block-start: 1px solid var(--line);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--space-2) var(--space-4);
+    color: var(--muted);
+    font-size: var(--text-meta);
+  }
+  .filings { display: flex; flex-wrap: wrap; gap: var(--space-1) var(--space-3); }
+  .filings span { white-space: nowrap; }
+</style>

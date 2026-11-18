@@ -1,0 +1,37 @@
+---
+import { categoryURL, href, type Post } from "../../lib/blog";
+import PageHeading from "./PageHeading.astro";
+import Plate from "./Plate.astro";
+import PostDate from "./PostDate.astro";
+import Prose from "./Prose.astro";
+import TagList from "./TagList.astro";
+
+interface Props { post: Post; }
+const { post } = Astro.props;
+const { title, description, date, category, tags, art } = post.data;
+---
+<article>
+  <PageHeading title={title} eyebrow={category} eyebrowHref={categoryURL(category)}>
+    <div class="meta">
+      <PostDate date={date} /><span aria-hidden="true">/</span><a href={href("archives/")}>文章归档</a>
+    </div>
+  </PageHeading>
+  <p class="deck">{description}</p>
+  {art && <Plate art={art} />}
+  <Prose><slot /></Prose>
+  <TagList variant="article" tags={tags.map(name => ({ name }))} />
+</article>
+
+<style>
+  .meta {
+    display: flex;
+    gap: var(--space-3);
+    flex-wrap: wrap;
+    align-items: center;
+    margin-block-start: var(--space-4);
+    color: var(--muted);
+    font-size: var(--text-meta);
+  }
+  .meta a:hover { text-decoration: underline; text-underline-offset: .23em; }
+  .deck { margin-block: var(--space-6); color: var(--muted); font: var(--weight-regular) var(--text-deck)/1.9 var(--serif); }
+</style>

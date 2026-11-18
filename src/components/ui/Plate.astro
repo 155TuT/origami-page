@@ -1,0 +1,72 @@
+---
+import { artwork, href } from "../../lib/blog";
+
+interface Props { art: keyof typeof artwork; variant?: "cover" | "article"; }
+const { art, variant = "article" } = Astro.props;
+const image = artwork[art];
+---
+<figure class:list={["plate", variant, art]}>
+  <div class="drawing">
+    <span class="orbit" aria-hidden="true"></span>
+    <img src={href("art/" + image.file)} width="1260" height="795" alt={image.alt} fetchpriority="high" />
+  </div>
+  <figcaption><span>{image.caption}</span><i lang="en">{image.english}</i></figcaption>
+</figure>
+
+<style>
+  .plate {
+    position: relative;
+    display: grid;
+    align-content: center;
+    overflow: hidden;
+    isolation: isolate;
+    background-color: var(--plate);
+    background-image: linear-gradient(var(--plot-grid) 1px, transparent 1px),
+      linear-gradient(90deg, var(--plot-grid) 1px, transparent 1px);
+    background-size: 21px 21px;
+    color: var(--muted);
+  }
+  .plate::before, .plate::after {
+    content: "";
+    position: absolute;
+    z-index: 2;
+    width: 12px;
+    height: 12px;
+    background: linear-gradient(var(--plot-line), var(--plot-line)) center / 100% 1px no-repeat,
+      linear-gradient(var(--plot-line), var(--plot-line)) center / 1px 100% no-repeat;
+  }
+  .plate::before { top: var(--space-4); left: var(--space-4); }
+  .plate::after { bottom: var(--space-4); right: var(--space-4); }
+  .drawing { position: relative; width: 100%; display: grid; place-items: center; padding: 14px 5% 26px; }
+  .orbit { position: absolute; width: 55%; aspect-ratio: 1; border: 1px solid var(--plot-line); border-radius: 50%; }
+  .orbit::before, .orbit::after { content: ""; position: absolute; inset: 50% -18% auto; border-top: 1px dashed var(--plot-line); }
+  .orbit::after { inset: -12% auto -12% 50%; border-top: 0; border-left: 1px dashed var(--plot-line); }
+  .river .orbit { opacity: .38; }
+  img { position: relative; display: block; width: 91%; max-width: 550px; height: auto; object-fit: contain; }
+  figcaption {
+    position: absolute;
+    left: var(--space-5);
+    bottom: var(--space-4);
+    display: flex;
+    align-items: baseline;
+    gap: var(--space-2);
+    font-size: var(--text-caption);
+    letter-spacing: .1em;
+  }
+  figcaption i { font: italic var(--text-ui)/1 var(--latin-serif); letter-spacing: 0; }
+  .cover { border-inline-start: 1px solid var(--line-dark); }
+  .article { margin: var(--space-5) 0 var(--space-8); border: 1px solid var(--line); }
+  .article .drawing { height: clamp(185px, 22vw, 290px); }
+  .article img { height: 100%; width: min(75%, 470px); min-height: 0; }
+  .article .orbit { width: min(42%, 200px); }
+  @media (max-width: 1084px) {
+    .cover { border-inline-start: 0; border-block-start: 1px solid var(--line-dark); }
+    .cover .drawing { height: clamp(134px, 28.8vw, 260px); padding: 7px 7% 26px; }
+    .cover img { max-height: 100%; min-height: 0; width: min(94%, 390px); }
+    .cover .orbit { width: 42%; max-width: 185px; }
+    figcaption { left: var(--space-4); bottom: var(--space-2); }
+  }
+  @media (max-width: 567px) {
+    .article .drawing { height: 138px; }
+  }
+</style>

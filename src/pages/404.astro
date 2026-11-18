@@ -1,5 +1,14 @@
 ---
 import Site from "../layouts/Site.astro";
+import { ActionLink, ActionRow, PageHeading } from "../components/ui";
 import { href } from "../lib/blog";
 ---
-<Site title="找不到这一页" current="home"><div class="error-page"><p class="eyeline">404</p><h1>找不到这一页</h1><p>可以回到首页，或在归档中查找文章。</p><div class="error-links"><a class="read-button" href={href()}>返回首页 →</a><a class="text-link" href={href("archives/")}>文章归档 ↗</a></div></div></Site>
+<Site title="找不到这一页" current="home">
+  <section>
+    <PageHeading eyebrow="404" title="找不到这一页" description="可以回到首页，或在归档中查找文章。" ruled={false} />
+    <ActionRow>
+      <ActionLink variant="primary" href={href()} arrow="→">返回首页</ActionLink>
+      <ActionLink href={href("archives/")} arrow="↗">文章归档</ActionLink>
+    </ActionRow>
+  </section>
+</Site>

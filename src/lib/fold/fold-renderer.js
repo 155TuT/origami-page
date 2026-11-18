@@ -110,7 +110,7 @@ export async function createPaperGPU(canvas) {
       gl.bindBuffer(gl.ARRAY_BUFFER,posBuffer); gl.bufferSubData(gl.ARRAY_BUFFER,0,positions);
       gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,indexBuffer); gl.bufferSubData(gl.ELEMENT_ARRAY_BUFFER,0,indices);
       gl.viewport(0,0,canvas.width,canvas.height);
-      const colors=Paper.palette(state.fold,surface.dark);
+      const colors=surface.material.palette(state.fold);
       gl.uniform3fv(u.paper,colors.paper); gl.uniform3fv(u.shadow,colors.shadow);
       gl.uniform4f(u.stage,stage.l,stage.t,stage.r-stage.l,stage.b-stage.t);
       gl.uniform2f(u.spacing,surface.stepX/surface.stock.width,surface.stepY/surface.stock.height);

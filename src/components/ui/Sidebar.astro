@@ -1,0 +1,22 @@
+---
+interface Props { label: string; sticky?: boolean; }
+const { label, sticky = false } = Astro.props;
+---
+<aside class:list={["sidebar", { sticky }]} aria-label={label}><slot /></aside>
+
+<style>
+  .sidebar { min-width: 0; padding-inline-start: var(--aside-inset); border-inline-start: 1px solid var(--line); }
+  .sticky { position: sticky; top: 0; }
+  .sidebar :global(h2) {
+    font: var(--weight-heading) var(--text-aside-heading)/1.4 var(--serif);
+    letter-spacing: -.04em;
+  }
+  @media (max-width: 1084px) {
+    .sidebar {
+      position: static;
+      padding: var(--space-5) 0 0;
+      border-inline-start: 0;
+      border-block-start: 1px solid var(--line);
+    }
+  }
+</style>

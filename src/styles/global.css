@@ -1,0 +1,23 @@
+@import "./tokens.css";
+
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+body {
+  margin: 0;
+  height: 100vh;
+  height: 100dvh;
+  display: grid;
+  grid-template-rows: var(--header-height) minmax(0, 1fr);
+  overflow: clip;
+  color: var(--ink);
+  background: var(--bg-surface);
+  font: var(--weight-regular) var(--text-body)/var(--leading-body) var(--sans);
+}
+h1, h2, h3, p, figure { margin: 0; }
+a { color: inherit; text-decoration: none; }
+button, input, summary { font: inherit; }
+:is(a, button, summary, input):focus-visible {
+  outline: var(--focus-ring);
+  outline-offset: var(--space-1);
+}
+::selection { color: var(--surface); background: var(--accent); }

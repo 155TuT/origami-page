@@ -25,7 +25,8 @@ function installNavigation() {
       const name = input.dataset.setting as Setting;
       input.checked = root.dataset[name] === (name === "theme" ? "dark" : "true");
     }
-    document.querySelector('meta[name="theme-color"]')?.setAttribute("content", root.dataset.theme === "dark" ? "#192321" : "#f7f8f5");
+    const headerColor = getComputedStyle(root).getPropertyValue("--base").trim();
+    document.querySelector('meta[name="theme-color"]')?.setAttribute("content", headerColor);
   }
 
   function skipFold() {

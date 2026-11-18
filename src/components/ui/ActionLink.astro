@@ -1,0 +1,38 @@
+---
+interface Props {
+  href: string;
+  variant?: "text" | "primary";
+  arrow?: "↗" | "→";
+}
+const { href, variant = "text", arrow } = Astro.props;
+---
+<a class:list={["action-link", variant]} href={href}>
+  <slot />{arrow && <span aria-hidden="true">{arrow}</span>}
+</a>
+
+<style>
+  .action-link {
+    display: inline-flex;
+    align-items: baseline;
+    gap: var(--space-1);
+    color: var(--accent);
+    font-size: var(--text-small);
+    font-weight: var(--weight-medium);
+  }
+  .text:hover { text-decoration: underline; text-underline-offset: .23em; }
+  .primary {
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-4);
+    padding: var(--space-2) var(--space-4);
+    border: 1px solid var(--ink);
+    border-radius: var(--radius-control);
+    background: var(--ink);
+    color: var(--surface);
+    font-size: var(--text-ui);
+    font-weight: var(--weight-semibold);
+    white-space: nowrap;
+  }
+  .primary:hover { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+  .primary span { font-size: var(--text-body); line-height: 1; }
+</style>

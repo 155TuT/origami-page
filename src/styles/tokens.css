@@ -1,0 +1,140 @@
+:root {
+  color-scheme: light;
+  --bg-surface: #dbc1a5;
+  --bg-strong-fiber: #94765b;
+  --bg-lite-fiber: #f5e4cc;
+  --bg-overlay-image: none;
+  --bg-overlay-opacity: .35;
+  --bg-overlay-size: cover;
+  --bg-overlay-repeat: no-repeat;
+  --base: #f1e7d8;
+  --surface: #f8f2e8;
+  --ink: #352b23;
+  --muted: #655444;
+  --faint: #75604e;
+  --line: #d6c8b5;
+  --line-dark: #a18a72;
+  --accent: #874630;
+  --accent-ink: #fff4e7;
+  --plate: #e9dcc7;
+  --plot-line: #906e5045;
+  --plot-grid: #90745125;
+  --wash: #ede2d1;
+  --crane-paper: #df9671;
+  --crane-shadow: #643321;
+  --fold-shadow: #90745a;
+  --fold-rule: #86664450;
+  --fold-grid: #87684a46;
+  --fold-score: #75583d32;
+  --fold-highlight: #fff9e6a6;
+  --shadow-sheet: 0 2px 4px #4a321d24, 0 12px 32px -16px #4a321d61;
+  --shadow-panel: 0 10px 30px #422c1c24;
+  --shadow-fold: 0 5px 20px #442f202b;
+  --shadow-cover: 3px 4px 0 var(--base), 4px 5px 0 var(--line);
+
+  --serif: "Noto Serif SC", "Songti SC", "Source Han Serif SC", "STSong", "SimSun", Georgia, serif;
+  --sans: "DM Sans", "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+  --mono: "IBM Plex Mono", Consolas, "Liberation Mono", monospace;
+  --latin-serif: Georgia, serif;
+  --weight-regular: 400;
+  --weight-medium: 550;
+  --weight-semibold: 600;
+  --weight-heading: 650;
+  --weight-bold: 700;
+  --text-caption: 11px;
+  --text-meta: 12px;
+  --text-small: 13px;
+  --text-ui: 14px;
+  --text-body: 16px;
+  --text-prose: 17px;
+  --text-aside-heading: 18px;
+  --text-neighbor: 19px;
+  --text-prose-h3: 21px;
+  --text-prose-h2: 25px;
+  --text-section: 26px;
+  --text-year: 28px;
+  --text-brand: 30px;
+  --text-brand-latin: 18px;
+  --text-nav: var(--text-ui);
+  --text-post-title: clamp(20px, 1.8vw, 26px);
+  --text-title: clamp(28px, 3.42vw, 59px);
+  --text-cover: clamp(29px, 3.96vw, 78px);
+  --text-cover-description: clamp(14px, 1.12vw, 17px);
+  --text-deck: clamp(17px, 1.5vw, 20px);
+  --leading-body: 1.65;
+  --leading-prose: 1.95;
+  --type-eyebrow: var(--weight-semibold) var(--text-meta)/1.5 var(--sans);
+  --type-count: var(--text-caption)/1.5 var(--mono), var(--sans);
+
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --paper-width: 60vw;
+  --paper-inset-fluid: clamp(10px, 2.4vw, 48px);
+  --paper-inset: var(--paper-inset-fluid);
+  --header-height: 75px;
+  --section-gap: clamp(24px, 3vw, 58px);
+  --column-gap: clamp(20px, 2.4vw, 68px);
+  --aside-inset: clamp(19px, 2.2vw, 35px);
+  --focus-ring: 2px solid var(--accent);
+  --radius-control: 2px;
+  --radius-panel: 4px;
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --bg-surface: #302821;
+  --bg-strong-fiber: #201912;
+  --bg-lite-fiber: #715f4e;
+  --base: #2a231e;
+  --surface: #372e28;
+  --ink: #f1e7d9;
+  --muted: #cbb9a5;
+  --faint: #bba58f;
+  --line: #58493d;
+  --line-dark: #8b7461;
+  --accent: #e6ae91;
+  --accent-ink: #3f241a;
+  --plate: #473a30;
+  --plot-line: #ceb4964d;
+  --plot-grid: #c7a78526;
+  --wash: #41352b;
+  --fold-shadow: #1c1612;
+  --fold-rule: #d8b99a4a;
+  --fold-grid: #d0b29643;
+  --fold-score: #170e0b59;
+  --fold-highlight: #ead1ad43;
+  --shadow-sheet: 0 2px 4px #120c0938, 0 12px 32px -16px #120c0980;
+  --shadow-panel: 0 10px 30px #120c0952;
+  --shadow-fold: 0 5px 20px #120c0940;
+}
+
+/* Match the native scrollport's border rounding on all four edges. */
+@supports (width: round(1px, 1px)) {
+  :root { --paper-inset: round(nearest, var(--paper-inset-fluid), 1px); }
+}
+
+@media (max-width: 1084px) {
+  :root {
+    --text-post-title: 21px;
+    --text-section: 23px;
+    --text-prose: 16px;
+  }
+}
+
+@media (max-width: 900px) {
+  :root {
+    --header-height: 88px;
+    --text-brand: 24px;
+    --text-brand-latin: 15px;
+    --text-nav: clamp(11px, 3vw, 14px);
+  }
+}
+
+@media (max-width: 567px) {
+  :root { --text-deck: var(--text-body); }
+}

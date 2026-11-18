@@ -1,0 +1,41 @@
+---
+interface Props {
+  setting: "theme" | "reduce" | "parallel";
+  describedBy?: string;
+}
+const { setting, describedBy } = Astro.props;
+---
+<label class="setting-switch">
+  <span><slot /></span>
+  <input type="checkbox" role="switch" data-setting={setting} aria-describedby={describedBy} />
+</label>
+
+<style>
+  .setting-switch {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-3);
+    min-height: 44px;
+    cursor: pointer;
+    font-size: var(--text-ui);
+  }
+  .setting-switch + .setting-switch { border-top: 1px solid var(--line); }
+  input {
+    appearance: none;
+    flex: none;
+    width: 32px;
+    height: 19px;
+    display: grid;
+    align-items: center;
+    padding: 2px;
+    margin: 0;
+    border: 1px solid var(--line-dark);
+    border-radius: 20px;
+    background: var(--wash);
+    cursor: pointer;
+  }
+  input::before { content: ""; width: 12px; height: 12px; border-radius: 50%; background: var(--muted); }
+  input:checked { background: var(--accent); border-color: var(--accent); }
+  input:checked::before { justify-self: end; background: var(--accent-ink); }
+</style>

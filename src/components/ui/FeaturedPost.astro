@@ -1,0 +1,60 @@
+---
+import { postURL, type Post } from "../../lib/blog";
+import ActionLink from "./ActionLink.astro";
+import ActionRow from "./ActionRow.astro";
+import Plate from "./Plate.astro";
+import PostDate from "./PostDate.astro";
+
+interface Props { post: Post; }
+const { post } = Astro.props;
+const { title, description, category, date, art } = post.data;
+---
+<section class="cover">
+  <div class="cover-copy">
+    <p class="label">最新手记</p>
+    <h1><a href={postURL(post)}>{title}<em aria-hidden="true">。</em></a></h1>
+    <p class="description">{description}</p>
+    <ActionRow>
+      <ActionLink variant="primary" href={postURL(post)} arrow="↗">阅读全文</ActionLink>
+      <div class="meta"><span>{category}</span><PostDate date={date} /></div>
+    </ActionRow>
+  </div>
+  <Plate variant="cover" art={art ?? "crane"} />
+</section>
+
+<style>
+  .cover {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.03fr);
+    min-height: clamp(245px, 19.8vw, 405px);
+    border: 1px solid var(--line-dark);
+    background: var(--surface);
+    box-shadow: var(--shadow-cover);
+  }
+  .cover-copy {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    padding: clamp(16px, 2.1vw, 48px);
+  }
+  .label { display: flex; gap: var(--space-2); align-items: center; color: var(--accent); font: var(--type-eyebrow); letter-spacing: .1em; }
+  .label::before { content: ""; width: 28px; border-top: 2px solid currentColor; }
+  h1 {
+    margin: var(--space-5) 0 var(--space-4);
+    font: var(--weight-bold) var(--text-cover)/1.12 var(--serif);
+    letter-spacing: -.065em;
+    overflow-wrap: anywhere;
+  }
+  h1 em { font-style: normal; color: var(--accent); }
+  .description { max-width: 29em; font: var(--weight-regular) var(--text-cover-description)/var(--leading-prose) var(--serif); color: var(--muted); }
+  .meta { display: grid; gap: 2px; color: var(--muted); font-size: var(--text-caption); }
+  @media (max-width: 1084px) {
+    .cover { grid-template-columns: minmax(0, 1fr); }
+    .cover-copy { padding: clamp(12px, 2.4vw, 24px); }
+    h1 { margin: var(--space-3) 0; }
+  }
+  @media (max-width: 567px) {
+    .description { line-height: 1.7; }
+  }
+</style>

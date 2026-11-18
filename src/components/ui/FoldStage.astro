@@ -1,0 +1,20 @@
+<div id="fold-stage" aria-hidden="true" inert transition:persist="fold-stage" transition:animate="none">
+  <div class="fold-flat" hidden></div>
+  <canvas id="motion" width="1" height="1" hidden></canvas>
+  <canvas id="motion-gl" width="1" height="1" hidden></canvas>
+  <img id="shuttle" width="39" height="32" alt="" hidden />
+  <output id="renderer-info" hidden></output>
+</div>
+
+<style>
+  #fold-stage { position: fixed; inset: 0; z-index: 7; pointer-events: none; overflow: clip; }
+  #fold-stage:has(> #shuttle:not([hidden])) { z-index: 31; }
+  #fold-stage > :is(canvas, img, .fold-flat) { position: absolute; }
+  .fold-flat { background: var(--surface); box-shadow: var(--shadow-fold); transform-origin: center; }
+  .fold-flat :global(canvas) { display: block; width: 100%; height: 100%; }
+  #shuttle { left: 0; top: 0; object-fit: contain; will-change: transform; }
+  :global(::view-transition-old(*)),
+  :global(::view-transition-new(*)),
+  :global(::view-transition-group(*)) { animation: none !important; }
+  :global(::view-transition-old(*)) { display: none; }
+</style>

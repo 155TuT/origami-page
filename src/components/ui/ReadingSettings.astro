@@ -1,0 +1,58 @@
+---
+import SettingSwitch from "./SettingSwitch.astro";
+---
+<details class="reading-settings" data-settings>
+  <summary aria-label="阅读设置" title="阅读设置">
+    <svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="1.55" aria-hidden="true"><path d="M3 7h5m5 0h8M3 17h9m5 0h4"/><circle cx="10.5" cy="7" r="2.5"/><circle cx="14.5" cy="17" r="2.5"/></svg>
+    <span>阅读设置</span>
+  </summary>
+  <div class="settings-panel">
+    <SettingSwitch setting="theme">深色模式</SettingSwitch>
+    <SettingSwitch setting="reduce">减少动态效果</SettingSwitch>
+    <SettingSwitch setting="parallel" describedBy="parallel-hint">并行取文与收纸</SettingSwitch>
+    <p id="parallel-hint">开启后，点击链接就开始收纸。关闭时，等下一页准备好再收纸。</p>
+  </div>
+</details>
+
+<style>
+  .reading-settings {
+    position: relative;
+    z-index: 1;
+    grid-area: settings;
+    justify-self: end;
+    padding-inline-end: clamp(10px, 1.4vw, 22px);
+    border-inline-end: 1px solid var(--line);
+  }
+  :global(html:not([data-enhanced])) .reading-settings { display: none; }
+  summary {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    cursor: pointer;
+    color: var(--muted);
+    font-size: var(--text-small);
+    white-space: nowrap;
+    list-style: none;
+  }
+  summary::-webkit-details-marker { display: none; }
+  summary:hover, details[open] summary { color: var(--accent); }
+  .settings-panel {
+    position: absolute;
+    right: 0;
+    top: calc(100% + var(--space-4));
+    width: min(280px, calc(80vw - 12px));
+    padding: var(--space-3) var(--space-4) var(--space-4);
+    border: 1px solid var(--line-dark);
+    border-radius: var(--radius-panel);
+    background: var(--surface);
+    box-shadow: var(--shadow-panel);
+  }
+  p { margin-top: var(--space-1); color: var(--muted); font-size: var(--text-meta); line-height: 1.7; }
+  @media (max-width: 1200px) {
+    summary span { display: none; }
+  }
+  @media (max-width: 900px) {
+    .reading-settings { border: none; padding: 0; }
+    summary { min-width: 36px; min-height: 36px; justify-content: flex-end; }
+  }
+</style>

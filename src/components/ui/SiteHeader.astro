@@ -1,0 +1,112 @@
+---
+import { href, siteName } from "../../lib/blog";
+import { sections, type Section } from "../../lib/sections";
+import ReadingSettings from "./ReadingSettings.astro";
+
+interface Props { current: Section; }
+const { current } = Astro.props;
+---
+<a class="skip-link" href="#content">跳到正文</a>
+<header class="site-header">
+  <div class="header-inner">
+    <a class="wordmark" href={href()} aria-label={siteName + "首页"}>
+      <strong>{siteName}</strong><i lang="en">Fold Journal</i>
+    </a>
+    <ReadingSettings />
+    <nav class="site-nav" aria-label="主导航">
+      {sections.map(section => (
+        <a href={href(section.path)} aria-current={current === section.id
+          ? (href(section.path) === Astro.url.pathname ? "page" : "location") : undefined}>
+          <span class="nav-fold-icon" data-fold-dock={section.id} aria-hidden="true">
+            <img src={href(section.icon)} width="39" height="32" alt="" />
+          </span>
+          <span>{section.label}</span>
+        </a>
+      ))}
+    </nav>
+  </div>
+</header>
+
+<style>
+  .skip-link {
+    position: fixed;
+    top: -100px;
+    left: var(--space-5);
+    z-index: 60;
+    padding: var(--space-2) var(--space-4);
+    background: var(--ink);
+    color: var(--surface);
+  }
+  .skip-link:focus { top: var(--space-2); }
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 30;
+    border-bottom: 1px solid var(--line);
+    background: var(--base);
+  }
+  .header-inner {
+    width: var(--paper-width);
+    height: 100%;
+    margin-inline: auto;
+    display: grid;
+    grid-template-columns: 1fr auto auto;
+    grid-template-areas: "brand settings nav";
+    align-items: center;
+    column-gap: clamp(12px, 1.6vw, 28px);
+  }
+  .wordmark {
+    grid-area: brand;
+    display: inline-flex;
+    justify-self: start;
+    align-items: flex-end;
+    gap: 10px;
+    white-space: nowrap;
+  }
+  .wordmark strong { font: var(--weight-bold) var(--text-brand)/1 var(--serif); letter-spacing: -.065em; }
+  /* Trim the Latin descent to align the visible letters with 折间. */
+  .wordmark i { font: italic var(--text-brand-latin)/.55 var(--latin-serif); color: var(--muted); }
+  .site-nav {
+    grid-area: nav;
+    height: 100%;
+    display: flex;
+    align-items: stretch;
+    gap: clamp(10px, 1.4vw, 28px);
+  }
+  .site-nav a {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--muted);
+    font-size: var(--text-nav);
+    font-weight: var(--weight-medium);
+    white-space: nowrap;
+  }
+  .site-nav a:is(:hover, [aria-current]) { color: var(--ink); }
+  .site-nav a[aria-current]::after {
+    content: "";
+    position: absolute;
+    inset: auto 0 var(--space-4);
+    height: 2px;
+    background: var(--accent);
+  }
+  .nav-fold-icon { display: grid; place-items: center; flex: none; width: clamp(27px, 3.15vw, 39px); aspect-ratio: 39/32; }
+  .nav-fold-icon img { display: block; width: 100%; height: 100%; object-fit: contain; }
+  :global(html:is([data-fold-phase="opening"], [data-fold-phase="closing"])) a[aria-current] .nav-fold-icon img {
+    visibility: hidden;
+  }
+  @media (max-width: 900px) {
+    .header-inner {
+      grid-template-columns: minmax(0, 1fr) auto;
+      grid-template-rows: 40px 1fr;
+      grid-template-areas: "brand settings" "nav nav";
+      gap: 0;
+    }
+    .wordmark { gap: var(--space-2); }
+    .site-nav { justify-content: space-between; gap: 2px; }
+    .site-nav a { gap: clamp(2px, .7vw, 5px); }
+    .site-nav a[aria-current]::after { bottom: 3px; }
+    .nav-fold-icon { width: clamp(17px, 5.6vw, 34px); }
+  }
+</style>

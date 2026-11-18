@@ -2,6 +2,15 @@
   color-scheme: light;
   --desk: #dce5eb;
   --paper: #f6f9fb;
+  /* The original study uses silver paper for the shared folding renderer. */
+  --surface: var(--paper);
+  --crane-paper: var(--paper);
+  --crane-shadow: #415568;
+  --fold-shadow: var(--crane-shadow);
+  --fold-rule: rgba(87,127,155,.31);
+  --fold-grid: rgba(85,123,149,.28);
+  --fold-score: rgba(84,107,130,.16);
+  --fold-highlight: rgba(255,255,255,.65);
   --ink: #243440;
   --muted: #536873;
   --rule: #afc0ca;

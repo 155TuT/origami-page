@@ -1,0 +1,66 @@
+---
+import type { Section } from "../../lib/sections";
+import PaperFooter from "./PaperFooter.astro";
+
+interface Props { section: Section; ruling?: "grid" | "ruled"; }
+const { section, ruling = "ruled" } = Astro.props;
+---
+<div class="paper-slot">
+  <main id="content" class="site-main" tabindex="0" data-fold-paper={section} data-ruling={ruling}>
+    <div class="sheet-ink">
+      <div class="sheet-content"><slot /></div>
+      <PaperFooter />
+    </div>
+  </main>
+</div>
+
+<style>
+  .paper-slot {
+    position: relative;
+    width: var(--paper-width);
+    min-height: 0;
+    margin-inline: auto;
+  }
+  .site-main {
+    height: 100%;
+    overflow: auto;
+    overscroll-behavior-y: contain;
+    scrollbar-width: thin;
+    scrollbar-color: var(--line-dark) var(--surface);
+    /* Native scrolling clips at the inside of these two paper edges. */
+    border-block: var(--paper-inset) solid transparent;
+    background: var(--surface);
+    outline: 1px solid var(--line);
+    box-shadow: var(--shadow-sheet);
+  }
+  .site-main:focus-visible { outline: var(--focus-ring); outline-offset: -2px; }
+  .sheet-ink {
+    /* Size from the sheet so a classic scrollbar fits inside the right margin. */
+    width: calc(var(--paper-width) - 2 * var(--paper-inset));
+    max-width: calc(100% - var(--paper-inset));
+    margin-inline-start: var(--paper-inset);
+    min-height: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: var(--section-gap);
+  }
+  .sheet-content {
+    display: grid;
+    gap: var(--section-gap);
+    min-width: 0;
+  }
+  :global(html[data-fold-phase]) .site-main {
+    position: relative;
+    z-index: 8;
+    visibility: hidden;
+  }
+  :global(html[data-fold-phase]) .site-main.folding-ink {
+    visibility: visible;
+    background: transparent;
+    outline: none;
+    box-shadow: none;
+    scrollbar-color: transparent transparent;
+    will-change: transform, opacity;
+    pointer-events: none;
+  }
+</style>

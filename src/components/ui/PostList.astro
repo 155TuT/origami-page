@@ -1,0 +1,58 @@
+---
+import { categoryURL, postURL, type Post } from "../../lib/blog";
+import PostDate from "./PostDate.astro";
+
+interface Props { posts: Post[]; }
+const { posts } = Astro.props;
+---
+<ul class="post-list">
+  {posts.map(post => (
+    <li>
+      <div class="post-date">
+        <PostDate date={post.data.date} />
+        <a href={categoryURL(post.data.category)}>{post.data.category}</a>
+      </div>
+      <div>
+        <a class="post-title" href={postURL(post)}>{post.data.title}<span aria-hidden="true">↗</span></a>
+        <p>{post.data.description}</p>
+      </div>
+    </li>
+  ))}
+</ul>
+
+<style>
+  .post-list { list-style: none; margin: 0; padding: 0; }
+  li {
+    display: grid;
+    grid-template-columns: clamp(82px, 7.2vw, 112px) minmax(0, 1fr);
+    gap: clamp(12px, 1.2vw, 26px);
+    padding-block: var(--space-5);
+    border-block-end: 1px solid var(--line);
+  }
+  .post-date {
+    display: flex;
+    align-items: flex-start;
+    flex-direction: column;
+    gap: var(--space-1);
+    padding-block-start: var(--space-1);
+    color: var(--faint);
+    font-size: var(--text-meta);
+  }
+  .post-date a:hover { text-decoration: underline; text-underline-offset: .23em; }
+  .post-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: var(--space-3);
+    font: var(--weight-heading) var(--text-post-title)/1.5 var(--serif);
+    letter-spacing: -.035em;
+    overflow-wrap: anywhere;
+  }
+  .post-title:hover { color: var(--accent); }
+  .post-title span { color: var(--faint); font: var(--text-body)/1 var(--sans); }
+  p { margin-block-start: var(--space-1); color: var(--muted); font-size: var(--text-small); line-height: 1.85; }
+  @media (max-width: 1084px) {
+    li { grid-template-columns: minmax(0, 1fr); gap: var(--space-1); padding-block: var(--space-4); }
+    .post-date { flex-direction: row; align-items: center; gap: var(--space-3); padding: 0; }
+  }
+</style>
