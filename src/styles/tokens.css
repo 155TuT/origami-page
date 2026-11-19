@@ -113,7 +113,7 @@
   --shadow-fold: 0 5px 20px #120c0940;
 }
 
-/* Match the native scrollport's border rounding on all four edges. */
+/* Keep the four content insets aligned to the same CSS pixel. */
 @supports (width: round(1px, 1px)) {
   :root { --paper-inset: round(nearest, var(--paper-inset-fluid), 1px); }
 }

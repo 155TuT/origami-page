@@ -54,8 +54,10 @@ async function checkLayout(page) {
     const nav = [...document.querySelectorAll(".site-nav a")].map(link => link.getBoundingClientRect());
     const footer = sheet.querySelector("footer");
     sheet.scrollTop = sheet.scrollHeight / 2;
-    const inMargin = y => document.elementFromPoint(paper.left + paper.width / 2, y) === sheet;
-    const clearMargins = inMargin(paper.top + inset / 2) && inMargin(paper.bottom - inset / 2);
+    const ink = sheet.querySelector(".sheet-ink");
+    const hitInk = y => ink.contains(document.elementFromPoint(paper.left + paper.width / 2, y));
+    const fullScrollport = sheet.clientTop === 0 && Math.abs(sheet.clientHeight - paper.height) <= 1 &&
+      hitInk(paper.top + 1) && hitInk(paper.bottom - 1);
     sheet.scrollTop = sheet.scrollHeight;
     const bottomInset = paper.bottom - footer.getBoundingClientRect().bottom;
     const fixed = rect(".site-header").bottom === header.bottom && rect(".desk-backdrop").top === desk.top;
@@ -70,7 +72,7 @@ async function checkLayout(page) {
       deskHeight: desk.height - window.innerHeight,
       bottom: paper.bottom - window.innerHeight,
       inset, topInset: content.top - paper.top, rightInset: paper.right - content.right, bottomInset,
-      clearMargins, fixed, overflowX: sheet.scrollWidth - sheet.clientWidth,
+      fullScrollport, fixed, overflowX: sheet.scrollWidth - sheet.clientWidth,
       footer: document.querySelectorAll("footer").length === 1 && footer.textContent.includes("闽ICP备")
         && footer.textContent.includes("闽公网安备"),
     };
@@ -80,7 +82,7 @@ async function checkLayout(page) {
     layout.bottom, layout.topInset - layout.inset, layout.rightInset - layout.inset,
     layout.bottomInset - layout.inset, layout.overflowX]) assert.ok(Math.abs(error) <= 1, JSON.stringify(layout));
   assert.ok(layout.inset >= 10 && layout.menuFits && layout.settingsFits && layout.footer &&
-    layout.clearMargins && layout.fixed, JSON.stringify(layout));
+    layout.fullScrollport && layout.fixed, JSON.stringify(layout));
 }
 
 async function delayedTurn(page, link, parallel) {

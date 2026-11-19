@@ -13,7 +13,7 @@
 
 - 桌面材质统一由 `DeskBackdrop` 组合。底纸与深浅纤维分别取 `--bg-surface`、`--bg-strong-fiber`、`--bg-lite-fiber`。每块 384 × 384 px 的纸纹使用 850 条深色短纤维，竹林等透明纹样放在纤维上方的浮层。
 - 文档头部从浏览器存储恢复两张纸纹，缺少有效缓存时才生成。站内换页保留桌面及其样式表。调整 `src/scripts/desk-texture.cjs` 中的配方时更新缓存版本，用 `python tools/generate-paper.py` 导出同配方的静态后备图，并同步 VI 和样张。换色直接使用设计变量。
-- 顶栏与桌面固定在视口，中央纸面保持 60% 视口宽度。纸面上沿接顶栏下沿，下沿接视口底部。四边共用 `--paper-inset`，仅 `main#content` 纵向滚动。
+- 顶栏与桌面固定在视口，中央纸面保持 60% 视口宽度。整张 `main#content` 是唯一纵向滚动区，原生轨道上接顶栏下沿、下达视口底部。四边共用 `--paper-inset`，上下留白由正文与版权的共同容器承载，随内容滚动。
 - 正文与版权都放在 `Paper` 里面。短页版权靠底，长页版权接在内容末尾。真实备案号和链接在 `PaperFooter` 中统一更新。
 - 折纸始终测量 `.paper-slot` 的完整外框。保留 `data-fold-paper`、`data-ruling`、`data-fold-dock` 与现有栏目映射。修改纸面或导航时，同时检查收展、减少动态效果、键盘焦点、目录锚点和历史滚动恢复。
 - 折面从当前主题的 `--surface` 过渡到纸鹤用色。修改 `--crane-paper` 或 `--crane-shadow` 后运行 `node tools/render-crane.cjs`，使导航图标、静态插图和动画末帧使用同一套纸色。
