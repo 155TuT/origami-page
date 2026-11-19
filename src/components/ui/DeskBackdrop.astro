@@ -25,11 +25,11 @@ const src = image && (/^(?:https?:)?\/\//i.test(image) ? image : href(image));
       mask: var(--fiber-mask) repeat;
     }
     .desk-backdrop::before {
-      --fiber-mask: url("../../assets/paper/fiber-strong.webp");
+      --fiber-mask: var(--desk-strong-mask, url("../../assets/paper/fiber-strong.webp"));
       background: var(--bg-strong-fiber);
     }
     .desk-backdrop::after {
-      --fiber-mask: url("../../assets/paper/fiber-lite.webp");
+      --fiber-mask: var(--desk-lite-mask, url("../../assets/paper/fiber-lite.webp"));
       background: var(--bg-lite-fiber);
     }
   }

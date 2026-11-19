@@ -13,6 +13,35 @@ async function settled(page, path, title) {
 
 const paperTop = page => page.locator("#content").evaluate(paper => paper.scrollTop);
 
+const cachedMasksVisible = page => page.evaluate(() => {
+  const saved = JSON.parse(localStorage.getItem("fold-journal:desk-texture"));
+  const desk = document.querySelector(".desk-backdrop");
+  return !!saved && getComputedStyle(desk, "::before").maskImage.includes(saved.strong) &&
+    getComputedStyle(desk, "::after").maskImage.includes(saved.lite);
+});
+
+async function checkTextureCache(page) {
+  await page.addInitScript(() => {
+    window.tileEncodes = 0;
+    const encode = HTMLCanvasElement.prototype.toDataURL;
+    HTMLCanvasElement.prototype.toDataURL = function (...args) {
+      if (this.width === 384 && this.height === 384) window.tileEncodes++;
+      return encode.apply(this, args);
+    };
+  });
+  const files = [];
+  const track = request => { if (/\/fiber-(strong|lite)[.]/.test(request.url())) files.push(request.url()); };
+  page.on("request", track);
+  await page.goto(base.href);
+  assert.ok(await cachedMasksVisible(page), "a cold visit stores and displays both generated masks");
+  assert.equal(await page.evaluate(() => window.tileEncodes), 2);
+  await page.reload();
+  assert.ok(await cachedMasksVisible(page), "a reload must use the stored masks");
+  assert.equal(await page.evaluate(() => window.tileEncodes), 0, "a warm reload must skip the generator");
+  assert.deepEqual(files, [], "storage-backed visits must not request the fallback images");
+  page.off("request", track);
+}
+
 async function checkLayout(page) {
   const layout = await page.evaluate(() => {
     const rect = selector => document.querySelector(selector).getBoundingClientRect();
@@ -108,7 +137,7 @@ async function run() {
     page.setDefaultTimeout(15000);
     const errors = [];
     page.on("pageerror", error => errors.push(error.message));
-    await page.goto(base.href);
+    await checkTextureCache(page);
     await page.waitForSelector("html[data-enhanced]", { state: "attached" });
     await page.evaluate(async () => {
       // A rebuilt Site module can be evaluated in the window that ClientRouter retained.
@@ -149,6 +178,8 @@ async function run() {
     await delayedTurn(page, page.getByRole("link", { name: "阅读全文", exact: true }), false);
     assert.ok(await backdrop.evaluate(node => node === document.querySelector(".desk-backdrop")),
       "folding to another page must keep the same textured backdrop");
+    assert.ok(await cachedMasksVisible(page), "the persisted desk must keep its masks during navigation");
+    assert.equal(await page.evaluate(() => window.tileEncodes), 0);
     const first = { path: new URL(page.url()).pathname, title: await page.title() };
     await page.locator("[data-settings] summary").click();
     await page.getByRole("switch", { name: "并行取文与收纸" }).check();

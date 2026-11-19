@@ -4,6 +4,7 @@ import { DeskBackdrop, FoldStage, Paper, SiteHeader } from "../components/ui";
 import { siteName } from "../lib/blog";
 import type { Section } from "../lib/sections";
 import initialPreferences from "../scripts/initial-preferences.js?raw";
+import deskTexture from "../scripts/desk-texture.cjs?raw";
 import "../styles/global.css";
 interface Props {
   title?: string;
@@ -29,6 +30,8 @@ const canonical = Astro.site && new URL(Astro.url.pathname, Astro.site);
     <link rel="icon" href="data:," />
     <title>{documentTitle}</title>
     <script is:inline set:html={initialPreferences}></script>
+    <style id="desk-texture" is:inline transition:persist="desk-texture"></style>
+    <script is:inline set:html={deskTexture}></script>
     <ClientRouter fallback="swap" />
   </head>
   <body>

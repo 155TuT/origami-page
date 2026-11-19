@@ -17,10 +17,12 @@ npm run dev
 
 固定桌面的再生纸由三种颜色组成。在设计变量中修改 `--bg-surface`（纸底）、`--bg-strong-fiber`（深色纤维）和 `--bg-lite-fiber`（浅色纤维）即可换色。中央内容纸面单独使用 `--surface`。[设计变量](src/styles/tokens.css)
 
-仓库自带两张可平铺的 WebP 遮罩，合计约 55 KiB。构建生成带内容指纹的文件名，浏览器按站点的 HTTP 缓存策略复用，首次访问即可显示纸纹。调整图样时，先准备 NumPy 和 Pillow，再运行以下命令。默认每块 384 × 384 px 纸纹含 850 条深色短纤维，改变 `--seed` 可得到另一种分布。
+第一次打开博客时，浏览器生成两张可平铺的纸纹，把实际位图和配方版本存进 `localStorage`，键名为 `fold-journal:desk-texture`。刷新、重新打开或直接进入文章时，页面在首帧前读取这份缓存。切换主题沿用同一张纸纹。清除该缓存或更换配方版本后，下次访问会重新生成。本地存储不可写时会尝试 `sessionStorage`。
+
+默认每块 384 × 384 px 纸纹含 850 条深色短纤维和 1,570 条浅色纤维。修改密度、种子或噪声时，在生成器内更新默认配方和缓存版本。仓库另附两张同配方的 WebP，供禁用脚本等情况使用。在装有 Node.js 和 Pillow 的环境运行以下命令即可重新导出。[浏览器生成器](src/scripts/desk-texture.cjs)
 
 ```sh
-python tools/generate-paper.py --seed 73421 --strong-count 850
+python tools/generate-paper.py
 ```
 
 竹林等带透明通道的纹样可以叠在纸纹上方。在项目根目录的 `.env.local` 填写图片地址，重启开发服务或重新构建。本地图片放在 `public/`，路径会自动补齐部署子目录。线上图片可填写完整的 HTTPS 地址。假设纹样保存为 `public/art/bamboo.webp`，配置如下。
@@ -76,7 +78,8 @@ ruling: ruled
 | `src/content.config.ts`、`src/content/posts/` | 文章约束和示例 Markdown |
 | `src/pages/`、`src/layouts/Site.astro` | 首页、归档、标签、栏目、文章、关于及 404 |
 | `src/components/ui/`、`src/styles/tokens.css` | 博客组件库与 VI 设计变量 |
-| `src/assets/paper/`、`tools/generate-paper.py` | 可换色的再生纸遮罩及其生成器 |
+| `src/scripts/desk-texture.cjs` | 再生纸配方、首屏生成和浏览器存储 |
+| `src/assets/paper/`、`tools/generate-paper.py` | 同配方导出的静态后备遮罩及导出工具 |
 | `src/scripts/navigation.ts` | 路由生命周期、导航取消、偏好和键盘焦点 |
 | `src/lib/fold/` | 原纸鹤模型、独立收展时间轨、2D 与按需 WebGL2 绘制 |
 | `public/art/` | 从同一模型和河岸绘图生成的静态插图，支持无脚本阅读 |
