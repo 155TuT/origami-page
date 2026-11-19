@@ -2,7 +2,7 @@
 import type { Section } from "../../lib/sections";
 import PaperFooter from "./PaperFooter.astro";
 
-interface Props { section: Section; ruling?: "grid" | "ruled"; }
+interface Props { section?: Section | null; ruling?: "grid" | "ruled"; }
 const { section, ruling = "ruled" } = Astro.props;
 ---
 <div class="paper-slot">

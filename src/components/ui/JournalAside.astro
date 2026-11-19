@@ -1,5 +1,6 @@
 ---
-import { categoryURL, groupPosts, href, type Post } from "../../lib/blog";
+import { categoryURL, groupPosts, type Post } from "../../lib/blog";
+import { sectionURL } from "../../lib/sections";
 import ActionLink from "./ActionLink.astro";
 import Sidebar from "./Sidebar.astro";
 
@@ -8,14 +9,14 @@ const { posts } = Astro.props;
 const groups = groupPosts(posts, "category");
 ---
 <Sidebar label="浏览手记">
-  <h2>手记栏目</h2>
+  <h2>文章分类</h2>
   <ul>{[...groups].map(([name, entries]) => (
     <li><a href={categoryURL(name)}><span>{name}</span><small>{entries.length} 篇</small></a></li>
   ))}</ul>
   <section>
     <h2>关于折间</h2>
     <p>纸上留下折痕，也留下设计、代码和路上偶遇的风景。</p>
-    <ActionLink href={href("about/")} arrow="↗">关于这本手记</ActionLink>
+    <ActionLink href={sectionURL("about")} arrow="↗">关于这本手记</ActionLink>
   </section>
 </Sidebar>
 

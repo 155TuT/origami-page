@@ -1,15 +1,16 @@
 ---
 import Site from "../layouts/Site.astro";
 import { ContentColumns, JournalAside, PageHeading, Prose } from "../components/ui";
-import { allPosts, href } from "../lib/blog";
+import { allPosts } from "../lib/blog";
+import { sectionURL } from "../lib/sections";
 const posts = await allPosts();
 ---
-<Site title="关于折间" current="about">
+<Site title="关于折间">
   <ContentColumns>
     <PageHeading eyebrow="Fold Journal" title="关于折间" />
     <Prose>
       <p>折间是一本放在网上的个人手记。这里收录折纸、设计和代码，也留一栏给平常散步时看到的风景。</p>
-      <h2>从哪里读起</h2><p><a href={href("archives/")}>文章归档</a>按时间排列。想沿一个主题往下读，可以翻翻<a href={href("tags/")}>标签索引</a>。</p>
+      <h2>从哪里读起</h2><p><a href={sectionURL("articles")}>文章列表</a>里可以找到全部手记，最近写的排在最前面。想沿一个主题往下读，可以翻翻<a href={sectionURL("tags")}>标签索引</a>。</p>
       <h2>关于那只纸鹤</h2><p>翻页时，眼前这张纸收回它所属的栏目，下一张从对应的栏目图标展开。阅读设置里可以切换深浅色，也可以直接翻页。</p>
     </Prose>
     <JournalAside slot="aside" posts={posts} />

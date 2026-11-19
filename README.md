@@ -1,6 +1,6 @@
 # 折间 · Fold Journal
 
-用 Astro、TypeScript 和 Markdown 构建的静态个人博客。首页展示最新手记，归档按年份列出文章，栏目和标签索引由文章自动生成。每篇文章都有独立的 `/posts/<slug>/`，其 HTML 包含完整正文，可直接打开、刷新和分享。
+用 Astro、TypeScript 和 Markdown 构建的静态个人博客。首页展示最新手记，「文章」位于 `/archives/`，按日期从新到旧列出全部文章。每篇正文都有独立的 `/archives/<slug>/`，可直接打开、刷新和分享。分类和标签页由文章内容生成。[可编辑的页面层级思维导图](docs/page-map.md)
 
 ## 本地运行
 
@@ -35,7 +35,7 @@ PUBLIC_DESK_IMAGE_URL=art/bamboo.webp
 
 ## 写一篇文章
 
-在 `src/content/posts/` 添加一个以英文短横线命名的 Markdown 文件。文件名决定永久链接，日期决定首页顺序和相邻文章。例如 `a-sheet-of-paper.md` 会发布到 `/posts/a-sheet-of-paper/`。
+在 `src/content/posts/` 添加一个以英文短横线命名的 Markdown 文件。文件名决定永久链接，日期决定首页顺序和相邻文章。例如 `a-sheet-of-paper.md` 会发布到 `/archives/a-sheet-of-paper/`。分类页位于 `/archives/categories/<分类>/`，标签页位于 `/tags/<标签>/`。旧书签 `/posts/<slug>/` 和 `/categories/<分类>/` 会转到对应的新地址。
 
 ```markdown
 ---
@@ -52,12 +52,12 @@ ruling: ruled
 这里写正文。
 ```
 
-`ruling` 可选 `ruled`（横线纸）或 `grid`（方格纸），默认横线纸。可选的 `art` 为 `crane` 或 `river`。二、三级标题生成目录。加入新栏目或标签时，对应索引页也会生成。
+`ruling` 可选 `ruled`（横线纸）或 `grid`（方格纸），默认横线纸。可选的 `art` 为 `crane` 或 `river`。二、三级标题生成目录。加入新分类或标签时，对应的文章列表也会生成。
 
 ## 阅读与换页
 
 - 页眉的「阅读设置」提供深色模式、减少动态效果和并行取文与收纸。三项选择保存在浏览器中。首次访问时，配色跟随系统，折纸为完整速度，并行默认关闭。
-- 首页、归档、标签、关于各有一个折纸入口，放在顶栏文字左侧。当前内容收回所属入口，ClientRouter 交换文档，下一页从自己的入口展开。文章和分类属于归档，标签详情属于标签。返回和前进时同样按页面归属取图标。
+- 首页、文章、标签、关于各有一个折纸入口，放在顶栏文字左侧。当前内容收回所属入口，ClientRouter 交换文档，下一页从自己的入口展开。文章和分类属于「文章」，标签详情属于标签。返回和前进时同样按页面归属取图标。
 - 默认先取文，再收纸。并行模式同时取文与收纸，两项完成后交换正文。原始时间轨单程 1160 毫秒，完整收展约 2.32 秒。
 - 中央纸面占视口宽度的 60%，整张纸面均可滚动。原生滚动条与纸面等高，从不透明顶栏下沿延伸到视口底边。四边等宽的留白属于内容容器，上下留白随正文滚动。短页版权靠底，长文滚到末尾可见。窄屏保留纸面比例并改用单栏。
 - 折纸模型在第一次需要动效时下载。各页面共用一个动效层，长文只取当前可视纸面，最多缓存两张大纸纹。首轮使用 Canvas 2D，空闲时可以准备 WebGL2，并在相同尺寸、纸纹和收展方向下比较绘制表现。开启减少动态效果或画布不可用时，直接显示目标页。
@@ -76,7 +76,8 @@ ruling: ruled
 | 路径 | 用途 |
 | --- | --- |
 | `src/content.config.ts`、`src/content/posts/` | 文章约束和示例 Markdown |
-| `src/pages/`、`src/layouts/Site.astro` | 首页、归档、标签、栏目、文章、关于及 404 |
+| `src/pages/`、`src/layouts/Site.astro` | 首页、文章、分类、标签、关于及 404 |
+| `docs/page-map.md`、`src/lib/sections.ts` | 可编辑的页面层级、一级栏目与图标配置 |
 | `src/components/ui/`、`src/styles/tokens.css` | 博客组件库与 VI 设计变量 |
 | `src/scripts/desk-texture.cjs` | 再生纸配方、首屏生成和浏览器存储 |
 | `src/assets/paper/`、`tools/generate-paper.py` | 同配方导出的静态后备遮罩及导出工具 |

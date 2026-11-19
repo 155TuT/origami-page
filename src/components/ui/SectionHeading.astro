@@ -1,11 +1,11 @@
 ---
-interface Props { title: string; variant?: "section" | "year"; }
-const { title, variant = "section" } = Astro.props;
+interface Props { title: string; }
+const { title } = Astro.props;
 ---
-<div class:list={["section-heading", variant]}><h2>{title}</h2><slot /></div>
+<div class="section-heading"><h2>{title}</h2><slot /></div>
 
 <style>
-  .section {
+  .section-heading {
     display: flex;
     flex-wrap: wrap;
     align-items: baseline;
@@ -14,10 +14,8 @@ const { title, variant = "section" } = Astro.props;
     padding-block-end: var(--space-4);
     border-block-end: 1px solid var(--line-dark);
   }
-  .section h2 { font: var(--weight-heading) var(--text-section)/1.4 var(--serif); letter-spacing: -.04em; }
-  .year { margin-block-start: var(--space-5); }
-  .year h2 { color: var(--accent); font: italic var(--text-year)/1.4 var(--latin-serif); }
+  h2 { font: var(--weight-heading) var(--text-section)/1.4 var(--serif); letter-spacing: -.04em; }
   @media (max-width: 1084px) {
-    .section { padding-block-end: var(--space-3); }
+    .section-heading { padding-block-end: var(--space-3); }
   }
 </style>

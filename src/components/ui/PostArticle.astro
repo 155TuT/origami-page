@@ -1,5 +1,6 @@
 ---
-import { categoryURL, href, type Post } from "../../lib/blog";
+import { categoryURL, type Post } from "../../lib/blog";
+import { sectionURL } from "../../lib/sections";
 import PageHeading from "./PageHeading.astro";
 import Plate from "./Plate.astro";
 import PostDate from "./PostDate.astro";
@@ -13,7 +14,7 @@ const { title, description, date, category, tags, art } = post.data;
 <article>
   <PageHeading title={title} eyebrow={category} eyebrowHref={categoryURL(category)}>
     <div class="meta">
-      <PostDate date={date} /><span aria-hidden="true">/</span><a href={href("archives/")}>文章归档</a>
+      <PostDate date={date} /><span aria-hidden="true">/</span><a href={sectionURL("articles")}>全部文章</a>
     </div>
   </PageHeading>
   <p class="deck">{description}</p>

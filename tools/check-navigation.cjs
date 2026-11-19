@@ -183,6 +183,7 @@ async function run() {
     assert.ok(await cachedMasksVisible(page), "the persisted desk must keep its masks during navigation");
     assert.equal(await page.evaluate(() => window.tileEncodes), 0);
     const first = { path: new URL(page.url()).pathname, title: await page.title() };
+    assert.ok(first.path.startsWith(new URL("archives/", base).pathname));
     await page.locator("[data-settings] summary").click();
     await page.getByRole("switch", { name: "并行取文与收纸" }).check();
     await page.locator("[data-settings] summary").click();
@@ -204,7 +205,7 @@ async function run() {
     await settled(page, second.path, second.title);
     assert.ok(Math.abs(await paperTop(page) - forwardScroll) <= 2, "forward must restore the second paper's reading position");
     const checks = await page.evaluate(() => window.dockChecks);
-    assert.deepEqual(checks.slice(0, 4).map(entry => entry.section), ["home", "archive", "archive", "archive"]);
+    assert.deepEqual(checks.slice(0, 4).map(entry => entry.section), ["home", "articles", "articles", "articles"]);
     assert.ok(checks.every(entry => entry.centered && entry.reachesDock && entry.fixedFrame), JSON.stringify(checks));
     const reload = await page.reload();
     assert.ok([200, 304].includes(reload.status()), "a refresh must serve or revalidate the article");

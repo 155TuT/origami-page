@@ -3,8 +3,9 @@ import { href, siteName } from "../../lib/blog";
 import { sections, type Section } from "../../lib/sections";
 import ReadingSettings from "./ReadingSettings.astro";
 
-interface Props { current: Section; }
+interface Props { current?: Section | null; }
 const { current } = Astro.props;
+const currentPath = Astro.url.pathname.replace(/\/?$/, "/");
 ---
 <a class="skip-link" href="#content">跳到正文</a>
 <header class="site-header">
@@ -16,7 +17,7 @@ const { current } = Astro.props;
     <nav class="site-nav" aria-label="主导航">
       {sections.map(section => (
         <a href={href(section.path)} aria-current={current === section.id
-          ? (href(section.path) === Astro.url.pathname ? "page" : "location") : undefined}>
+          ? (href(section.path) === currentPath ? "page" : "location") : undefined}>
           <span class="nav-fold-icon" data-fold-dock={section.id} aria-hidden="true">
             <img src={href(section.icon)} width="39" height="32" alt="" />
           </span>

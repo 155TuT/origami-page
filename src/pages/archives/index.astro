@@ -1,0 +1,13 @@
+---
+import Site from "../../layouts/Site.astro";
+import { ContentColumns, JournalAside, PageHeading, PostList } from "../../components/ui";
+import { allPosts } from "../../lib/blog";
+const posts = await allPosts();
+---
+<Site title="文章">
+  <ContentColumns>
+    <PageHeading title="文章" description={`共 ${posts.length} 篇手记`} />
+    <PostList posts={posts} />
+    <JournalAside slot="aside" posts={posts} />
+  </ContentColumns>
+</Site>

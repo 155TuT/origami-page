@@ -5,7 +5,7 @@ import { allPosts, groupPosts } from "../../lib/blog";
 const posts = await allPosts();
 const tags = [...groupPosts(posts,"tags")].sort((a,b) => b[1].length - a[1].length || a[0].localeCompare(b[0],"zh-CN"));
 ---
-<Site title="标签" current="tags" ruling="grid">
+<Site title="标签" ruling="grid">
   <ContentColumns>
     <PageHeading eyebrow="按主题浏览" title="标签" description={`${tags.length} 个主题，${posts.length} 篇手记`} />
     <TagList tags={tags.map(([name, entries]) => ({ name, count: entries.length }))} />

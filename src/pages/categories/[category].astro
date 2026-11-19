@@ -1,9 +1,9 @@
 ---
-import TopicPage from "../../components/TopicPage.astro";
-import { allPosts, groupPosts } from "../../lib/blog";
+import { allPosts, categoryURL, groupPosts } from "../../lib/blog";
+
 export async function getStaticPaths() {
-  const all = await allPosts();
-  return [...groupPosts(all, "category")].map(([name, posts]) => ({ params: { category: name }, props: { name, posts, all } }));
+  const names = groupPosts(await allPosts(), "category").keys();
+  return Array.from(names, name => ({ params: { category: name }, props: { to: categoryURL(name) } }));
 }
+return Astro.redirect(Astro.props.to, 301);
 ---
-<TopicPage type="category" {...Astro.props} />

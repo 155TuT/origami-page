@@ -2,7 +2,7 @@ export function createRenderStack(canvas,readout,readingMode,canPrepare,onFailur
   const param=new URLSearchParams(location.search).get('renderer');
   const preference=['2d','webgl2'].includes(param)?param:'auto';
   let gpu=null, preparing=false, queued=false, failed='', used='2d';
-  // An article, an archive and the cover have different visible paper sizes.
+  // An article, a list and the cover can have different visible paper sizes.
   // A return visit can reuse a comparison without retaining any of its canvases.
   const profiles=new Map();
   const newProfile=()=>({decision:'baseline',reference:null,regressions:0});

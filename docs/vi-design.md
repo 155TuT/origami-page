@@ -10,7 +10,7 @@
 
 站标由中文「折间」和斜体英文 *Fold Journal* 组成，两者的可见字底对齐。桌面字号分别为 30 和 18 px，双行顶栏中缩为 24 和 15 px。站标左边与纸张外沿对齐，点击回到首页。
 
-主导航保留「首页、归档、标签、关于」四个入口。图标放在文字左侧，当前栏目使用墨色文字与一条 2 px 的赤陶色下划线。文章和分类归入「归档」，标签详情归入「标签」。四个入口共用赤陶色纸鹤，停靠图与飞行末段读取同一张图。封面和文章中的纸鹤由相同的折纸模型绘制。[栏目与图标](../src/lib/sections.ts) · [纸鹤插图生成器](../tools/render-crane.cjs)
+主导航的四个入口是「首页、文章、标签、关于」。图标位于文字左侧。当前栏目使用墨色文字与一条 2 px 的赤陶色下划线。正文和分类属于「文章」，标签详情属于「标签」。[页面层级思维导图](page-map.md)
 
 插图使用细方格、定位十字、中英文图注和有替代文本的图像。封面图与标题并排时用竖线分隔，单栏时改用横线。文章内插图四边有细框。纸鹤与河岸两幅图均使用静态资源。[插图组件](../src/components/ui/Plate.astro)
 
@@ -69,7 +69,7 @@
 | 正文与正文小标题 | `--serif` | 正文 17 px，单栏 16 px，400，行高 1.95。二、三级标题为 25、21 px，700 |
 | 导航、操作与说明 | `--sans` | 常规 400，导航和文字链接 550，主操作和眉题 600。说明与操作常用 12–14 px |
 | 日期、篇数与代码 | `--mono` | 日期 12 px 并使用等宽数字，篇数 11 px，代码块 13 px |
-| 英文站标、图注英文与归档年份 | `--latin-serif` | Georgia 斜体。英文图注 14 px，年份 28 px |
+| 英文站标、图注英文 | `--latin-serif` | Georgia 斜体。英文图注 14 px |
 
 中文标题与正文优先 Noto Serif SC，依次回退到宋体类字体。界面使用 DM Sans 配系统中文无衬线字体，日期和代码优先 IBM Plex Mono。站点使用读者设备上可用的字形。以上字重对应 `--weight-regular / medium / semibold / heading / bold`，新增角色在设计变量里命名。
 
@@ -85,31 +85,31 @@
 
 ## 组件选用
 
-组件通过 `src/components/ui/index.ts` 导出。页面负责取数、决定栏目和组合组件。组件的样式、变体和断点放在对应的 `.astro` 文件中。
+组件通过 `src/components/ui/index.ts` 导出。页面负责取数和组合组件，布局根据 URL 确定所属栏目。组件的样式、变体和断点放在对应的 `.astro` 文件中。
 
 | 用途 | 组件 | 用法 |
 | --- | --- | --- |
-| 站点外框 | `DeskBackdrop`、`SiteHeader`、`Paper`、`FoldStage` | 由 `Site` 布局统一装配。页面传入 `current` 与可选的 `ruling`，纸面自带 `PaperFooter` |
+| 站点外框 | `DeskBackdrop`、`SiteHeader`、`Paper`、`FoldStage` | 由 `Site` 统一装配。页面可传纸纹 `ruling`，纸面自带 `PaperFooter`。404 使用 `current={null}` |
 | 阅读偏好 | `ReadingSettings`、`SettingSwitch` | 使用原生展开面板与带标签的开关。设置项沿用 `theme`、`reduce`、`parallel` |
 | 分栏与旁注 | `ContentColumns`、`Sidebar`、`JournalAside`、`TableOfContents` | 正文进默认插槽，侧栏进 `aside` 插槽。文章传 Markdown 标题生成二、三级目录 |
-| 标题 | `PageHeading`、`SectionHeading` | 内页共用眉题、标题、可选说明。需要返回链接时传 `eyebrowHref`。归档年份使用 `variant="year"` |
+| 标题 | `PageHeading`、`SectionHeading` | 内页使用标题、可选眉题与说明。眉题可通过 `eyebrowHref` 链接到上一级，分区标题可附文字操作 |
 | 链接与操作 | `ActionLink`、`ActionRow` | 普通文字链接使用默认变体，主要阅读入口使用 `variant="primary"`。可选箭头属于装饰，操作含义由可见文字给出 |
 | 封面、插图与日期 | `FeaturedPost`、`Plate`、`PostDate` | 封面接收一篇文章。插图支持 `cover`、`article` 两种变体。日期用 `time` 元素同时保留标准值与印刷格式 |
-| 文章与索引 | `PostList`、`PostArticle`、`Prose`、`TagList`、`PostNeighbors` | 首页、归档、分类和标签详情共用列表。文章把 Markdown 正文传给 `PostArticle`，自定义长文可用 `Prose`。索引标签带篇数，文末标签用紧凑的 `article` 变体 |
+| 文章与索引 | `PostList`、`PostArticle`、`Prose`、`TagList`、`PostNeighbors` | 首页、文章、分类和标签详情共用列表。文章把 Markdown 正文传给 `PostArticle`，自定义长文可用 `Prose`。索引标签带篇数，文末标签用紧凑的 `article` 变体 |
 
-例如，给归档加一个新的索引页时，可以直接组合现有标题、列表和侧栏。
+文章列表页直接组合标题、文章列表和分类侧栏。
 
 ```astro
 ---
-import Site from "../layouts/Site.astro";
-import { ContentColumns, JournalAside, PageHeading, PostList } from "../components/ui";
-import { allPosts } from "../lib/blog";
+import Site from "../../layouts/Site.astro";
+import { ContentColumns, JournalAside, PageHeading, PostList } from "../../components/ui";
+import { allPosts } from "../../lib/blog";
 
 const posts = await allPosts();
 ---
-<Site title="手记索引" current="archive">
+<Site title="文章">
   <ContentColumns>
-    <PageHeading eyebrow="按时间浏览" title="手记索引" />
+    <PageHeading title="文章" description={`共 ${posts.length} 篇手记`} />
     <PostList posts={posts} />
     <JournalAside slot="aside" posts={posts} />
   </ContentColumns>

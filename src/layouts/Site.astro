@@ -2,17 +2,18 @@
 import { ClientRouter } from "astro:transitions";
 import { DeskBackdrop, FoldStage, Paper, SiteHeader } from "../components/ui";
 import { siteName } from "../lib/blog";
-import type { Section } from "../lib/sections";
+import { sectionForPath, type Section } from "../lib/sections";
 import initialPreferences from "../scripts/initial-preferences.js?raw";
 import deskTexture from "../scripts/desk-texture.cjs?raw";
 import "../styles/global.css";
 interface Props {
   title?: string;
   description?: string;
-  current: Section;
+  current?: Section | null;
   ruling?: "ruled" | "grid";
 }
-const { title, description = "折间，一本关于折纸、设计、代码和日常散步的个人手记。", current, ruling = "ruled" } = Astro.props;
+const { title, description = "折间，一本关于折纸、设计、代码和日常散步的个人手记。",
+  current = sectionForPath(Astro.url.pathname), ruling = "ruled" } = Astro.props;
 const documentTitle = title ? title + " · " + siteName : siteName + " · Fold Journal";
 const canonical = Astro.site && new URL(Astro.url.pathname, Astro.site);
 ---
