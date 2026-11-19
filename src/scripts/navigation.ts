@@ -1,6 +1,7 @@
 import type { FoldPlayer } from "../lib/fold/player";
 import type { TransitionBeforePreparationEvent } from "astro:transitions/client";
 import { installPaperScroll } from "./paper-scroll";
+import { sectionForPath } from "../lib/sections";
 
 type Setting = "theme" | "reduce" | "parallel";
 type Navigation = {
@@ -60,10 +61,12 @@ function installNavigation() {
   });
 
   document.addEventListener("astro:before-preparation", event => {
-    const fullPage = event.from.pathname !== event.to.pathname || event.from.search !== event.to.search;
+    const fromSection = document.querySelector<HTMLElement>("main[data-fold-paper]")?.dataset.foldPaper;
+    const toSection = sectionForPath(event.to.pathname);
     const canFold = root.dataset.reduce !== "true" && !document.hidden && (player?.allowed ?? true);
     const parallel = root.dataset.parallel === "true";
-    const nav: Navigation = { event, fold: fullPage && canFold, keyboard, swapping: false };
+    const nav: Navigation = { event, fold: !!fromSection && !!toSection && fromSection !== toSection && canFold,
+      keyboard, swapping: false };
     current = nav;
     // Restore the outgoing sheet when a serial request replaces an unfinished close.
     if (!nav.fold || (!parallel && root.dataset.foldPhase && root.dataset.foldPhase !== "opening")) player?.reset();

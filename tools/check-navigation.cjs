@@ -126,6 +126,15 @@ async function delayedTurn(page, link, parallel) {
   console.log((parallel ? "parallel" : "serial") + " close/open (ms)", closing, opening);
 }
 
+async function directTurn(page, link) {
+  const url = new URL(await link.getAttribute("href"), base);
+  await page.evaluate(() => { window.foldLog.length = 0; });
+  await link.click();
+  await page.waitForURL(url.href);
+  await page.waitForFunction(() => !document.documentElement.dataset.foldPhase);
+  assert.deepEqual(await page.evaluate(() => window.foldLog), [], "direct navigation should never start a fold");
+}
+
 async function run() {
   const browserType = { chrome: chromium, edge: chromium, chromium, firefox, webkit }[engine];
   assert.ok(browserType, "choose chrome, edge, chromium, firefox or webkit");
@@ -164,7 +173,9 @@ async function run() {
             Math.abs(parseFloat(flat.height) - (innerHeight - top)) < 1,
         });
       }
-      document.addEventListener("astro:before-swap", () => recordDock("in"));
+      document.addEventListener("astro:before-swap", () => {
+        if (document.documentElement.dataset.foldPhase === "docked") recordDock("in");
+      });
       new MutationObserver(() => {
         const phase = document.documentElement.dataset.foldPhase || "idle";
         if (window.foldLog.at(-1)?.phase === phase) return;
@@ -172,16 +183,17 @@ async function run() {
         if (phase === "opening") recordDock("out");
       }).observe(document.documentElement, { attributes: true, attributeFilter: ["data-fold-phase"] });
     });
-    const initialLength = await page.evaluate(() => history.length);
     assert.equal(await page.locator(".site-nav a > [data-fold-dock]:first-child").count(), 4);
     assert.equal(await page.locator("[data-fold-paper]").count(), 1);
     await checkLayout(page);
     const backdrop = await page.locator(".desk-backdrop").elementHandle();
-    await delayedTurn(page, page.getByRole("link", { name: "阅读全文", exact: true }), false);
+    await delayedTurn(page, page.getByRole("link", { name: "文章", exact: true }), false);
     assert.ok(await backdrop.evaluate(node => node === document.querySelector(".desk-backdrop")),
       "folding to another page must keep the same textured backdrop");
     assert.ok(await cachedMasksVisible(page), "the persisted desk must keep its masks during navigation");
     assert.equal(await page.evaluate(() => window.tileEncodes), 0);
+    const initialLength = await page.evaluate(() => history.length);
+    await directTurn(page, page.locator(".post-list .post-title").first());
     const first = { path: new URL(page.url()).pathname, title: await page.title() };
     assert.ok(first.path.startsWith(new URL("archives/", base).pathname));
     await page.locator("[data-settings] summary").click();
@@ -191,7 +203,7 @@ async function run() {
     await next.scrollIntoViewIfNeeded();
     const scroll = await paperTop(page);
     assert.ok(scroll > 0 && await page.evaluate(() => window.scrollY === 0), "only the paper should scroll");
-    await delayedTurn(page, next, true);
+    await directTurn(page, next);
     const second = { path: new URL(page.url()).pathname, title: await page.title() };
     assert.notEqual(first.path, second.path);
     assert.equal(await paperTop(page), 0, "a newly opened article starts at its top edge");
@@ -204,9 +216,17 @@ async function run() {
     await page.evaluate(() => history.forward());
     await settled(page, second.path, second.title);
     assert.ok(Math.abs(await paperTop(page) - forwardScroll) <= 2, "forward must restore the second paper's reading position");
+    assert.deepEqual(await page.evaluate(() => window.foldLog), [], "history inside a section must stay direct");
+    await delayedTurn(page, page.getByRole("link", { name: "标签", exact: true }), true);
     const checks = await page.evaluate(() => window.dockChecks);
-    assert.deepEqual(checks.slice(0, 4).map(entry => entry.section), ["home", "articles", "articles", "articles"]);
+    assert.deepEqual(checks.map(entry => entry.section), ["home", "articles", "articles", "tags"]);
     assert.ok(checks.every(entry => entry.centered && entry.reachesDock && entry.fixedFrame), JSON.stringify(checks));
+    await directTurn(page, page.locator(".sheet-content .tag-list a").first());
+    await delayedTurn(page, page.locator(".post-list .post-title").first(), true);
+    await directTurn(page, page.locator("article .page-heading .eyebrow"));
+    await directTurn(page, page.getByRole("link", { name: "文章", exact: true }));
+    await page.goto(new URL(second.path, base).href);
+    await page.locator("#content").evaluate((paper, top) => { paper.scrollTop = top; }, forwardScroll);
     const reload = await page.reload();
     assert.ok([200, 304].includes(reload.status()), "a refresh must serve or revalidate the article");
     assert.equal(await page.title(), second.title);
