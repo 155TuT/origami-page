@@ -22,7 +22,9 @@
   --wash: #ede2d1;
   --crane-paper: #df9671;
   --crane-shadow: #643321;
+  --dock-outline-ink: #785139;
   --dock-outline-stroke: .65px;
+  --dock-width: clamp(27px, 3.15vw, 39px);
   --fold-shadow: #90745a;
   --fold-rule: #86664450;
   --fold-grid: #87684a46;
@@ -103,6 +105,7 @@
   --plot-line: #ceb4964d;
   --plot-grid: #c7a78526;
   --wash: #41352b;
+  --dock-outline-ink: #d1ab86;
   --fold-shadow: #1c1612;
   --fold-rule: #d8b99a4a;
   --fold-grid: #d0b29643;
@@ -132,6 +135,7 @@
     --text-brand: 24px;
     --text-brand-latin: 15px;
     --text-nav: clamp(11px, 3vw, 14px);
+    --dock-width: clamp(17px, 5.6vw, 34px);
   }
 }
 

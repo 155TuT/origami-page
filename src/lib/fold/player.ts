@@ -105,7 +105,7 @@ export class FoldPlayer {
     const paper = this.paper;
     if (!paper) return false;
     const anchor = document.querySelector<HTMLElement>(`[data-fold-dock="${CSS.escape(paper.dataset.foldPaper!)}"]`);
-    const icon = anchor?.querySelector("img");
+    const icon = anchor?.querySelector<HTMLImageElement>("[data-fold-solid]");
     if (!anchor || !icon) return false;
     // The slot stays still while the scrollport and the visible ink scale together.
     const box = paper.closest(".paper-slot")!.getBoundingClientRect();

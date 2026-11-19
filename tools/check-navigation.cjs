@@ -135,6 +135,20 @@ async function directTurn(page, link) {
   assert.deepEqual(await page.evaluate(() => window.foldLog), [], "direct navigation should never start a fold");
 }
 
+async function checkDocks(page, active, current) {
+  const docks = await page.locator(".site-nav [data-fold-dock]").evaluateAll(nodes => nodes.map(node => ({
+    id: node.dataset.foldDock, current: node.closest("a").getAttribute("aria-current"),
+    solid: getComputedStyle(node.querySelector("[data-fold-solid]")).visibility,
+    outline: getComputedStyle(node, "::before").maskImage,
+  })));
+  assert.equal(docks.length, 4);
+  for (const dock of docks) {
+    assert.equal(dock.current, dock.id === active ? current : null);
+    assert.equal(dock.solid, dock.id === active ? "hidden" : "visible");
+    assert.notEqual(dock.outline, "none", "the line drawing must remain underneath every print");
+  }
+}
+
 async function run() {
   const browserType = { chrome: chromium, edge: chromium, chromium, firefox, webkit }[engine];
   assert.ok(browserType, "choose chrome, edge, chromium, firefox or webkit");
@@ -161,13 +175,19 @@ async function run() {
         const section = sheet.dataset.foldPaper;
         const icon = document.querySelector('[data-fold-dock="' + section + '"]');
         const dock = icon.getBoundingClientRect();
-        const position = new DOMMatrix(document.getElementById("shuttle").style.transform);
+        const shuttle = document.getElementById("shuttle");
+        const position = new DOMMatrix(shuttle.style.transform);
+        const print = icon.querySelector("[data-fold-solid]");
         const width = document.documentElement.clientWidth;
         const flat = document.querySelector(".fold-flat").style;
         const top = document.querySelector(".site-header").getBoundingClientRect().bottom;
         window.dockChecks.push({
           direction, section,
           reachesDock: Math.abs(position.m41 - dock.left) < 1 && Math.abs(position.m42 - dock.top) < 1,
+          samePrint: shuttle.src === print.src && Math.abs(parseFloat(shuttle.style.width) - dock.width) < 1 &&
+            Math.abs(parseFloat(shuttle.style.height) - dock.height) < 1 &&
+            getComputedStyle(icon, "::before").maskImage !== "none" &&
+            getComputedStyle(print).visibility === (direction === "in" ? "visible" : "hidden"),
           centered: Math.abs(parseFloat(flat.width) - width * .6) < 1 && Math.abs(parseFloat(flat.left) - width * .2) < 1,
           fixedFrame: Math.abs(parseFloat(flat.top) - top) < 1 &&
             Math.abs(parseFloat(flat.height) - (innerHeight - top)) < 1,
@@ -183,17 +203,19 @@ async function run() {
         if (phase === "opening") recordDock("out");
       }).observe(document.documentElement, { attributes: true, attributeFilter: ["data-fold-phase"] });
     });
-    assert.equal(await page.locator(".site-nav a > [data-fold-dock]:first-child").count(), 4);
+    await checkDocks(page, "home", "page");
     assert.equal(await page.locator("[data-fold-paper]").count(), 1);
     await checkLayout(page);
     const backdrop = await page.locator(".desk-backdrop").elementHandle();
     await delayedTurn(page, page.getByRole("link", { name: "文章", exact: true }), false);
+    await checkDocks(page, "articles", "page");
     assert.ok(await backdrop.evaluate(node => node === document.querySelector(".desk-backdrop")),
       "folding to another page must keep the same textured backdrop");
     assert.ok(await cachedMasksVisible(page), "the persisted desk must keep its masks during navigation");
     assert.equal(await page.evaluate(() => window.tileEncodes), 0);
     const initialLength = await page.evaluate(() => history.length);
     await directTurn(page, page.locator(".post-list .post-title").first());
+    await checkDocks(page, "articles", "location");
     const first = { path: new URL(page.url()).pathname, title: await page.title() };
     assert.ok(first.path.startsWith(new URL("archives/", base).pathname));
     await page.locator("[data-settings] summary").click();
@@ -218,13 +240,19 @@ async function run() {
     assert.ok(Math.abs(await paperTop(page) - forwardScroll) <= 2, "forward must restore the second paper's reading position");
     assert.deepEqual(await page.evaluate(() => window.foldLog), [], "history inside a section must stay direct");
     await delayedTurn(page, page.getByRole("link", { name: "标签", exact: true }), true);
+    await checkDocks(page, "tags", "page");
     const checks = await page.evaluate(() => window.dockChecks);
     assert.deepEqual(checks.map(entry => entry.section), ["home", "articles", "articles", "tags"]);
-    assert.ok(checks.every(entry => entry.centered && entry.reachesDock && entry.fixedFrame), JSON.stringify(checks));
+    assert.ok(checks.every(entry => entry.centered && entry.reachesDock && entry.fixedFrame && entry.samePrint),
+      JSON.stringify(checks));
     await directTurn(page, page.locator(".sheet-content .tag-list a").first());
+    await checkDocks(page, "tags", "location");
     await delayedTurn(page, page.locator(".post-list .post-title").first(), true);
+    await checkDocks(page, "articles", "location");
     await directTurn(page, page.locator("article .page-heading .eyebrow"));
+    await checkDocks(page, "articles", "location");
     await directTurn(page, page.getByRole("link", { name: "文章", exact: true }));
+    await checkDocks(page, "articles", "page");
     await page.goto(new URL(second.path, base).href);
     await page.locator("#content").evaluate((paper, top) => { paper.scrollTop = top; }, forwardScroll);
     const reload = await page.reload();

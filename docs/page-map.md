@@ -30,4 +30,4 @@ mindmap
 
 **辅助地址。** 找不到页面时显示 `404.html`，顶栏没有选中项。`/credits.txt` 提供素材署名。旧书签 `/posts/:slug/` 和 `/categories/:category/` 分别跳转到图中的正文和分类页。
 
-新增一级栏目时，在栏目配置中登记名称、路径和图标。调整子页面时，同步修改页面文件与链接生成函数。[栏目配置](../src/lib/sections.ts) · [页面目录](../src/pages/) · [内容链接](../src/lib/blog.ts)
+新增一级栏目时，在栏目配置中登记名称、路径和图标对。调整子页面时，同步修改页面文件与链接生成函数。纸鹤的选中态与停靠规则见项目 VI。[栏目配置](../src/lib/sections.ts) · [页面目录](../src/pages/) · [内容链接](../src/lib/blog.ts) · [项目 VI](vi-design.md#导航线稿与停靠)

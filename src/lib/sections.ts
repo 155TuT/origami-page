@@ -1,13 +1,14 @@
-// Each top-level section owns a dock and its resting artwork.
-// All four currently use the original crane while their individual icons are being designed.
+// The two images share a transparent frame, including its optical margins.
+const crane = { icon: "art/crane-icon.png", outline: "art/crane-outline.svg" };
 export const sections = [
-  { id: "home", label: "首页", path: "", icon: "art/crane-icon.png" },
-  { id: "articles", label: "文章", path: "archives/", icon: "art/crane-icon.png" },
-  { id: "tags", label: "标签", path: "tags/", icon: "art/crane-icon.png" },
-  { id: "about", label: "关于", path: "about/", icon: "art/crane-icon.png" },
+  { id: "home", label: "首页", path: "", ...crane },
+  { id: "articles", label: "文章", path: "archives/", ...crane },
+  { id: "tags", label: "标签", path: "tags/", ...crane },
+  { id: "about", label: "关于", path: "about/", ...crane },
 ] as const;
 
-export type Section = typeof sections[number]["id"];
+export type NavSection = typeof sections[number];
+export type Section = NavSection["id"];
 
 const base = import.meta.env.BASE_URL.replace(/\/?$/, "/");
 export const href = (path = "") => base + path.replace(/^\/+/, "");

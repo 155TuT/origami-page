@@ -1,0 +1,24 @@
+---
+import { href, type NavSection } from "../../lib/sections";
+
+interface Props { section: NavSection; }
+const { section } = Astro.props;
+---
+<span class="fold-dock" data-fold-dock={section.id} aria-hidden="true"
+  style={{ "--dock-outline-image": `url(${JSON.stringify(href(section.outline))})` }}>
+  <img data-fold-solid src={href(section.icon)} width="39" height="32" alt="" />
+</span>
+
+<style>
+  .fold-dock { position: relative; display: inline-block; flex: none; width: var(--dock-width); aspect-ratio: 39/32; }
+  .fold-dock::before, img { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .fold-dock::before {
+    content: "";
+    background-color: var(--dock-outline-ink);
+    -webkit-mask: var(--dock-outline-image) center / contain no-repeat;
+    mask: var(--dock-outline-image) center / contain no-repeat;
+  }
+  img { display: block; object-fit: contain; }
+  /* At the exact docked frame the resting print takes over from the shuttle. */
+  :global(html:not([data-fold-phase="docked"]) a[aria-current]) img { visibility: hidden; }
+</style>

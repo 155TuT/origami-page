@@ -1,5 +1,6 @@
 export { default as DeskBackdrop } from "./DeskBackdrop.astro";
 export { default as SiteHeader } from "./SiteHeader.astro";
+export { default as FoldDock } from "./FoldDock.astro";
 export { default as ReadingSettings } from "./ReadingSettings.astro";
 export { default as SettingSwitch } from "./SettingSwitch.astro";
 export { default as Paper } from "./Paper.astro";
