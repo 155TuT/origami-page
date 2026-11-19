@@ -64,7 +64,7 @@ ruling: ruled
 - 折纸模型在第一次需要动效时下载。各页面共用一个动效层，长文只取当前可视纸面，最多缓存两张大纸纹。首轮使用 Canvas 2D，空闲时可以准备 WebGL2，并在相同尺寸、纸纹和收展方向下比较绘制表现。开启减少动态效果或画布不可用时，直接显示目标页。
 - Astro ClientRouter 管理导航和页面元数据。博客按浏览器历史条目保存纸面的阅读位置，支持前进、后退和刷新。目录锚点、在新标签页打开和禁用 JavaScript 阅读使用普通链接。
 
-四个入口暂用同一只赤陶色纸鹤。`src/lib/sections.ts` 配置各栏目图标，导航停靠图和飞行末段读取同一张图。折面的三维姿态来自 `src/lib/fold/crane-data.js`。修改 `--crane-paper` 或 `--crane-shadow` 后，使用下文导航回归所用的 Playwright 和本机 Chrome 运行 `node tools/render-crane.cjs`，同步生成导航图标与文章插图。
+四个入口暂用同一只赤陶色纸鹤。修改纸色、造型或线宽后，使用下文相同的 Playwright 与本机 Chrome 运行 `node tools/render-crane.cjs`，同步导出实心图、线稿和文章插图。加 `--benchmark` 可复测提取与显示开销。[通用可见边提取](tools/fold-outline.mjs)
 
 需要复查换页时，可在生产预览运行期间执行 `node tools/check-navigation.cjs`。此开发工具使用可选的 `playwright` 包和本机 Chrome，设置 `ORIGAMI_BROWSER=edge` 可改用本机 Edge，`ORIGAMI_URL` 可指向其他预览地址。回归覆盖背景缓存、跨栏目收展、同栏目直达、锚点和历史滚动恢复，以及桌面和窄屏下的纸边与版权位置。
 
