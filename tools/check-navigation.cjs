@@ -63,10 +63,18 @@ async function checkLayout(page) {
       hitInk(paper.top + 1) && hitInk(paper.bottom - 1);
     sheet.scrollTop = sheet.scrollHeight;
     const bottomInset = paper.bottom - footer.getBoundingClientRect().bottom;
+    const footerLinks = [...footer.querySelectorAll("nav a")];
+    const linkRects = footerLinks.map(link => link.getBoundingClientRect());
+    const filings = rect(".filings");
+    const footerText = footerLinks.map(link => link.textContent.trim());
+    const footerRow = linkRects.length === 3 && linkRects.every(link => Math.abs(link.top - linkRects[0].top) <= 1)
+      && Math.abs(linkRects[0].left - content.left) <= 1;
+    const desktopFilings = window.innerWidth < 1100 || (Math.abs(filings.top - linkRects[0].top) <= 1
+      && Math.abs(filings.right - content.right) <= 1);
     const fixed = rect(".site-header").bottom === header.bottom && rect(".desk-backdrop").top === desk.top;
     sheet.scrollTop = originalTop;
     return {
-      width: window.innerWidth, sheetWidth: paper.width, sheetLeft: paper.left,
+      path: location.pathname, width: window.innerWidth, sheetWidth: paper.width, sheetLeft: paper.left,
       brand: brand.left - paper.left,
       menu: stacked ? (nav[0].left + nav.at(-1).right - window.innerWidth) / 2 : nav.at(-1).right - paper.right,
       wordmark: rect(".wordmark i").bottom - rect(".wordmark strong").bottom,
@@ -79,6 +87,7 @@ async function checkLayout(page) {
       bottom: paper.bottom - window.innerHeight,
       inset, topInset: content.top - paper.top, rightInset: paper.right - content.right, bottomInset,
       fullScrollport, fixed, overflowX: sheet.scrollWidth - sheet.clientWidth,
+      footerRow, desktopFilings, footerText,
       footer: document.querySelectorAll("footer").length === 1 && footer.textContent.includes("闽ICP备")
         && footer.textContent.includes("闽公网安备"),
     };
@@ -88,7 +97,9 @@ async function checkLayout(page) {
     layout.bottom, layout.topInset - layout.inset, layout.rightInset - layout.inset,
     layout.bottomInset - layout.inset, layout.overflowX]) assert.ok(Math.abs(error) <= 1, JSON.stringify(layout));
   assert.ok(layout.inset >= 10 && layout.menuFits && layout.settingsFits && layout.footer &&
-    layout.fullScrollport && layout.fixed, JSON.stringify(layout));
+    layout.fullScrollport && layout.fixed && layout.footerRow && layout.desktopFilings, JSON.stringify(layout));
+  assert.deepEqual(layout.footerText.slice(0, 2), ["友链", "RSS"]);
+  assert.match(layout.footerText[2], /^©\d{4} 折间$/u);
 }
 
 async function delayedTurn(page, link, parallel) {
