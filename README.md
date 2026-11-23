@@ -53,6 +53,8 @@ ruling: ruled
 
 `ruling` 可选 `ruled`（横线纸）或 `grid`（方格纸），默认横线纸。二、三级标题生成目录。六篇原示例保存在 `src/content/posts/draft/`，在本机开发服务的 `/archives/draft/` 阅读。将定稿移至 `src/content/posts/` 即可发布。生产构建只为公开内容生成页面、标签、搜索结果、订阅条目和旧址跳转。
 
+用 `$…$` 写行内公式，用独立成行的 `$$` 包裹公式块，构建时生成 MathML。
+
 ## 作品、影集与个人资料
 
 - 在 `src/content/works/` 添加带标题、摘要、日期和标签的 Markdown。站点自身的案例在 `/works/fold-journal/`，页脚与简历可直接引用。
