@@ -1,6 +1,6 @@
 # 折间 · Fold Journal
 
-用 Astro、TypeScript 和 Markdown 构建的静态个人站。顶栏有首页、作品集、文章、影集和关于我。作品、文章和整本影集共用标签、搜索和 RSS，各自有可分享的正式地址。页脚左侧同排显示友链、RSS 和版权，点击「©年份 折间」可阅读关于本站的项目详情。[可编辑的页面层级图](docs/page-map.md)
+用 Astro、TypeScript 和 Markdown 构建的静态个人站。首页是作者的个人介绍，顶栏可进入作品集、文章和影集。作品、文章和整本影集共用标签、搜索和 RSS，各自有可分享的正式地址。页脚左侧同排显示友链、RSS 和版权，点击「©年份 折间」可阅读关于本站的项目详情。[可编辑的页面层级图](docs/page-map.md)
 
 ## 本地运行
 
@@ -57,9 +57,9 @@ ruling: ruled
 
 ## 作品、影集与个人资料
 
-- 在 `src/content/works/` 添加带标题、摘要、日期和标签的 Markdown。站点自身的案例在 `/works/fold-journal/`，页脚与简历可直接引用。
+- 在 `src/content/works/` 添加带标题、摘要、日期和标签的 Markdown。站点自身的案例在 `/works/fold-journal/`，可从页脚版权或个人介绍正文中的「折间」链接打开。
 - 在 `src/content/albums/` 发布影集，使用 `photos` 数组按观看顺序填写每张照片的 `src`、`alt` 与可选的 `caption`。`cover` 可指定单独的封面，默认取第一张照片。公开照片可放进 `public/`。每册拥有独立地址 `/albums/<slug>/`。
-- 首页和网页简历共用 `src/lib/profile.ts`。在此填写公开资料、经历和邮箱，也可用 `PUBLIC_CONTACT_EMAIL` 设置邮箱。访客通过静态页面阅读。
+- 在 [个人资料配置](src/lib/profile.ts) 填写署名、自我介绍、经历和邮箱。经历和邮箱留空时分别显示「暂无公开经历」和「邮箱暂未公开」。也可用 `PUBLIC_CONTACT_EMAIL` 设置邮箱，公开后友链页的「联系我」指向首页的「联系方式」段落 `/#contact`。
 - 友链名录在 `src/data/friends.json`。每条填写分组 `group`（`friends` 或 `reading`）、站名 `name`、主页 `url`、推荐语 `note` 与手选文章 `picks`（每篇含 `title`、`url`）。用 `feed` 指定 RSS/Atom 地址，也可以用 `latest` 手填最新文章及可选日期 `date`。`npm run sync:friends` 从对方的订阅源同步最新一篇文章，构建时也会同步。`src/data/friend-updates.json` 保存成功结果。保留此快照即可在后续构建遇到源站离线时继续展示。
 - 正式部署时将 `SITE_URL` 设为站点源地址。`/feed.xml` 在每次构建时收录已发布的作品、文章和影集，并使用含部署前缀的绝对链接。
 
@@ -72,14 +72,14 @@ ruling: ruled
 ## 阅读与换页
 
 - 页眉的「阅读设置」提供深色模式、减少动态效果和并行取文与收纸。三项选择保存在浏览器中。首次访问时，配色跟随系统，折纸为完整速度，并行默认关闭。
-- 首页、作品集、文章、影集、关于我各有一个折纸入口。当前栏目显示线稿，其余入口在线稿上覆盖实心图。跨栏目时，纸面折回原入口并与线稿重合，新内容从目标图标的位置展开。
+- 首页、作品集、文章、影集各有一个折纸入口。当前栏目显示线稿，其余入口在线稿上覆盖实心图。跨栏目时，纸面折回原入口并与线稿重合，新内容从目标图标的位置展开。
 - 同栏目内直接换内容。搜索、友链与 404 共用无选中项的顶栏，进出这些页面均直接切换。前进、后退遵循相同的栏目判断。
 - 跨栏目时默认先取文，再收纸。并行模式同时取文与收纸，两项完成后交换正文。单程 1160 毫秒，完整收展约 2.32 秒。
 - 中央纸面占视口宽度的 60%，整张纸面均可滚动。原生滚动条与纸面等高，从不透明顶栏下沿延伸到视口底边。四边等宽的留白属于内容容器，上下留白随正文滚动。短页版权靠底，长文滚到末尾可见。窄屏保留纸面比例并改用单栏。
 - 折纸模型在第一次需要动效时下载。各页面共用一个动效层，长文只取当前可视纸面，最多缓存两张大纸纹。首轮使用 Canvas 2D，空闲时可以准备 WebGL2，并在相同尺寸、纸纹和收展方向下比较绘制表现。开启减少动态效果或画布不可用时，直接显示目标页。
 - Astro ClientRouter 管理导航和页面元数据。博客按浏览器历史条目保存纸面的阅读位置，支持前进、后退和刷新。目录锚点、在新标签页打开和禁用 JavaScript 阅读使用普通链接。
 
-五个入口共用同一只赤陶色纸鹤，每个栏目可以单独配置实心图 `icon` 和线稿 `outline`。线稿保留外缘和可见折边，按最终折姿预先生成。浏览器直接显示 SVG，换主题时用 CSS 着色。修改纸色、造型或线宽后，使用下文相同的 Playwright 与本机 Chrome 运行 `node tools/render-crane.cjs`，同步导出实心图、线稿和文章插图。加 `--benchmark` 可复测提取与显示开销。[栏目配置](src/lib/sections.ts) · [通用可见边提取](tools/fold-outline.mjs) · [停靠规则与性能实测](docs/vi-design.md#导航线稿与停靠)
+四个入口共用同一只赤陶色纸鹤，每个栏目可以单独配置实心图 `icon` 和线稿 `outline`。线稿保留外缘和可见折边，按最终折姿预先生成。浏览器直接显示 SVG，换主题时用 CSS 着色。修改纸色、造型或线宽后，使用下文相同的 Playwright 与本机 Chrome 运行 `node tools/render-crane.cjs`，同步导出实心图、线稿和文章插图。加 `--benchmark` 可复测提取与显示开销。[栏目配置](src/lib/sections.ts) · [通用可见边提取](tools/fold-outline.mjs) · [停靠规则与性能实测](docs/vi-design.md#导航线稿与停靠)
 
 需要复查换页时，可在生产预览运行期间执行 `node tools/check-navigation.cjs`。此开发工具使用可选的 `playwright` 包和本机 Chrome，设置 `ORIGAMI_BROWSER=edge` 可改用本机 Edge，`ORIGAMI_URL` 可指向其他预览地址。回归覆盖背景缓存、导航线稿与实心图交接、跨栏目收展、同栏目直达、锚点和历史滚动恢复，以及桌面和窄屏下的纸边与版权位置。
 
@@ -92,7 +92,7 @@ ruling: ruled
 | 路径 | 用途 |
 | --- | --- |
 | `src/content.config.ts`、`src/content/` | 已发布作品、文章、影集与本地文章草稿 |
-| `src/pages/`、`src/layouts/Site.astro` | 五个主栏目、辅助页面、RSS 与 404 |
+| `src/pages/`、`src/layouts/Site.astro` | 四个主栏目、辅助页面、RSS 与 404 |
 | `docs/page-map.md`、`src/lib/sections.ts` | 可编辑的页面层级、一级栏目与图标配置 |
 | `src/components/ui/`、`src/styles/tokens.css` | 博客组件库与 VI 设计变量 |
 | `src/scripts/desk-texture.cjs` | 再生纸配方、首屏生成和浏览器存储 |

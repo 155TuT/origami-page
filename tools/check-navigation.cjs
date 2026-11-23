@@ -159,7 +159,7 @@ async function checkDocks(page, active, current) {
     loaded: node.querySelector("[data-fold-solid]").naturalWidth > 0,
     outline: getComputedStyle(node, "::before").maskImage,
   })));
-  assert.deepEqual(docks.map(dock => dock.id), ["home", "works", "articles", "albums", "about"]);
+  assert.deepEqual(docks.map(dock => dock.id), ["home", "works", "articles", "albums"]);
   for (const dock of docks) {
     assert.equal(dock.current, dock.id === active ? current : null);
     assert.equal(dock.solid, dock.id === active ? "hidden" : "visible");
@@ -372,9 +372,8 @@ async function run() {
     await setting(page, "parallel", true);
     await checkHandoff(page, "works", "articles", "archives/", true);
     await checkHandoff(page, "articles", "albums", "albums/", true);
-    await checkHandoff(page, "albums", "about", "about/", true);
-    await checkHandoff(page, "about", "home", "", true);
-    for (const [method, from, to] of [["back", "home", "about"], ["forward", "about", "home"]]) {
+    await checkHandoff(page, "albums", "home", "", true);
+    for (const [method, from, to] of [["back", "home", "albums"], ["forward", "albums", "home"]]) {
       await page.evaluate(action => {
         window.dockChecks.length = 0;
         window.foldLog.length = 0;
@@ -416,9 +415,12 @@ async function run() {
     await observeMotion(page);
     await checkHandoff(page, "works", "albums", "albums/", true);
     const staticPage = await browser.newPage({ javaScriptEnabled: false });
+    assert.equal((await staticPage.request.get(new URL("about/", base).href, { maxRedirects: 0 })).status(), 404);
     await staticPage.goto(base.href);
-    await linkTo(staticPage, "works/", ".site-nav").click();
-    await linkTo(staticPage, project, ".sheet-content").click();
+    await checkDocks(staticPage, "home", "page");
+    const profile = staticPage.locator("main article .prose");
+    assert.deepEqual(await profile.locator("h2").allTextContents(), ["经历", "代表项目", "联系方式"]);
+    await linkTo(staticPage, project, "main article .prose").click();
     await staticPage.waitForURL(new URL(project, base).href);
     assert.ok(await staticPage.locator("main h1").isVisible(), "the work must be readable without scripts");
     await checkDocks(staticPage, "works", "location");
@@ -431,7 +433,7 @@ async function run() {
     await linkTo(staticPage, project, "main details[open]").waitFor({state: "visible"});
     await staticPage.close();
     assert.deepEqual(errors, []);
-    console.log(engine, "passed five fold docks, direct routes, accessibility, history, themes and draft visibility");
+    console.log(engine, "passed four fold docks, home profile, grouped tags, full-text search, direct routes, accessibility, history, themes and draft visibility");
   } finally {
     await browser.close();
   }

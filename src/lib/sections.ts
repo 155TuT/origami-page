@@ -5,7 +5,6 @@ export const sections = [
   { id: "works", label: "作品集", path: "works/", ...crane },
   { id: "articles", label: "文章", path: "archives/", ...crane },
   { id: "albums", label: "影集", path: "albums/", ...crane },
-  { id: "about", label: "关于我", path: "about/", ...crane },
 ] as const;
 
 export type NavSection = typeof sections[number];

@@ -60,8 +60,6 @@
   --text-nav: var(--text-ui);
   --text-post-title: clamp(20px, 1.8vw, 26px);
   --text-title: clamp(28px, 3.42vw, 59px);
-  --text-cover: clamp(29px, 3.96vw, 78px);
-  --text-cover-description: clamp(14px, 1.12vw, 17px);
   --text-deck: clamp(17px, 1.5vw, 20px);
   --leading-body: 1.65;
   --leading-prose: 1.95;

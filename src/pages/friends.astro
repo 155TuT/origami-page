@@ -16,5 +16,5 @@ const groups = { friends: "我的朋友", reading: "我常读的网站" };
     </section>;
   })}
   {!friends.length && <p>暂无友链。</p>}
-  {contactEmail && <ActionLink href={sectionURL("about") + "#contact"}>联系我</ActionLink>}
+  {contactEmail && <ActionLink href={sectionURL("home") + "#contact"}>联系我</ActionLink>}
 </Site>
