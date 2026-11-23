@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>栏目折纸 · 折间</title>
+  <link rel="stylesheet" href="../../src/styles/tokens.css">
+  <link rel="stylesheet" href="./folds.css">
+  <script src="./fold-shapes.js" defer></script>
+  <script src="./folds.js" defer></script>
+</head>
+<body>
+  <header>
+    <div class="masthead">
+      <a class="brand" href="./index.html">折间 <i lang="en">Fold Journal</i></a>
+      <nav aria-label="选型对照">
+        <a href="./index.html#type">字体</a>
+        <a href="./index.html#icons">页面功能图标</a>
+        <a aria-current="page" href="#top">栏目折纸</a>
+        <a href="./index.html#specimen">页面试排</a>
+      </nav>
+      <button id="theme" type="button">深色纸面</button>
+    </div>
+  </header>
+  <main id="top">
+    <h1>栏目折纸</h1>
+    <section class="proof" aria-label="四个栏目停靠预览">
+      <div class="spread" aria-hidden="true">
+        <div class="model"><div id="print"></div><span>实心</span></div>
+        <div class="model"><div id="outline"></div><span>线稿</span></div>
+      </div>
+      <div class="proof-info">
+        <h2 id="model-name"></h2>
+        <p id="motion"></p>
+        <div class="size-control" role="group" aria-label="停靠预览宽度">
+          <button type="button" data-width="39" aria-pressed="true">39 px</button>
+          <button type="button" data-width="22" aria-pressed="false">22 px</button>
+        </div>
+      </div>
+      <div class="docks" role="group" aria-label="选择当前栏目"></div>
+    </section>
+    <section aria-labelledby="choices">
+      <h2 id="choices">四个栏目的选形</h2>
+      <div id="rows"></div>
+    </section>
+    <details>
+      <summary>从选形到换页</summary>
+      <p>顶栏停留时，当前栏目露出线稿，其余栏目显示实心。跨栏目时，纸面先折回旧图标，再从新图标的位置展开。同栏目内直接换内容。</p>
+      <p>千纸鹤引用站内已有模型的末帧。其余七件是为这次选型绘制的折面草图。选定后要制作可连续收展的折痕模型，再从同一停靠视角导出实心图与可见边线稿，核对飞行末帧的边距和轮廓。</p>
+    </details>
+    <noscript>请启用 JavaScript 查看折纸样张和停靠预览。</noscript>
+  </main>
+</body>
+</html>

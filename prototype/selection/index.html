@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="zh-CN" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>字体与图标 · 折间</title>
+  <link rel="stylesheet" href="../../src/styles/tokens.css">
+  <link rel="stylesheet" href="selection.css">
+  <style id="desk-texture"></style>
+  <script src="../../src/scripts/desk-texture.cjs"></script>
+  <script src="icons/sprite.js" defer></script>
+  <script src="selection.js" defer></script>
+</head>
+<body>
+  <a class="skip" href="#type">跳到样张</a>
+  <header class="bar">
+    <div class="bar-inner">
+      <a class="wordmark" href="#top"><strong>折间</strong><i lang="en">Fold Journal</i></a>
+      <nav aria-label="样张导航">
+        <a href="#type">字体</a><a href="#icons">页面功能图标</a><a href="./folds.html">栏目折纸</a><a href="#specimen">页面试排</a>
+      </nav>
+      <button class="theme-toggle" type="button"><span aria-hidden="true"></span><span id="theme-label">深色纸面</span></button>
+    </div>
+  </header>
+  <main id="top">
+    <header class="cover">
+      <div class="title-block">
+        <h1>字体与图标</h1>
+      </div>
+      <div class="cover-art" aria-hidden="true">
+        <img src="../../public/art/crane.webp" alt="">
+      </div>
+    </header>
+
+    <section id="type">
+      <div class="section-heading"><h2>字样对照</h2><span class="technical">30 / 18 · 26 · 17 · 12 px</span></div>
+      <div class="font-grid" id="font-grid"></div>
+      <div class="common">
+        <div><h3>导航与操作</h3><div class="common-ui"><span>作品集</span><span>文章</span><span>影集</span><span>RSS</span></div><p>DM Sans · Noto Sans SC，550</p></div>
+        <div><h3>日期与代码</h3><div class="common-mono">2026.11.16 &nbsp; #A1 · 09:42</div><p>IBM Plex Mono，400</p></div>
+      </div>
+    </section>
+
+    <section id="icons">
+      <div class="section-heading">
+        <h2>页面功能图标</h2>
+        <fieldset class="segment" id="sizes"><legend class="sr-only">图标显示尺寸</legend>
+          <label><input type="radio" name="size" value="16">16 px</label>
+          <label><input type="radio" name="size" value="20" checked>20 px</label>
+          <label><input type="radio" name="size" value="24">24 px</label>
+        </fieldset>
+      </div>
+      <div class="icon-grid" id="icon-grid"></div>
+    </section>
+
+    <section id="specimen">
+      <div class="section-heading"><h2>页面试排</h2></div>
+      <div class="tryout">
+        <div class="sample-page" data-face="song">
+          <div class="sample-bar"><div class="mini-brand"><strong>折间</strong><i lang="en">Fold Journal</i></div><div class="sample-tools" id="sample-tools"></div></div>
+          <div class="sample-article">
+            <time datetime="2026-11-16">2026.11.16</time>
+            <h3>纸上生风</h3>
+            <p>午后折了一只纸鹤。拇指压住翼根，轻轻提起纸尖，桌面上便多了一道细长的影子。</p>
+            <p>一张方纸平放在窗边，很难看出它究竟有多薄。斜着抬高一角，迎光的边缘忽然亮起来，纸上细小的起伏也跟着显了形。</p>
+          </div>
+        </div>
+        <aside class="controls">
+          <label for="face">文字组合</label>
+          <select id="face"><option value="song">Noto Serif SC + Lora</option><option value="kai">霞鹜文楷 + Crimson Pro</option><option value="hei">Noto Sans SC + Source Serif 4</option></select>
+          <label for="library">工具图标</label>
+          <select id="library"><option value="tabler">Tabler Outline</option><option value="lucide">Lucide</option><option value="phosphor">Phosphor Regular</option></select>
+          <div class="verdict"><h3>建议组合</h3><p>Noto Serif SC 的横细竖重呼应纸上的细线，Lora 的斜体能在 18 px 站标上读清。工具选 Tabler Outline，调节杆上的空心圆与折线之间留有余白。</p></div>
+        </aside>
+      </div>
+    </section>
+    <details class="sources">
+      <summary>字体来源与许可</summary>
+      <p>样张附带用于本页文字的 WOFF2 子集。八个字体家族均依 SIL Open Font License 1.1 分发，原文和作者署名随文件保留。用于正式文章时需按实际内容重新分包。</p>
+      <ul>
+        <li><a href="https://github.com/google/fonts/tree/main/ofl/notoserifsc">Noto Serif SC</a><a href="fonts/noto-serif-OFL.txt">许可</a></li>
+        <li><a href="https://github.com/lxgw/LxgwWenKai">霞鹜文楷</a><a href="fonts/wenkai-OFL.txt">许可</a></li>
+        <li><a href="https://github.com/google/fonts/tree/main/ofl/notosanssc">Noto Sans SC</a><a href="fonts/noto-sans-OFL.txt">许可</a></li>
+        <li><a href="https://github.com/google/fonts/tree/main/ofl/lora">Lora</a><a href="fonts/lora-OFL.txt">许可</a></li>
+        <li><a href="https://github.com/google/fonts/tree/main/ofl/crimsonpro">Crimson Pro</a><a href="fonts/crimson-OFL.txt">许可</a></li>
+        <li><a href="https://github.com/google/fonts/tree/main/ofl/sourceserif4">Source Serif 4</a><a href="fonts/source-serif-OFL.txt">许可</a></li>
+        <li><a href="https://github.com/google/fonts/tree/main/ofl/dmsans">DM Sans</a><a href="fonts/dm-sans-OFL.txt">许可</a></li>
+        <li><a href="https://github.com/IBM/plex">IBM Plex Mono</a><a href="fonts/plex-mono-OFL.txt">许可</a></li>
+      </ul>
+    </details>
+  </main>
+  <footer><a href="./folds.html">栏目折纸方案 →</a></footer>
+</body>
+</html>

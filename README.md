@@ -102,4 +102,6 @@ ruling: ruled
 | `public/art/` | 从同一模型和河岸绘图生成的静态插图，支持无脚本阅读 |
 | `models/crane/`、`tools/` | 折痕、原始姿态、模型烘焙和打包工具 |
 
-最初的两篇互切实验保存在 [prototype](prototype/index.html)，可在项目根目录用静态 HTTP 服务器访问 `/prototype/`。博客构建只发布 Astro 页面。原实验的[渲染实测](docs/渲染回退与博客集成.md)和[模型说明](docs/实现与多图标扩展.md)保留供对照。纸鹤折痕来源见[第三方署名](THIRD-PARTY-NOTICES.txt)。
+在 [字体与页面功能图标对照板](prototype/selection/index.html) 比较正文、界面字体和工具图标，在 [栏目折纸对照板](prototype/selection/folds.html) 试选四个栏目的折姿与停靠组合。两张板保存在 `prototype/selection/`，可在本地打开，也可从项目根目录用静态 HTTP 服务器预览。
+
+最初的两篇互切实验保存在 [prototype](prototype/index.html)。博客构建只发布 Astro 页面。原实验的[渲染实测](docs/渲染回退与博客集成.md)和[模型说明](docs/实现与多图标扩展.md)保留供对照。纸鹤折痕来源见[第三方署名](THIRD-PARTY-NOTICES.txt)。
