@@ -1,44 +1,33 @@
 ---
-import { categoryURL, postURL, type Post } from "../../lib/blog";
+import type { PublicEntry } from "../../lib/blog";
 import PostDate from "./PostDate.astro";
-
-interface Props { posts: Post[]; }
-const { posts } = Astro.props;
+interface Props { entries: PublicEntry[]; empty?: string; covers?: boolean; }
+const { entries, empty = "暂无公开内容。", covers = false } = Astro.props;
 ---
-<ul class="post-list">
-  {posts.map(post => (
-    <li>
-      <div class="post-date">
-        <PostDate date={post.data.date} />
-        <a href={categoryURL(post.data.category)}>{post.data.category}</a>
-      </div>
-      <div>
-        <a class="post-title" href={postURL(post)}>{post.data.title}<span aria-hidden="true">↗</span></a>
-        <p>{post.data.description}</p>
+{entries.length ? <ul class="post-list">
+  {entries.map(entry => (
+    <li data-entry-url={entry.url} class:list={{ illustrated: covers && entry.cover }}>
+      {covers && entry.cover && <div class="thumb">
+        <img src={entry.cover.src} alt={entry.cover.alt} loading="lazy" />
+      </div>}
+      <div class="entry">
+        <div class="post-date">
+          <PostDate date={entry.date} />
+        </div>
+        <a class="post-title" href={entry.url}>{entry.title}<span aria-hidden="true">↗</span></a>
       </div>
     </li>
   ))}
-</ul>
+</ul> : <p class="empty">{empty}</p>}
 
 <style>
-  .post-list { list-style: none; margin: 0; padding: 0; }
-  li {
-    display: grid;
-    grid-template-columns: clamp(82px, 7.2vw, 112px) minmax(0, 1fr);
-    gap: clamp(12px, 1.2vw, 26px);
-    padding-block: var(--space-5);
-    border-block-end: 1px solid var(--line);
-  }
-  .post-date {
-    display: flex;
-    align-items: flex-start;
-    flex-direction: column;
-    gap: var(--space-1);
-    padding-block-start: var(--space-1);
-    color: var(--faint);
-    font-size: var(--text-meta);
-  }
-  .post-date a:hover { text-decoration: underline; text-underline-offset: .23em; }
+  ul { list-style: none; margin: 0; padding: 0; }
+  li { padding-block: var(--space-5); border-block-end: 1px solid var(--line); }
+  li.illustrated { position: relative; display: grid; grid-template-columns: minmax(100px, .45fr) minmax(0, 1fr); align-items: center; gap: var(--space-6); }
+  .illustrated .post-title::after { content: ""; position: absolute; inset: 0; }
+  .thumb { display: grid; align-items: center; background: var(--plate); }
+  .thumb img { display: block; width: 100%; height: auto; }
+  .post-date { display: flex; flex-wrap: wrap; gap: var(--space-3); color: var(--faint); font-size: var(--text-meta); }
   .post-title {
     display: flex;
     justify-content: space-between;
@@ -50,9 +39,8 @@ const { posts } = Astro.props;
   }
   .post-title:hover { color: var(--accent); }
   .post-title span { color: var(--faint); font: var(--text-body)/1 var(--sans); }
-  p { margin-block-start: var(--space-1); color: var(--muted); font-size: var(--text-small); line-height: 1.85; }
-  @media (max-width: 1084px) {
-    li { grid-template-columns: minmax(0, 1fr); gap: var(--space-1); padding-block: var(--space-4); }
-    .post-date { flex-direction: row; align-items: center; gap: var(--space-3); padding: 0; }
+  .empty { margin-block: var(--space-6); color: var(--muted); font-size: var(--text-small); }
+  @media (max-width: 700px) {
+    li.illustrated { grid-template-columns: minmax(0, 1fr); gap: var(--space-3); }
   }
 </style>

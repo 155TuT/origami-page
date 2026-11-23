@@ -1,18 +1,22 @@
 ---
 import Site from "../layouts/Site.astro";
-import { ContentColumns, JournalAside, PageHeading, Prose } from "../components/ui";
-import { allPosts } from "../lib/blog";
+import { PageHeading, Prose } from "../components/ui";
+import { profile, contactEmail } from "../lib/profile";
 import { sectionURL } from "../lib/sections";
-const posts = await allPosts();
 ---
-<Site title="关于折间">
-  <ContentColumns>
-    <PageHeading eyebrow="Fold Journal" title="关于折间" />
+<Site title="关于我" description={profile.introduction}>
+  <article>
+    <PageHeading title={profile.name || "关于我"} />
     <Prose>
-      <p>折间是一本放在网上的个人手记。这里收录折纸、设计和代码，也留一栏给平常散步时看到的风景。</p>
-      <h2>从哪里读起</h2><p><a href={sectionURL("articles")}>文章列表</a>里可以找到全部手记，最近写的排在最前面。想沿一个主题往下读，可以翻翻<a href={sectionURL("tags")}>标签索引</a>。</p>
-      <h2>关于那只纸鹤</h2><p>切换栏目时，眼前这张纸折成纸鹤，飞回顶栏里属于它的轮廓，下一张从新栏目的位置展开。在同一栏目里读文章可以直接翻页。阅读设置里可以切换深浅色，也可以减少动态效果。</p>
+      <p>{profile.introduction}</p>
+      <h2>经历</h2>
+      {profile.experience.length ? profile.experience.map(item => (
+        <p><strong>{item.title}</strong> · {item.period}{item.description && <><br />{item.description}</>}</p>
+      )) : <p>暂无公开经历。</p>}
+      <h2>代表项目</h2>
+      <p><a href={sectionURL("works", "fold-journal/")}>折间</a></p>
+      <h2 id="contact">联系方式</h2>
+      {contactEmail ? <p><a href={`mailto:${contactEmail}`}>{contactEmail}</a></p> : <p>邮箱暂未公开。</p>}
     </Prose>
-    <JournalAside slot="aside" posts={posts} />
-  </ContentColumns>
+  </article>
 </Site>

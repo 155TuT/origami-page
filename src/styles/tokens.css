@@ -79,6 +79,8 @@
   --paper-inset-fluid: clamp(10px, 2.4vw, 48px);
   --paper-inset: var(--paper-inset-fluid);
   --header-height: 75px;
+  --nav-gap: clamp(10px, 1.25vw, 24px);
+  --tool-size: 28px;
   --section-gap: clamp(24px, 3vw, 58px);
   --column-gap: clamp(20px, 2.4vw, 68px);
   --aside-inset: clamp(19px, 2.2vw, 35px);
@@ -129,7 +131,7 @@
   }
 }
 
-@media (max-width: 900px) {
+@media (max-width: 1200px) {
   :root {
     --header-height: 88px;
     --text-brand: 24px;
@@ -141,4 +143,8 @@
 
 @media (max-width: 567px) {
   :root { --text-deck: var(--text-body); }
+}
+
+@media (max-width: 355px) {
+  :root { --text-brand-latin: 12px; }
 }

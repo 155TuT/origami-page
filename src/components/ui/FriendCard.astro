@@ -1,0 +1,41 @@
+---
+import { type FriendSite } from "../../lib/friends";
+import ActionLink from "./ActionLink.astro";
+import PostDate from "./PostDate.astro";
+
+interface Props { friend: FriendSite; }
+const { friend } = Astro.props;
+const latest = friend.latest;
+const date = latest?.date ?? latest?.updated;
+---
+<article>
+  <h3><a href={friend.url}>{friend.name}</a></h3>
+  <p>{friend.note}</p>
+  <dl>
+    {friend.picks.length > 0 && <div>
+      <dt>我推荐的文章</dt>
+      {friend.picks.map(pick => <dd><ActionLink href={pick.url} arrow="↗">{pick.title}</ActionLink></dd>)}
+    </div>}
+    {latest && <div>
+      <dt>最新发布</dt>
+      <dd>
+        <ActionLink href={latest.url} arrow="↗">{latest.title}</ActionLink>
+        {date && <small>{!latest.date && "更新于 "}<PostDate date={new Date(date)} /></small>}
+      </dd>
+    </div>}
+  </dl>
+</article>
+
+<style>
+  article { padding-block: var(--space-5); border-bottom: 1px solid var(--line); overflow-wrap: anywhere; }
+  h3 { font: var(--weight-heading) var(--text-post-title)/1.5 var(--serif); }
+  h3 a:hover { color: var(--accent); }
+  p, dd { font-size: var(--text-small); }
+  p, dt, small { color: var(--muted); }
+  p { margin-top: var(--space-1); }
+  dl { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 12em), 1fr)); gap: var(--space-4); margin: var(--space-4) 0 0; }
+  dl:empty { display: none; }
+  dt { font-size: var(--text-meta); }
+  dd { margin: var(--space-1) 0 0; }
+  small { display: block; }
+</style>

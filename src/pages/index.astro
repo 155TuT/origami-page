@@ -1,20 +1,8 @@
 ---
 import Site from "../layouts/Site.astro";
-import { ActionLink, ContentColumns, FeaturedPost, JournalAside, PostList, SectionHeading } from "../components/ui";
-import { allPosts } from "../lib/blog";
-import { sectionURL } from "../lib/sections";
-const posts = await allPosts();
-const [lead, ...more] = posts;
+import { IntroCover, SectionLinks } from "../components/ui";
 ---
-<Site ruling={lead?.data.ruling}>
-  {lead && <FeaturedPost post={lead} />}
-  <ContentColumns>
-    <section>
-      <SectionHeading title="近期文章">
-        <ActionLink href={sectionURL("articles")} arrow="→">全部文章</ActionLink>
-      </SectionHeading>
-      <PostList posts={more.slice(0, 5)} />
-    </section>
-    <JournalAside slot="aside" posts={posts} />
-  </ContentColumns>
+<Site>
+  <IntroCover />
+  <SectionLinks />
 </Site>

@@ -10,7 +10,7 @@ const image = artwork[art];
     <span class="orbit" aria-hidden="true"></span>
     <img src={href("art/" + image.file)} width="1260" height="795" alt={image.alt} fetchpriority="high" />
   </div>
-  <figcaption><span>{image.caption}</span><i lang="en">{image.english}</i></figcaption>
+  {variant === "article" && <figcaption><span>{image.caption}</span><i lang="en">{image.english}</i></figcaption>}
 </figure>
 
 <style>

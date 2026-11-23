@@ -14,7 +14,12 @@ const currentPath = Astro.url.pathname.replace(/\/?$/, "/");
     <a class="wordmark" href={href()} aria-label={siteName + "首页"}>
       <strong>{siteName}</strong><i lang="en">Fold Journal</i>
     </a>
-    <ReadingSettings />
+    <div class="header-tools">
+      <a class="search-link" href={href("search/")} aria-label="全站搜索" title="全站搜索">
+        <svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m15.5 15.5 5 5"/></svg>
+      </a>
+      <ReadingSettings />
+    </div>
     <nav class="site-nav" aria-label="主导航">
       {sections.map(section => (
         <a href={href(section.path)} aria-current={current === section.id
@@ -51,9 +56,9 @@ const currentPath = Astro.url.pathname.replace(/\/?$/, "/");
     margin-inline: auto;
     display: grid;
     grid-template-columns: 1fr auto auto;
-    grid-template-areas: "brand settings nav";
+    grid-template-areas: "brand tools nav";
     align-items: center;
-    column-gap: clamp(12px, 1.6vw, 28px);
+    column-gap: var(--nav-gap);
   }
   .wordmark {
     grid-area: brand;
@@ -66,18 +71,32 @@ const currentPath = Astro.url.pathname.replace(/\/?$/, "/");
   .wordmark strong { font: var(--weight-bold) var(--text-brand)/1 var(--serif); letter-spacing: -.065em; }
   /* Trim the Latin descent to align the visible letters with 折间. */
   .wordmark i { font: italic var(--text-brand-latin)/.55 var(--latin-serif); color: var(--muted); }
+  .header-tools {
+    grid-area: tools;
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+  }
+  .search-link {
+    display: grid;
+    width: var(--tool-size);
+    height: var(--tool-size);
+    place-items: center;
+    color: var(--muted);
+  }
+  .search-link:hover { color: var(--ink); }
   .site-nav {
     grid-area: nav;
     height: 100%;
     display: flex;
     align-items: stretch;
-    gap: clamp(10px, 1.4vw, 28px);
+    gap: var(--nav-gap);
   }
   .site-nav a {
     position: relative;
     display: inline-flex;
     align-items: center;
-    gap: 6px;
+    gap: var(--space-1);
     color: var(--muted);
     font-size: var(--text-nav);
     font-weight: var(--weight-medium);
@@ -91,16 +110,35 @@ const currentPath = Astro.url.pathname.replace(/\/?$/, "/");
     height: 2px;
     background: var(--accent);
   }
-  @media (max-width: 900px) {
+  @media (max-width: 1200px) {
     .header-inner {
       grid-template-columns: minmax(0, 1fr) auto;
       grid-template-rows: 40px 1fr;
-      grid-template-areas: "brand settings" "nav nav";
+      grid-template-areas: "brand tools" "nav nav";
       gap: 0;
     }
     .wordmark { gap: var(--space-2); }
-    .site-nav { justify-content: space-between; gap: 2px; }
-    .site-nav a { gap: clamp(2px, .7vw, 5px); }
+    .site-nav {
+      justify-self: center;
+      width: 100%;
+      justify-content: space-between;
+      gap: var(--space-1);
+    }
+    .site-nav a { gap: var(--space-1); }
     .site-nav a[aria-current]::after { bottom: 3px; }
+  }
+  @media (max-width: 700px) {
+    .site-nav { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 0; }
+    .site-nav a {
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0;
+      padding-bottom: var(--space-1);
+      line-height: 1.2;
+    }
+  }
+  @media (max-width: 355px) {
+    .wordmark, .header-tools { gap: var(--space-1); }
   }
 </style>

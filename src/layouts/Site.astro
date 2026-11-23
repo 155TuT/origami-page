@@ -2,7 +2,7 @@
 import { ClientRouter } from "astro:transitions";
 import { DeskBackdrop, FoldStage, Paper, SiteHeader } from "../components/ui";
 import { siteName } from "../lib/blog";
-import { sectionForPath, type Section } from "../lib/sections";
+import { href, sectionForPath, type Section } from "../lib/sections";
 import initialPreferences from "../scripts/initial-preferences.js?raw";
 import deskTexture from "../scripts/desk-texture.cjs?raw";
 import "../styles/global.css";
@@ -12,7 +12,7 @@ interface Props {
   current?: Section | null;
   ruling?: "ruled" | "grid";
 }
-const { title, description = "折间，一本关于折纸、设计、代码和日常散步的个人手记。",
+const { title, description = "折间，收录个人作品、文章和摄影集。",
   current = sectionForPath(Astro.url.pathname), ruling = "ruled" } = Astro.props;
 const documentTitle = title ? title + " · " + siteName : siteName + " · Fold Journal";
 const canonical = Astro.site && new URL(Astro.url.pathname, Astro.site);
@@ -28,6 +28,7 @@ const canonical = Astro.site && new URL(Astro.url.pathname, Astro.site);
     <meta property="og:title" content={documentTitle} />
     <meta property="og:description" content={description} />
     {canonical && <link rel="canonical" href={canonical} />}
+    <link rel="alternate" type="application/rss+xml" title={siteName} href={href("feed.xml")} />
     <link rel="icon" href="data:," />
     <title>{documentTitle}</title>
     <script is:inline set:html={initialPreferences}></script>

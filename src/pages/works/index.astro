@@ -1,0 +1,14 @@
+---
+import Site from "../../layouts/Site.astro";
+import { ActionLink, PageHeading, PostList } from "../../components/ui";
+import { href, published, toEntry } from "../../lib/blog";
+const works = (await published("work")).map(toEntry);
+---
+<Site title="作品集">
+  <section>
+    <PageHeading title="作品集">
+      <ActionLink href={href("tags/")} arrow="↗">全部标签</ActionLink>
+    </PageHeading>
+    <PostList entries={works} covers empty="作品集还没有公开作品。" />
+  </section>
+</Site>

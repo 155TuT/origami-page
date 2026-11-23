@@ -1,0 +1,14 @@
+---
+import { photoURL, type Photo } from "../../lib/blog";
+interface Props { photo: Photo; eager?: boolean }
+const { photo, eager = false } = Astro.props;
+---
+<figure>
+  <img src={photoURL(photo.src)} alt={photo.alt} loading={eager ? "eager" : "lazy"} decoding="async" />
+  {photo.caption && <figcaption>{photo.caption}</figcaption>}
+</figure>
+<style>
+  figure { margin-block: var(--space-6); }
+  img { display: block; width: 100%; height: auto; }
+  figcaption { margin-block-start: var(--space-2); font-size: var(--text-small); color: var(--muted); }
+</style>

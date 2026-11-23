@@ -5,7 +5,7 @@ import { sectionURL } from "../lib/sections";
 ---
 <Site title="找不到这一页" current={null}>
   <section>
-    <PageHeading eyebrow="404" title="找不到这一页" description="可以回到首页，或从文章列表里找一篇手记。" ruled={false} />
+    <PageHeading title="找不到这一页" ruled={false} />
     <ActionRow>
       <ActionLink variant="primary" href={sectionURL("home")} arrow="→">返回首页</ActionLink>
       <ActionLink href={sectionURL("articles")} arrow="↗">全部文章</ActionLink>

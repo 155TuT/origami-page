@@ -1,9 +1,15 @@
 ---
 import { siteName } from "../../lib/blog";
+import { href, sectionURL } from "../../lib/sections";
 
 const year = new Date().getFullYear();
 ---
-<footer class="paper-footer" aria-label="版权与备案">
+<footer class="paper-footer" aria-label="站点信息与版权">
+  <nav class="footer-links" aria-label="页脚导航">
+    <a href={href("friends/")}>友链</a>
+    <a href={sectionURL("works", "fold-journal/")}>关于本站</a>
+    <a href={href("feed.xml")} data-astro-reload><span lang="en">RSS</span> 订阅</a>
+  </nav>
   <span>© {year} {siteName}</span>
   <div class="filings">
     <span>闽ICP备（待填写）</span>
@@ -26,4 +32,7 @@ const year = new Date().getFullYear();
   }
   .filings { display: flex; flex-wrap: wrap; gap: var(--space-1) var(--space-3); }
   .filings span { white-space: nowrap; }
+  .footer-links { flex-basis: 100%; display: flex; flex-wrap: wrap; gap: var(--space-2) var(--space-4); }
+  .footer-links a { color: var(--muted); }
+  .footer-links a:hover { color: var(--accent); text-decoration: underline; }
 </style>

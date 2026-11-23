@@ -9,8 +9,7 @@ import SettingSwitch from "./SettingSwitch.astro";
   <div class="settings-panel">
     <SettingSwitch setting="theme">深色模式</SettingSwitch>
     <SettingSwitch setting="reduce">减少动态效果</SettingSwitch>
-    <SettingSwitch setting="parallel" describedBy="parallel-hint">并行取文与收纸</SettingSwitch>
-    <p id="parallel-hint">切换栏目时，开启后立即收纸，关闭时等下一页准备好再收纸。</p>
+    <SettingSwitch setting="parallel">并行取文与收纸</SettingSwitch>
   </div>
 </details>
 
@@ -18,8 +17,6 @@ import SettingSwitch from "./SettingSwitch.astro";
   .reading-settings {
     position: relative;
     z-index: 1;
-    grid-area: settings;
-    justify-self: end;
     padding-inline-end: clamp(10px, 1.4vw, 22px);
     border-inline-end: 1px solid var(--line);
   }
@@ -47,12 +44,11 @@ import SettingSwitch from "./SettingSwitch.astro";
     background: var(--surface);
     box-shadow: var(--shadow-panel);
   }
-  p { margin-top: var(--space-1); color: var(--muted); font-size: var(--text-meta); line-height: 1.7; }
-  @media (max-width: 1200px) {
+  @media (max-width: 1360px) {
     summary span { display: none; }
   }
-  @media (max-width: 900px) {
+  @media (max-width: 1200px) {
     .reading-settings { border: none; padding: 0; }
-    summary { min-width: 36px; min-height: 36px; justify-content: flex-end; }
+    summary { width: var(--tool-size); height: var(--tool-size); justify-content: center; }
   }
 </style>

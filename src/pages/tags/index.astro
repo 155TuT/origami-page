@@ -1,14 +1,14 @@
 ---
 import Site from "../../layouts/Site.astro";
-import { ContentColumns, JournalAside, PageHeading, TagList } from "../../components/ui";
-import { allPosts, groupPosts } from "../../lib/blog";
-const posts = await allPosts();
-const tags = [...groupPosts(posts,"tags")].sort((a,b) => b[1].length - a[1].length || a[0].localeCompare(b[0],"zh-CN"));
+import { PageHeading, TagList } from "../../components/ui";
+import { allPublicEntries } from "../../lib/blog";
+import { groupByTag } from "../../lib/public-index";
+
+const groups = groupByTag(await allPublicEntries());
+const tags = [...groups].map(([name, entries]) => ({ name, count: entries.length }))
+  .sort((a, b) => b.count - a.count || a.name.localeCompare(b.name, "zh-CN"));
 ---
-<Site title="标签" ruling="grid">
-  <ContentColumns>
-    <PageHeading eyebrow="按主题浏览" title="标签" description={`${tags.length} 个主题，${posts.length} 篇手记`} />
-    <TagList tags={tags.map(([name, entries]) => ({ name, count: entries.length }))} />
-    <JournalAside slot="aside" posts={posts} />
-  </ContentColumns>
+<Site title="全部标签" current={null} ruling="grid">
+  <PageHeading title="全部标签" />
+  {tags.length ? <TagList tags={tags} /> : <p>暂无公开标签。</p>}
 </Site>

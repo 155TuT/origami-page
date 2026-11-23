@@ -1,0 +1,9 @@
+---
+import Site from "../layouts/Site.astro";
+import { PageHeading, SiteSearch } from "../components/ui";
+import { allPublicEntries } from "../lib/blog";
+---
+<Site title="全站搜索" current={null}>
+  <PageHeading title="全站搜索" />
+  <SiteSearch entries={await allPublicEntries()} />
+</Site>

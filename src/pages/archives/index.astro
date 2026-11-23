@@ -1,13 +1,17 @@
 ---
 import Site from "../../layouts/Site.astro";
-import { ContentColumns, JournalAside, PageHeading, PostList } from "../../components/ui";
-import { allPosts } from "../../lib/blog";
-const posts = await allPosts();
+import { ActionLink, ActionRow, PageHeading, PostList } from "../../components/ui";
+import { allPosts, href, localDraftPreview, toEntry } from "../../lib/blog";
+const posts = (await allPosts()).map(toEntry);
 ---
 <Site title="文章">
-  <ContentColumns>
-    <PageHeading title="文章" description={`共 ${posts.length} 篇手记`} />
-    <PostList posts={posts} />
-    <JournalAside slot="aside" posts={posts} />
-  </ContentColumns>
+  <section>
+    <PageHeading title="文章">
+      <ActionRow>
+        <ActionLink href={href("tags/")} arrow="↗">全部标签</ActionLink>
+        {localDraftPreview(Astro.url) && <ActionLink href={href("archives/draft/")} arrow="→">本地草稿</ActionLink>}
+      </ActionRow>
+    </PageHeading>
+    <PostList entries={posts} empty="还没有公开的文章。" />
+  </section>
 </Site>

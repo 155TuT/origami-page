@@ -1,0 +1,27 @@
+---
+import { render } from "astro:content";
+import Site from "../../layouts/Site.astro";
+import { ActionLink, AlbumPhoto, PageHeading, PostDate, Prose, TagList } from "../../components/ui";
+import { albumCover, entrySlug, published } from "../../lib/blog";
+import { sectionURL } from "../../lib/sections";
+
+export async function getStaticPaths() {
+  return (await published("album")).map(album => ({ params: { slug: entrySlug(album) }, props: { album } }));
+}
+const { album } = Astro.props;
+const { Content } = await render(album);
+const { title, description, tags, date, photos = [], ruling } = album.data;
+const cover = albumCover(album);
+---
+<Site title={title} description={description} ruling={ruling}>
+  <article>
+    <PageHeading title={title}>
+      <PostDate date={date} />
+    </PageHeading>
+    <AlbumPhoto photo={cover} eager />
+    <Prose><Content /></Prose>
+    {photos.slice(cover.src === photos[0]?.src ? 1 : 0).map(photo => <AlbumPhoto photo={photo} />)}
+    <TagList variant="article" tags={tags.map(name => ({ name }))} />
+    <ActionLink href={sectionURL("albums")}>返回影集</ActionLink>
+  </article>
+</Site>

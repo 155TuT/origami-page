@@ -52,6 +52,9 @@ async function checkLayout(page) {
     const content = rect(".sheet-content");
     const inset = content.left - paper.left;
     const nav = [...document.querySelectorAll(".site-nav a")].map(link => link.getBoundingClientRect());
+    const brand = rect(".wordmark");
+    const tools = rect(".header-tools");
+    const stacked = nav[0].top >= brand.bottom;
     const footer = sheet.querySelector("footer");
     sheet.scrollTop = sheet.scrollHeight / 2;
     const ink = sheet.querySelector(".sheet-ink");
@@ -64,10 +67,13 @@ async function checkLayout(page) {
     sheet.scrollTop = originalTop;
     return {
       width: window.innerWidth, sheetWidth: paper.width, sheetLeft: paper.left,
-      brand: rect(".wordmark").left - paper.left, menu: nav.at(-1).right - paper.right,
+      brand: brand.left - paper.left,
+      menu: stacked ? (nav[0].left + nav.at(-1).right - window.innerWidth) / 2 : nav.at(-1).right - paper.right,
       wordmark: rect(".wordmark i").bottom - rect(".wordmark strong").bottom,
-      menuFits: nav.slice(1).every((link, i) => link.left >= nav[i].right),
-      settingsFits: rect(".reading-settings").left >= rect(".wordmark").right,
+      menuFits: nav[0].left >= 0 && nav.at(-1).right <= window.innerWidth &&
+        nav.slice(1).every((link, i) => link.left >= nav[i].right),
+      toolGap: tools.left - brand.right,
+      settingsFits: tools.left >= brand.right && (stacked || tools.right <= nav[0].left),
       seam: paper.top - header.bottom, rootY: window.scrollY, deskTop: desk.top,
       deskHeight: desk.height - window.innerHeight,
       bottom: paper.bottom - window.innerHeight,
@@ -114,7 +120,7 @@ async function delayedTurn(page, link, parallel) {
     release();
   }
   await page.waitForURL(url.href);
-  await page.waitForFunction(() => !document.documentElement.dataset.foldPhase);
+  await page.waitForFunction(() => window.foldLog.at(-1)?.phase === "idle" && !document.documentElement.dataset.foldPhase);
   await page.unroute(url.href, handler);
   assert.equal(requests, 1);
   const log = await page.evaluate(() => window.foldLog);
@@ -139,13 +145,168 @@ async function checkDocks(page, active, current) {
   const docks = await page.locator(".site-nav [data-fold-dock]").evaluateAll(nodes => nodes.map(node => ({
     id: node.dataset.foldDock, current: node.closest("a").getAttribute("aria-current"),
     solid: getComputedStyle(node.querySelector("[data-fold-solid]")).visibility,
+    loaded: node.querySelector("[data-fold-solid]").naturalWidth > 0,
     outline: getComputedStyle(node, "::before").maskImage,
   })));
-  assert.equal(docks.length, 4);
+  assert.deepEqual(docks.map(dock => dock.id), ["home", "works", "articles", "albums", "about"]);
   for (const dock of docks) {
     assert.equal(dock.current, dock.id === active ? current : null);
     assert.equal(dock.solid, dock.id === active ? "hidden" : "visible");
+    assert.ok(dock.loaded, "the navigation print must load for " + dock.id);
     assert.notEqual(dock.outline, "none", "the line drawing must remain underneath every print");
+  }
+}
+
+async function observeMotion(page) {
+  await page.evaluate(async () => {
+    // A rebuilt Site module can be evaluated in the window that ClientRouter retained.
+    if (window.foldLog) return;
+    const entry = [...document.scripts].find(script => script.src.includes("/Site."));
+    await import(entry.src + "?navigation-regression");
+    window.foldLog = [];
+    window.dockChecks = [];
+    function recordDock(direction) {
+      const sheet = document.querySelector("main[data-fold-paper]");
+      const section = sheet.dataset.foldPaper;
+      const icon = document.querySelector('[data-fold-dock="' + section + '"]');
+      const dock = icon.getBoundingClientRect();
+      const shuttle = document.getElementById("shuttle");
+      const position = new DOMMatrix(shuttle.style.transform);
+      const print = icon.querySelector("[data-fold-solid]");
+      const width = document.documentElement.clientWidth;
+      const flat = document.querySelector(".fold-flat").style;
+      const top = document.querySelector(".site-header").getBoundingClientRect().bottom;
+      window.dockChecks.push({
+        direction, section,
+        reachesDock: Math.abs(position.m41 - dock.left) < 1 && Math.abs(position.m42 - dock.top) < 1,
+        samePrint: shuttle.hidden === (direction === "in") && shuttle.src === print.src &&
+          Math.abs(parseFloat(shuttle.style.width) - dock.width) < 1 &&
+          Math.abs(parseFloat(shuttle.style.height) - dock.height) < 1 &&
+          getComputedStyle(icon, "::before").maskImage !== "none" &&
+          getComputedStyle(print).visibility === (direction === "in" ? "visible" : "hidden"),
+        centered: Math.abs(parseFloat(flat.width) - width * .6) < 1 && Math.abs(parseFloat(flat.left) - width * .2) < 1,
+        fixedFrame: Math.abs(parseFloat(flat.top) - top) < 1 &&
+          Math.abs(parseFloat(flat.height) - (innerHeight - top)) < 1,
+      });
+    }
+    document.addEventListener("astro:before-swap", () => {
+      if (document.documentElement.dataset.foldPhase === "docked") recordDock("in");
+    });
+    new MutationObserver(() => {
+      const phase = document.documentElement.dataset.foldPhase || "idle";
+      if (window.foldLog.at(-1)?.phase === phase) return;
+      window.foldLog.push({ phase, at: performance.now() });
+      if (phase === "opening") recordDock("out");
+    }).observe(document.documentElement, { attributes: true, attributeFilter: ["data-fold-phase"] });
+  });
+}
+
+const project = "works/fold-journal/";
+
+function linkTo(page, path, scope) {
+  return page.locator(scope).locator(`a[href="${new URL(path, base).pathname}"]`).first();
+}
+
+async function setting(page, name, checked) {
+  const toggle = page.locator("[data-settings] summary");
+  await toggle.click();
+  await page.locator(`[data-setting="${name}"]`).setChecked(checked);
+  await toggle.click();
+}
+
+async function checkHandoff(page, from, to, path, parallel) {
+  await page.evaluate(() => { window.dockChecks.length = 0; });
+  await delayedTurn(page, linkTo(page, path, ".site-nav"), parallel);
+  await checkDockEvidence(page, from, to);
+}
+
+async function checkDockEvidence(page, from, to) {
+  const checks = await page.evaluate(() => window.dockChecks);
+  assert.deepEqual(checks.map(check => [check.direction, check.section]), [["in", from], ["out", to]]);
+  assert.ok(checks.every(check => check.centered && check.reachesDock && check.fixedFrame && check.samePrint),
+    JSON.stringify(checks));
+  await checkDocks(page, to, "page");
+}
+
+async function checkHistoryAndAnchors(page) {
+  const detail = { path: new URL(page.url()).pathname, title: await page.title() };
+  const start = await page.locator("#content").evaluate(paper => { paper.scrollTop = 187; return paper.scrollTop; });
+  assert.ok(start > 0 && await page.evaluate(() => window.scrollY === 0));
+  const before = await page.evaluate(() => history.length);
+  await directTurn(page, linkTo(page, "works/", ".site-nav"));
+  const index = { path: new URL(page.url()).pathname, title: await page.title() };
+  assert.equal(await page.evaluate(() => history.length), before + 1);
+  assert.equal(await paperTop(page), 0);
+  await page.evaluate(() => history.back());
+  await settled(page, detail.path, detail.title);
+  await page.waitForFunction(top => Math.abs(document.getElementById("content").scrollTop - top) <= 2, start);
+  await page.evaluate(() => history.forward());
+  await settled(page, index.path, index.title);
+  assert.deepEqual(await page.evaluate(() => window.foldLog), [], "same-section history must remain direct");
+  await directTurn(page, linkTo(page, project, ".sheet-content"));
+  const reloadTop = await page.locator("#content").evaluate(paper => { paper.scrollTop = 110; return paper.scrollTop; });
+  const reload = await page.reload();
+  assert.ok([200, 304].includes(reload.status()), "refresh must serve the project detail");
+  await page.waitForFunction(top => Math.abs(document.getElementById("content").scrollTop - top) <= 2, reloadTop);
+  await observeMotion(page);
+  const anchors = page.locator('.sheet-content a[href^="#"]:not([href="#content"])');
+  const anchor = anchors.last();
+  await anchor.scrollIntoViewIfNeeded();
+  const beforeHash = await paperTop(page);
+  const target = await anchor.getAttribute("href");
+  await anchor.click();
+  await page.waitForFunction(hash => decodeURIComponent(location.hash) === decodeURIComponent(hash), target);
+  const atHash = await paperTop(page);
+  assert.ok(atHash > 0);
+  await page.evaluate(() => history.back());
+  await page.waitForFunction(top => !location.hash && Math.abs(document.getElementById("content").scrollTop - top) <= 2, beforeHash);
+  await page.evaluate(() => history.forward());
+  await page.waitForFunction(top => location.hash && Math.abs(document.getElementById("content").scrollTop - top) <= 2, atHash);
+  await page.locator("#content").evaluate(paper => { paper.scrollTop = 110; });
+  await page.reload();
+  await page.waitForFunction(() => location.hash && Math.abs(document.getElementById("content").scrollTop - 110) <= 2);
+  await observeMotion(page);
+}
+
+async function checkAuxiliaryPages(page) {
+  const tagPrefix = new URL("tags/", base).pathname;
+  const projectTag = await page.locator(".sheet-content a").evaluateAll((links, prefix) =>
+    links.find(link => link.pathname.startsWith(prefix) && link.pathname !== prefix)?.getAttribute("href"), tagPrefix);
+  assert.ok(projectTag, "the public project must contribute a tag");
+  await directTurn(page, linkTo(page, "works/", ".site-nav"));
+  await directTurn(page, linkTo(page, "tags/", ".sheet-content"));
+  await checkDocks(page);
+  await directTurn(page, page.locator(`.sheet-content a[href="${projectTag}"]`).first());
+  await checkDocks(page);
+  await directTurn(page, linkTo(page, project, ".sheet-content"));
+  await checkDocks(page, "works", "location");
+  await directTurn(page, linkTo(page, "friends/", ".paper-footer"));
+  await checkDocks(page);
+  await directTurn(page, linkTo(page, project, ".paper-footer"));
+  await checkDocks(page, "works", "location");
+  const search = linkTo(page, "search/", ".site-header");
+  await search.focus();
+  await page.keyboard.press("Enter");
+  await page.waitForURL(new URL("search/", base).href);
+  await page.waitForFunction(() => document.activeElement === document.querySelector("main h1"));
+  await checkDocks(page);
+  await page.locator('input[name="q"]').fill("折间");
+  await page.locator('input[name="q"]').press("Enter");
+  await linkTo(page, project, ".sheet-content").waitFor({state: "visible"});
+}
+
+async function checkPublicBoundary(page) {
+  const feed = await page.request.get(new URL("feed.xml", base).href);
+  assert.equal(feed.status(), 200);
+  const items = await page.evaluate(source => {
+    const xml = new DOMParser().parseFromString(source, "application/xml");
+    return [...xml.querySelectorAll("rss > channel > item > link")].map(link => new URL(link.textContent).pathname);
+  }, await feed.text());
+  assert.ok(items.includes(new URL(project, base).pathname));
+  assert.ok(!items.some(path => path.includes("/draft/")));
+  for (const privatePath of ["archives/draft/", "archives/draft/wind-in-the-folds/", "archives/wind-in-the-folds/",
+    "posts/wind-in-the-folds/", "archives/categories/折纸手记/", "categories/折纸手记/"]) {
+    assert.equal((await page.request.get(new URL(privatePath, base).href)).status(), 404, privatePath);
   }
 }
 
@@ -164,134 +325,67 @@ async function run() {
     page.on("pageerror", error => errors.push(error.message));
     await checkTextureCache(page);
     await page.waitForSelector("html[data-enhanced]", { state: "attached" });
-    await page.evaluate(async () => {
-      // A rebuilt Site module can be evaluated in the window that ClientRouter retained.
-      const entry = [...document.scripts].find(script => script.src.includes("/Site."));
-      await import(entry.src + "?navigation-regression");
-      window.foldLog = [];
-      window.dockChecks = [];
-      function recordDock(direction) {
-        const sheet = document.querySelector("main[data-fold-paper]");
-        const section = sheet.dataset.foldPaper;
-        const icon = document.querySelector('[data-fold-dock="' + section + '"]');
-        const dock = icon.getBoundingClientRect();
-        const shuttle = document.getElementById("shuttle");
-        const position = new DOMMatrix(shuttle.style.transform);
-        const print = icon.querySelector("[data-fold-solid]");
-        const width = document.documentElement.clientWidth;
-        const flat = document.querySelector(".fold-flat").style;
-        const top = document.querySelector(".site-header").getBoundingClientRect().bottom;
-        window.dockChecks.push({
-          direction, section,
-          reachesDock: Math.abs(position.m41 - dock.left) < 1 && Math.abs(position.m42 - dock.top) < 1,
-          samePrint: shuttle.src === print.src && Math.abs(parseFloat(shuttle.style.width) - dock.width) < 1 &&
-            Math.abs(parseFloat(shuttle.style.height) - dock.height) < 1 &&
-            getComputedStyle(icon, "::before").maskImage !== "none" &&
-            getComputedStyle(print).visibility === (direction === "in" ? "visible" : "hidden"),
-          centered: Math.abs(parseFloat(flat.width) - width * .6) < 1 && Math.abs(parseFloat(flat.left) - width * .2) < 1,
-          fixedFrame: Math.abs(parseFloat(flat.top) - top) < 1 &&
-            Math.abs(parseFloat(flat.height) - (innerHeight - top)) < 1,
-        });
-      }
-      document.addEventListener("astro:before-swap", () => {
-        if (document.documentElement.dataset.foldPhase === "docked") recordDock("in");
-      });
-      new MutationObserver(() => {
-        const phase = document.documentElement.dataset.foldPhase || "idle";
-        if (window.foldLog.at(-1)?.phase === phase) return;
-        window.foldLog.push({ phase, at: performance.now() });
-        if (phase === "opening") recordDock("out");
-      }).observe(document.documentElement, { attributes: true, attributeFilter: ["data-fold-phase"] });
-    });
+    await observeMotion(page);
     await checkDocks(page, "home", "page");
-    assert.equal(await page.locator("[data-fold-paper]").count(), 1);
     await checkLayout(page);
     const backdrop = await page.locator(".desk-backdrop").elementHandle();
-    await delayedTurn(page, page.getByRole("link", { name: "文章", exact: true }), false);
-    await checkDocks(page, "articles", "page");
-    assert.ok(await backdrop.evaluate(node => node === document.querySelector(".desk-backdrop")),
-      "folding to another page must keep the same textured backdrop");
-    assert.ok(await cachedMasksVisible(page), "the persisted desk must keep its masks during navigation");
+    await checkHandoff(page, "home", "works", "works/", false);
+    await setting(page, "parallel", true);
+    await checkHandoff(page, "works", "articles", "archives/", true);
+    await checkHandoff(page, "articles", "albums", "albums/", true);
+    await checkHandoff(page, "albums", "about", "about/", true);
+    await checkHandoff(page, "about", "home", "", true);
+    for (const [method, from, to] of [["back", "home", "about"], ["forward", "about", "home"]]) {
+      await page.evaluate(action => {
+        window.dockChecks.length = 0;
+        window.foldLog.length = 0;
+        history[action]();
+      }, method);
+      await page.waitForFunction(() => window.foldLog.at(-1)?.phase === "idle");
+      await checkDockEvidence(page, from, to);
+    }
+    assert.ok(await backdrop.evaluate(node => node === document.querySelector(".desk-backdrop")));
+    assert.ok(await cachedMasksVisible(page));
     assert.equal(await page.evaluate(() => window.tileEncodes), 0);
-    const initialLength = await page.evaluate(() => history.length);
-    await directTurn(page, page.locator(".post-list .post-title").first());
-    await checkDocks(page, "articles", "location");
-    const first = { path: new URL(page.url()).pathname, title: await page.title() };
-    assert.ok(first.path.startsWith(new URL("archives/", base).pathname));
-    await page.locator("[data-settings] summary").click();
-    await page.getByRole("switch", { name: "并行取文与收纸" }).check();
-    await page.locator("[data-settings] summary").click();
-    const next = page.locator(".post-neighbors a").first();
-    await next.scrollIntoViewIfNeeded();
-    const scroll = await paperTop(page);
-    assert.ok(scroll > 0 && await page.evaluate(() => window.scrollY === 0), "only the paper should scroll");
-    await directTurn(page, next);
-    const second = { path: new URL(page.url()).pathname, title: await page.title() };
-    assert.notEqual(first.path, second.path);
-    assert.equal(await paperTop(page), 0, "a newly opened article starts at its top edge");
-    const forwardScroll = await page.locator("#content").evaluate(paper => { paper.scrollTop = 187; return paper.scrollTop; });
-    assert.ok(forwardScroll > 0);
-    assert.equal(await page.evaluate(() => history.length), initialLength + 2);
-    await page.evaluate(() => history.back());
-    await settled(page, first.path, first.title);
-    assert.ok(Math.abs(await paperTop(page) - scroll) <= 2, "back must restore the first paper's reading position");
-    await page.evaluate(() => history.forward());
-    await settled(page, second.path, second.title);
-    assert.ok(Math.abs(await paperTop(page) - forwardScroll) <= 2, "forward must restore the second paper's reading position");
-    assert.deepEqual(await page.evaluate(() => window.foldLog), [], "history inside a section must stay direct");
-    await delayedTurn(page, page.getByRole("link", { name: "标签", exact: true }), true);
-    await checkDocks(page, "tags", "page");
-    const checks = await page.evaluate(() => window.dockChecks);
-    assert.deepEqual(checks.map(entry => entry.section), ["home", "articles", "articles", "tags"]);
-    assert.ok(checks.every(entry => entry.centered && entry.reachesDock && entry.fixedFrame && entry.samePrint),
-      JSON.stringify(checks));
-    await directTurn(page, page.locator(".sheet-content .tag-list a").first());
-    await checkDocks(page, "tags", "location");
-    await delayedTurn(page, page.locator(".post-list .post-title").first(), true);
-    await checkDocks(page, "articles", "location");
-    await directTurn(page, page.locator("article .page-heading .eyebrow"));
-    await checkDocks(page, "articles", "location");
-    await directTurn(page, page.getByRole("link", { name: "文章", exact: true }));
-    await checkDocks(page, "articles", "page");
-    await page.goto(new URL(second.path, base).href);
-    await page.locator("#content").evaluate((paper, top) => { paper.scrollTop = top; }, forwardScroll);
-    const reload = await page.reload();
-    assert.ok([200, 304].includes(reload.status()), "a refresh must serve or revalidate the article");
-    assert.equal(await page.title(), second.title);
-    assert.equal(await page.locator("main article h1").count(), 1);
-    await page.waitForFunction(top => Math.abs(document.getElementById("content").scrollTop - top) <= 2, forwardScroll);
-    const tocLinks = page.getByRole("navigation", { name: "本篇目录" }).getByRole("link");
-    const toc = tocLinks.first();
-    const beforeHash = await paperTop(page);
-    await toc.click();
-    await page.waitForFunction(() => !!location.hash);
-    const atHash = await paperTop(page);
-    assert.ok(atHash > 0 && Math.abs(atHash - beforeHash) > 2);
-    await page.evaluate(() => history.back());
-    await page.waitForFunction(top => !location.hash && Math.abs(document.getElementById("content").scrollTop - top) <= 2, beforeHash);
-    await page.evaluate(() => history.forward());
-    await page.waitForFunction(top => location.hash && Math.abs(document.getElementById("content").scrollTop - top) <= 2, atHash);
-    const lastHeading = await tocLinks.last().getAttribute("href");
-    await page.goto(new URL(lastHeading, page.url()).href);
-    await page.locator("#content").evaluate(paper => { paper.scrollTop = 110; });
-    await page.reload();
-    await page.waitForFunction(() => Math.abs(document.getElementById("content").scrollTop - 110) <= 2);
-    await page.goto(new URL("tags/", base).href);
-    await page.waitForSelector("html[data-enhanced]", { state: "attached" });
-    await checkLayout(page);
-    assert.ok(await page.locator("#content").evaluate(paper => paper.scrollHeight === paper.clientHeight),
-      "a short page must fill the same frame without adding a scrollable tail");
+    await setting(page, "reduce", true);
+    await directTurn(page, linkTo(page, "works/", ".site-nav"));
+    await setting(page, "reduce", false);
+    await directTurn(page, linkTo(page, project, ".sheet-content"));
+    await checkDocks(page, "works", "location");
+    await page.setViewportSize({ width: 1000, height: 600 });
+    await checkHistoryAndAnchors(page);
+    await checkAuxiliaryPages(page);
+    await checkPublicBoundary(page);
     for (const viewport of [{ width: 1440, height: 900 }, { width: 390, height: 844 }, { width: 320, height: 568 }]) {
       await page.setViewportSize(viewport);
-      await page.goto(new URL(first.path, base).href);
-      await checkLayout(page);
-      await page.goto(new URL("404.html", base).href);
-      await checkLayout(page);
-      assert.equal(await page.locator("#content").evaluate(paper => paper.scrollHeight - paper.clientHeight), 0,
-        "a short page pins its footer inside the bottom paper margin");
+      for (const dark of [false, true]) {
+        await setting(page, "theme", dark);
+        for (const path of ["", project, "404.html"]) {
+          await page.goto(new URL(path, base).href);
+          await page.waitForSelector("html[data-enhanced]", { state: "attached" });
+          assert.equal(await page.locator("html").getAttribute("data-theme"), dark ? "dark" : "light");
+          await checkLayout(page);
+          if (path === "404.html") {
+            await checkDocks(page);
+            if (viewport.width === 1440) assert.equal(await page.locator("#content")
+              .evaluate(paper => paper.scrollHeight - paper.clientHeight), 0, "a short page must not have a scrollable tail");
+          }
+        }
+      }
     }
+    await page.goto(new URL("works/", base).href);
+    await observeMotion(page);
+    await checkHandoff(page, "works", "albums", "albums/", true);
+    const staticPage = await browser.newPage({ javaScriptEnabled: false });
+    await staticPage.goto(base.href);
+    await linkTo(staticPage, "works/", ".site-nav").click();
+    await linkTo(staticPage, project, ".sheet-content").click();
+    await staticPage.waitForURL(new URL(project, base).href);
+    assert.ok(await staticPage.locator("main h1").isVisible(), "the work must be readable without scripts");
+    await checkDocks(staticPage, "works", "location");
+    await staticPage.close();
     assert.deepEqual(errors, []);
-    console.log(engine, "passed", first.path, second.path);
+    console.log(engine, "passed five fold docks, direct routes, accessibility, history, themes and draft visibility");
   } finally {
     await browser.close();
   }

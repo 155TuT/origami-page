@@ -1,9 +1,18 @@
 ---
-import TopicPage from "../../components/TopicPage.astro";
-import { allPosts, groupPosts } from "../../lib/blog";
+import Site from "../../layouts/Site.astro";
+import { ActionLink, ContentGroups, PageHeading } from "../../components/ui";
+import { allPublicEntries, href } from "../../lib/blog";
+import { groupByTag } from "../../lib/public-index";
+import { tagSegment } from "../../lib/tag-path";
+
 export async function getStaticPaths() {
-  const all = await allPosts();
-  return [...groupPosts(all, "tags")].map(([name, posts]) => ({ params: { tag: name }, props: { name, posts, all } }));
+  const tags = groupByTag(await allPublicEntries());
+  return [...tags].map(([tag, entries]) => ({ params: { tag: tagSegment(tag) }, props: { tag, entries } }));
 }
+const { tag, entries } = Astro.props;
 ---
-<TopicPage type="tag" {...Astro.props} />
+<Site title={tag} current={null} ruling="grid">
+  <PageHeading title={tag} />
+  <ContentGroups entries={entries} />
+  <ActionLink href={href("tags/")}>全部标签</ActionLink>
+</Site>

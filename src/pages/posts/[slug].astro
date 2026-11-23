@@ -1,8 +1,8 @@
 ---
-import { allPosts, postURL } from "../../lib/blog";
+import { allPosts, entrySlug, postURL } from "../../lib/blog";
 
 export async function getStaticPaths() {
-  return (await allPosts()).map(post => ({ params: { slug: post.id }, props: { to: postURL(post) } }));
+  return (await allPosts()).map(post => ({ params: { slug: entrySlug(post) }, props: { to: postURL(post) } }));
 }
 return Astro.redirect(Astro.props.to, 301);
 ---

@@ -93,8 +93,15 @@ function installNavigation() {
           player ??= new module.FoldPlayer(document.getElementById("fold-stage")!);
           await player.close();
         };
-        if (parallel) await Promise.all([load(), close()]);
-        else { await load(); await close(); }
+        const loadTarget = async () => {
+          await load();
+          if (!valid()) return;
+          // A missing child URL can return the shared 404 under a section prefix.
+          const target = event.newDocument.querySelector<HTMLElement>("main[data-fold-paper]")?.dataset.foldPaper;
+          if (!target || target === fromSection) skipFold();
+        };
+        if (parallel) await Promise.all([loadTarget(), close()]);
+        else { await loadTarget(); await close(); }
       } finally {
         if (!valid() && current === nav) { current = undefined; player?.reset(); }
       }

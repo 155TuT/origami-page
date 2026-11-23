@@ -1,0 +1,21 @@
+---
+import { render } from "astro:content";
+import Site from "../../layouts/Site.astro";
+import { ContentColumns, PostArticle, TableOfContents } from "../../components/ui";
+import { entrySlug, published } from "../../lib/blog";
+import { sectionURL } from "../../lib/sections";
+
+export async function getStaticPaths() {
+  return (await published("work")).map(work => ({ params: { slug: entrySlug(work) }, props: { work } }));
+}
+const { work } = Astro.props;
+const { Content, headings } = await render(work);
+---
+<Site title={work.data.title} description={work.data.description} ruling={work.data.ruling}>
+  <ContentColumns>
+    <PostArticle post={work}>
+      <Content />
+    </PostArticle>
+    <TableOfContents slot="aside" headings={headings} returnLabel="返回作品集" returnHref={sectionURL("works")} />
+  </ContentColumns>
+</Site>

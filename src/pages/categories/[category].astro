@@ -1,9 +1,0 @@
----
-import { allPosts, categoryURL, groupPosts } from "../../lib/blog";
-
-export async function getStaticPaths() {
-  const names = groupPosts(await allPosts(), "category").keys();
-  return Array.from(names, name => ({ params: { category: name }, props: { to: categoryURL(name) } }));
-}
-return Astro.redirect(Astro.props.to, 301);
----

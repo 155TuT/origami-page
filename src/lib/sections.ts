@@ -2,9 +2,10 @@
 const crane = { icon: "art/crane-icon.png", outline: "art/crane-outline.svg" };
 export const sections = [
   { id: "home", label: "首页", path: "", ...crane },
+  { id: "works", label: "作品集", path: "works/", ...crane },
   { id: "articles", label: "文章", path: "archives/", ...crane },
-  { id: "tags", label: "标签", path: "tags/", ...crane },
-  { id: "about", label: "关于", path: "about/", ...crane },
+  { id: "albums", label: "影集", path: "albums/", ...crane },
+  { id: "about", label: "关于我", path: "about/", ...crane },
 ] as const;
 
 export type NavSection = typeof sections[number];

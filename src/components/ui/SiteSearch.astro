@@ -1,0 +1,77 @@
+---
+import { href, type PublicEntry } from "../../lib/blog";
+import ContentGroups from "./ContentGroups.astro";
+
+interface Props { entries: PublicEntry[]; }
+const { entries } = Astro.props;
+const index = entries.map(entry => [
+  entry.url,
+  [entry.title, entry.description, ...entry.tags, entry.text].join(" ").normalize("NFKC").toLowerCase(),
+]);
+---
+<journal-search data-index={JSON.stringify(index)}>
+  <form role="search" action={href("search/")} hidden>
+    <input name="q" type="search" aria-label="搜索关键词" placeholder="搜索关键词" />
+  </form>
+  <p role="status" aria-live="polite"></p>
+  <noscript>以下是全部公开内容，可使用浏览器的页内查找。</noscript>
+  <ContentGroups entries={entries} />
+</journal-search>
+
+<script>
+  class JournalSearch extends HTMLElement {
+    connectedCallback() {
+      const form = this.querySelector("form")!;
+      const input = form.querySelector("input")!;
+      const status = this.querySelector('[role="status"]')!;
+      const records = new Map<string, string>(JSON.parse(this.dataset.index!));
+      const groups = Array.from(this.querySelectorAll<HTMLElement>("[data-content-group]"), group => ({
+        group, rows: Array.from(group.querySelectorAll<HTMLElement>("[data-entry-url]")),
+      }));
+      const filter = () => {
+        const query = input.value.trim();
+        const words = query.normalize("NFKC").toLowerCase().split(/\s+/u).filter(Boolean);
+        let total = 0;
+        for (const {group, rows} of groups) {
+          let visible = 0;
+          for (const row of rows) {
+            const text = records.get(row.dataset.entryUrl!) ?? "";
+            row.hidden = !words.every(word => text.includes(word));
+            if (!row.hidden) visible++;
+          }
+          group.hidden = visible === 0;
+          total += visible;
+        }
+        status.textContent = total ? (query ? `找到 ${total} 项内容` : "")
+          : (query ? "没有找到相关内容，可以换一个关键词。" : "暂无公开内容。");
+      };
+      input.value = new URLSearchParams(location.search).get("q") ?? "";
+      form.hidden = false;
+      filter();
+      input.oninput = () => {
+        const url = new URL(location.href);
+        if (input.value.trim()) url.searchParams.set("q", input.value.trim());
+        else url.searchParams.delete("q");
+        history.replaceState(history.state, "", url);
+        filter();
+      };
+      form.onsubmit = event => { event.preventDefault(); filter(); };
+    }
+  }
+  if (!customElements.get("journal-search")) customElements.define("journal-search", JournalSearch);
+</script>
+
+<style>
+  journal-search { display: grid; gap: var(--space-6); min-width: 0; }
+  form { display: grid; gap: var(--space-2); }
+  input {
+    min-width: 0; width: 100%;
+    padding: var(--space-3) var(--space-4);
+    border: 1px solid var(--line-dark);
+    border-radius: var(--radius-control);
+    color: var(--ink); background: var(--surface); font-size: var(--text-body);
+  }
+  input::placeholder { color: var(--faint); }
+  [role="status"], noscript { color: var(--muted); font-size: var(--text-small); }
+  [role="status"]:empty { display: none; }
+</style>

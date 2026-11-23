@@ -4,17 +4,18 @@ import { sectionURL } from "../../lib/sections";
 import ActionLink from "./ActionLink.astro";
 import Sidebar from "./Sidebar.astro";
 
-interface Props { headings: MarkdownHeading[]; }
+interface Props { headings: MarkdownHeading[]; returnLabel?: string; returnHref?: string; }
+const { returnLabel = "返回文章列表", returnHref = sectionURL("articles") } = Astro.props;
 const contents = Astro.props.headings.filter(h => h.depth === 2 || h.depth === 3);
 ---
-<Sidebar label="文章导航" sticky>
+<Sidebar label="内容导航" sticky>
   {contents.length > 0 && <nav aria-label="本篇目录">
     <h2>本篇目录</h2>
     <ol>{contents.map(h => (
       <li class:list={{ subhead: h.depth === 3 }}><a href={"#" + h.slug}>{h.text}</a></li>
     ))}</ol>
   </nav>}
-  <ActionLink href={sectionURL("articles")} arrow="↗">返回文章列表</ActionLink>
+  <ActionLink href={returnHref} arrow="↗">{returnLabel}</ActionLink>
 </Sidebar>
 
 <style>

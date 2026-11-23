@@ -1,0 +1,32 @@
+---
+import { sectionURL } from "../../lib/sections";
+
+const links = [
+  { section: "works", title: "作品集" },
+  { section: "articles", title: "文章" },
+  { section: "albums", title: "影集" },
+] as const;
+---
+<nav aria-label="浏览作品、文章和影集">
+  {links.map(link => (
+    <a href={sectionURL(link.section)}>
+      <strong>{link.title}<span aria-hidden="true">↗</span></strong>
+    </a>
+  ))}
+</nav>
+<style>
+  nav { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-6); }
+  a { padding-block: var(--space-4); border-block-start: 1px solid var(--line-dark); }
+  strong {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: var(--space-1);
+    font: var(--weight-heading) var(--text-section)/1.4 var(--serif);
+  }
+  span { color: var(--accent); font: var(--weight-regular) var(--text-ui)/1 var(--sans); }
+  a:hover strong { color: var(--accent); }
+  @media (max-width: 900px) {
+    nav { grid-template-columns: minmax(0, 1fr); gap: 0; }
+  }
+</style>

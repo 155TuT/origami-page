@@ -1,0 +1,18 @@
+---
+import type { PublicEntry } from "../../lib/blog";
+import SectionHeading from "./SectionHeading.astro";
+import PostList from "./PostList.astro";
+
+interface Props { entries: PublicEntry[]; }
+const { entries } = Astro.props;
+const labels = { work: "作品", post: "文章", album: "影集" } as const;
+---
+{Object.entries(labels).map(([kind, label]) => {
+  const matches = entries.filter(entry => entry.kind === kind);
+  return matches.length > 0 && (
+    <section data-content-group={kind}>
+      <SectionHeading title={label} />
+      <PostList entries={matches} />
+    </section>
+  );
+})}
