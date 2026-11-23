@@ -1,5 +1,6 @@
 ---
 import { type FriendSite } from "../../lib/friends";
+import { photoURL } from "../../lib/blog";
 import ActionLink from "./ActionLink.astro";
 import PostDate from "./PostDate.astro";
 
@@ -9,8 +10,13 @@ const latest = friend.latest;
 const date = latest?.date ?? latest?.updated;
 ---
 <article>
-  <h3><a href={friend.url}>{friend.name}</a></h3>
-  <p>{friend.note}</p>
+  <div class="site">
+    {friend.avatar && <img src={photoURL(friend.avatar)} alt="" width="48" height="48" loading="lazy" decoding="async" />}
+    <div>
+      <h3><a href={friend.url}>{friend.name}</a></h3>
+      <p>{friend.note}</p>
+    </div>
+  </div>
   <dl>
     {friend.picks.length > 0 && <div>
       <dt>我推荐的文章</dt>
@@ -30,6 +36,8 @@ const date = latest?.date ?? latest?.updated;
   article { padding-block: var(--space-5); border-bottom: 1px solid var(--line); overflow-wrap: anywhere; }
   h3 { font: var(--weight-heading) var(--text-post-title)/1.5 var(--serif); }
   h3 a:hover { color: var(--accent); }
+  .site { display: flex; align-items: center; gap: var(--space-3); }
+  img { width: calc(2 * var(--space-6)); height: calc(2 * var(--space-6)); object-fit: cover; border-radius: var(--radius-control); }
   p, dd { font-size: var(--text-small); }
   p, dt, small { color: var(--muted); }
   p { margin-top: var(--space-1); }

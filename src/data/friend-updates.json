@@ -1,1 +1,17 @@
-{}
+{
+  "https://blog.baoshuo.ren/atom.xml": {
+    "title": "介绍 Expo Harmony —— 让 Expo 在 HarmonyOS 上轻松运行",
+    "url": "https://blog.baoshuo.ren/post/expo-harmony/",
+    "updated": "2026-09-11T09:00:00.000Z"
+  },
+  "https://www.cnblogs.com/cjtcalc/rss": {
+    "title": "【比赛游记】2026 CCPC 长春站游记 - Calculatelove",
+    "url": "https://www.cnblogs.com/cjtcalc/p/23405559",
+    "date": "2026-10-22T15:54:00.000Z"
+  },
+  "https://schariac125.online/rss.xml": {
+    "title": "萌新向：从零开始，用 VS Code 写出你的第一行Python代码",
+    "url": "https://schariac125.github.io/posts/%E8%90%8C%E6%96%B0%E5%90%91%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E7%94%A8-vs-code-%E5%86%99%E5%87%BA%E4%BD%A0%E7%9A%84%E7%AC%AC%E4%B8%80%E8%A1%8Cpython%E4%BB%A3%E7%A0%81/",
+    "date": "2026-09-02T00:00:00.000Z"
+  }
+}

@@ -121,7 +121,7 @@
 | 封面、插图与日期 | `IntroCover`、`Plate`、`PostDate` | 首页封面承载作者介绍与简历入口。插图支持 `cover`、`article` 两种变体。日期用 `time` 元素同时保留标准值与印刷格式 |
 | 文章与索引 | `PostList`、`PostArticle`、`Prose`、`TagList`、`PostNeighbors` | 作品、文章和主题结果共用列表。文章把 Markdown 正文传给 `PostArticle`，自定义长文可用 `Prose`。索引标签带内容项数，文末标签用紧凑的 `article` 变体 |
 | 栏目入口与影集照片 | `SectionLinks`、`AlbumPhoto` | 首页入口平级排列，窄屏依次纵排。影集按作者给定的顺序逐张展示 |
-| 查询与友链 | `ContentGroups`、`SiteSearch`、`FriendCard` | 标签结果和搜索结果按作品、文章、影集分组。每张友链卡并列呈现作者荐读和对方的新文章 |
+| 查询与友链 | `ContentGroups`、`SiteSearch`、`FriendCard` | 标签结果和搜索结果按作品、文章、影集分组。友链标题旁可配原站头像，作者荐读与对方的新文章仅在有资料时呈现 |
 
 ## 动效、键盘与验证
 

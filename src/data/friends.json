@@ -1,1 +1,77 @@
-[]
+[
+  {
+    "group": "friends",
+    "name": "Azsgw_Sakuta",
+    "url": "https://azusagawa-sakuta.github.io/",
+    "note": "Personal Blog",
+    "avatar": "media/friends/Azsgw.webp",
+    "picks": []
+  },
+  {
+    "group": "friends",
+    "name": "Baoshuo",
+    "feed": "https://blog.baoshuo.ren/atom.xml",
+    "url": "https://baoshuo.ren",
+    "note": "Personal Blog",
+    "avatar": "media/friends/Baoshuo.webp",
+    "picks": []
+  },
+  {
+    "group": "friends",
+    "name": "Doubeecat",
+    "url": "https://doubeecat.cn",
+    "note": "Personal Blog",
+    "avatar": "media/friends/Doubeecat.webp",
+    "picks": []
+  },
+  {
+    "group": "friends",
+    "name": "Soapoison",
+    "url": "https://soapoison.github.io",
+    "note": "Personal Blog",
+    "avatar": "media/friends/Soapoison.webp",
+    "picks": []
+  },
+  {
+    "group": "friends",
+    "name": "CornWorld",
+    "url": "https://corn.li",
+    "note": "Personal Blog",
+    "avatar": "media/friends/CornWorld.webp",
+    "picks": []
+  },
+  {
+    "group": "friends",
+    "name": "WildDonkey",
+    "url": "https://wild-donkey.github.io/",
+    "note": "Personal Blog",
+    "avatar": "media/friends/WildDonkey.webp",
+    "picks": []
+  },
+  {
+    "group": "friends",
+    "name": "CalculationLove",
+    "feed": "https://www.cnblogs.com/cjtcalc/rss",
+    "url": "https://www.cnblogs.com/cjtcalc",
+    "note": "Personal Blog",
+    "avatar": "media/friends/CalculationLove.webp",
+    "picks": []
+  },
+  {
+    "group": "friends",
+    "name": "Schariac125",
+    "feed": "https://schariac125.online/rss.xml",
+    "url": "https://schariac125.github.io/",
+    "note": "Personal Blog",
+    "avatar": "media/friends/Schariac125.webp",
+    "picks": []
+  },
+  {
+    "group": "friends",
+    "name": "ACaicat",
+    "url": "https://blog.terraria.ink/",
+    "note": "Personal Blog",
+    "avatar": "media/friends/ACaicat.webp",
+    "picks": []
+  }
+]

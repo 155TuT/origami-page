@@ -11,6 +11,7 @@ const site = z.object({
   name: z.string().min(1),
   url: webURL,
   note: z.string().min(1),
+  avatar: z.string().min(1).optional(),
   picks: z.array(link),
   feed: webURL.optional(),
   latest: latest.optional(),

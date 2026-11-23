@@ -53,7 +53,7 @@ ruling: ruled
 
 `ruling` 可选 `ruled`（横线纸）或 `grid`（方格纸），默认横线纸。二、三级标题生成目录。六篇原示例保存在 `src/content/posts/draft/`，在本机开发服务的 `/archives/draft/` 阅读。将定稿移至 `src/content/posts/` 即可发布。生产构建只为公开内容生成页面、标签、搜索结果、订阅条目和旧址跳转。
 
-旧 Hexo 博客的八篇公开文章保留原发布时间、标签和日期书签。两份原草稿一并存入本机草稿区。日期按北京时间显示，RSS 使用原发布时刻。用 `$…$` 写行内公式，用独立成行的 `$$` 包裹公式块，构建时生成 MathML。旧文章的插图位于 `public/media/posts/<slug>/`，在 Markdown 里写 `![图注](/media/posts/<slug>/图片.webp)`，构建会补上部署子路径。
+旧 Hexo 博客的八篇公开文章保留原发布时间、标签和日期书签。两份原草稿一并存入本机草稿区。日期按北京时间显示，RSS 使用原发布时刻。用 `$…$` 写行内公式，用独立成行的 `$$` 包裹公式块，构建时生成 MathML。旧文章的插图位于 `public/media/posts/<slug>/`，在 Markdown 里写 `![图注](/media/posts/<slug>/图片.webp)`，构建会补上部署子路径。友链的可选 `avatar` 字段可填写 `media/friends/文件名.webp`。
 
 ## 作品、影集与个人资料
 
