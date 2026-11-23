@@ -17,7 +17,10 @@ export type PublicEntry = {
 };
 export const siteName = "折间";
 export const tagURL = (name: string) => href("tags/" + encodeURIComponent(tagSegment(name)) + "/");
-export const isoDate = (date: Date) => date.toISOString().slice(0, 10);
+const calendar = new Intl.DateTimeFormat("en-CA", {
+  timeZone: "Asia/Shanghai", year: "numeric", month: "2-digit", day: "2-digit",
+});
+export const isoDate = (date: Date) => calendar.format(date);
 export const printedDate = (date: Date) => isoDate(date).replaceAll("-", ".");
 export const artwork = {
   crane: { file: "crane.webp", alt: "一只赤陶色的折纸鹤，双翼斜展，在纸面上投下轻轻的阴影", caption: "千纸鹤", english: "Paper crane" },
