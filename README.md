@@ -58,7 +58,7 @@ ruling: ruled
 ## 作品、影集与个人资料
 
 - 在 `src/content/works/` 添加带标题、摘要、日期和标签的 Markdown。站点自身的案例在 `/works/fold-journal/`，可从页脚版权或个人介绍正文中的「折间」链接打开。
-- 在 `src/content/albums/` 发布影集，使用 `photos` 数组按观看顺序填写每张照片的 `src`、`alt` 与可选的 `caption`。`cover` 可指定单独的封面，默认取第一张照片。公开照片可放进 `public/`。每册拥有独立地址 `/albums/<slug>/`。
+- 在 `src/content/albums/` 发布影集，使用 `photos` 数组按观看顺序填写每张照片的 `src`、`alt` 与可选的 `caption`。`cover` 可指定单独的封面，默认取第一张照片。公开照片可放进 `public/`，也可填 R2 图片子域名的完整 HTTPS 地址。每册拥有独立地址 `/albums/<slug>/`。[R2 建桶、上传与引用示例](docs/r2-images.md)
 - 在 [个人资料配置](src/lib/profile.ts) 填写署名、自我介绍、经历和邮箱。首页从自我介绍开始，填写署名后会在首段前以正文字号显示。经历和邮箱留空时分别显示「暂无公开经历」和「邮箱暂未公开」。也可用 `PUBLIC_CONTACT_EMAIL` 设置邮箱，公开后友链页的「联系我」指向首页的「联系方式」段落 `/#contact`。
 - 友链名录在 `src/data/friends.json`。每条填写分组 `group`（`friends` 或 `reading`）、站名 `name`、主页 `url`、推荐语 `note` 与手选文章 `picks`（每篇含 `title`、`url`）。用 `feed` 指定 RSS/Atom 地址，也可以用 `latest` 手填最新文章及可选日期 `date`。`npm run sync:friends` 从对方的订阅源同步最新一篇文章，构建时也会同步。`src/data/friend-updates.json` 保存成功结果。保留此快照即可在后续构建遇到源站离线时继续展示。
 - 正式部署时将 `SITE_URL` 设为站点源地址。`/feed.xml` 在每次构建时收录已发布的作品、文章和影集，并使用含部署前缀的绝对链接。
