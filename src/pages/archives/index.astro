@@ -8,7 +8,6 @@ const posts = (await allPosts()).map(toEntry);
   <section>
     <PageHeading title="文章">
       <ActionRow>
-        <ActionLink href={href("tags/")} arrow="↗">全部标签</ActionLink>
         {localDraftPreview(Astro.url) && <ActionLink href={href("archives/draft/")} arrow="→">本地草稿</ActionLink>}
       </ActionRow>
     </PageHeading>

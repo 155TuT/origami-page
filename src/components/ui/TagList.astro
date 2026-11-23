@@ -1,22 +1,29 @@
 ---
-import { tagURL } from "../../lib/blog";
+import { tagAnchor, tagURL } from "../../lib/blog";
 
 interface Props {
   tags: { name: string; count?: number }[];
   variant?: "index" | "article";
+  label?: string;
 }
-const { tags, variant = "index" } = Astro.props;
+const { tags, variant = "index", label = variant === "article" ? "内容标签" : "全部标签" } = Astro.props;
 ---
 {tags.length > 0 && (
-  <ul class:list={["tag-list", variant]} aria-label={variant === "article" ? "内容标签" : "全部标签"}>
+  <ul class:list={["tag-list", variant]} aria-label={label}>
     {tags.map(({ name, count }) => (
-      <li><a href={tagURL(name)}>
-        <span>{variant === "article" && "# "}{name}</span>
-        {count !== undefined && <small>{count} 项</small>}
-      </a></li>
+      <li data-tag-name={variant === "index" ? name : undefined}>
+        <a class="tag-query" href={tagURL(name)}>
+          <span>{variant === "article" && "# "}{name}</span>
+          {count !== undefined && <small>{count} 项</small>}
+        </a>
+        {variant === "article" && <noscript>
+          <a href={tagURL(name) + "#" + encodeURIComponent(tagAnchor(name))}># {name}</a>
+        </noscript>}
+      </li>
     ))}
   </ul>
 )}
+{variant === "article" && <noscript><style is:inline>.tag-list.article .tag-query { display: none; }</style></noscript>}
 
 <style>
   .tag-list {
@@ -24,12 +31,14 @@ const { tags, variant = "index" } = Astro.props;
     flex-wrap: wrap;
     gap: var(--space-2);
     list-style: none;
-    margin: var(--space-8) 0 0;
+    margin: 0;
     padding: 0;
   }
+  .article { margin-block-start: var(--space-8); }
   li { max-width: 100%; }
   a {
     display: inline-flex;
+    max-width: 100%;
     align-items: baseline;
     flex-wrap: wrap;
     gap: var(--space-3);

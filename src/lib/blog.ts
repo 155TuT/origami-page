@@ -1,6 +1,5 @@
 import { getCollection, type CollectionEntry } from "astro:content";
 import { href, sectionURL } from "./sections";
-import { tagSegment } from "./tag-path";
 export { href } from "./sections";
 
 export type Post = CollectionEntry<"journal">;
@@ -16,7 +15,8 @@ export type PublicEntry = {
   cover?: { src: string; alt: string };
 };
 export const siteName = "折间";
-export const tagURL = (name: string) => href("tags/" + encodeURIComponent(tagSegment(name)) + "/");
+export const tagURL = (name: string) => href("search/") + "?" + new URLSearchParams({ tag: name });
+export const tagAnchor = (name: string) => "tag-" + encodeURIComponent(name);
 const calendar = new Intl.DateTimeFormat("en-CA", {
   timeZone: "Asia/Shanghai", year: "numeric", month: "2-digit", day: "2-digit",
 });

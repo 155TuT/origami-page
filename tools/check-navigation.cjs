@@ -280,13 +280,16 @@ async function checkHistoryAndAnchors(page) {
 }
 
 async function checkAuxiliaryPages(page) {
-  const tagPrefix = new URL("tags/", base).pathname;
-  const projectTag = await page.locator(".sheet-content a").evaluateAll((links, prefix) =>
-    links.find(link => link.pathname.startsWith(prefix) && link.pathname !== prefix)?.getAttribute("href"), tagPrefix);
-  assert.ok(projectTag, "the public project must contribute a tag");
+  const searchURL = new URL("search/", base);
+  const projectTag = await page.locator("article .tag-list a").first().getAttribute("href");
+  assert.equal(new URL(projectTag, base).pathname, searchURL.pathname);
+  assert.ok(new URL(projectTag, base).searchParams.get("tag"));
+  await directTurn(page, page.locator("article .tag-list a").first());
+  await linkTo(page, project, "[data-results]").waitFor({state: "visible"});
   await directTurn(page, linkTo(page, "works/", ".site-nav"));
-  await directTurn(page, linkTo(page, "tags/", ".sheet-content"));
+  await directTurn(page, linkTo(page, "search/", ".site-header"));
   await checkDocks(page);
+  assert.equal(await page.locator("main [data-entry-url]").count(), 0, "the idle search only contains tags");
   await directTurn(page, page.locator(`.sheet-content a[href="${projectTag}"]`).first());
   await checkDocks(page);
   await directTurn(page, linkTo(page, project, ".sheet-content"));
@@ -301,9 +304,34 @@ async function checkAuxiliaryPages(page) {
   await page.waitForURL(new URL("search/", base).href);
   await page.waitForFunction(() => document.activeElement === document.querySelector("main h1"));
   await checkDocks(page);
-  await page.locator('input[name="q"]').fill("折间");
-  await page.locator('input[name="q"]').press("Enter");
-  await linkTo(page, project, ".sheet-content").waitFor({state: "visible"});
+  const input = page.getByRole("searchbox");
+  await input.fill("编程");
+  assert.deepEqual(await page.locator("[data-tag-group]:visible h2").allTextContents(), ["编程与算法"]);
+  await input.fill("ｃ＋＋");
+  const chip = page.locator('[data-tag-name="C++"] a');
+  await chip.waitFor({state: "visible"});
+  const expectedCount = parseInt(await chip.locator("small").innerText(), 10);
+  await directTurn(page, chip);
+  assert.equal(new URL(page.url()).searchParams.get("tag"), "C++");
+  assert.equal(await page.locator("[data-results] [data-entry-url]").count(), expectedCount);
+  await page.goBack();
+  await page.waitForFunction(() => document.querySelector('input[name="q"]')?.value === "ｃ＋＋");
+  await page.goForward();
+  await page.waitForFunction(() => !document.querySelector("[data-results]")?.hidden);
+  await input.fill("Amanda Ghassaei");
+  assert.equal(await page.locator("[data-results]:visible").count(), 0);
+  await input.press("Enter");
+  await linkTo(page, project, "[data-results]").waitFor({state: "visible"});
+  assert.equal(new URL(page.url()).searchParams.get("q"), "Amanda Ghassaei");
+  await page.reload();
+  await linkTo(page, project, "[data-results]").waitFor({state: "visible"});
+  await input.fill("no-such-content-fold-qa");
+  await input.press("Enter");
+  await page.waitForFunction(() => document.querySelector('[role="status"]')?.textContent === "没有找到相关内容");
+  assert.equal(await page.locator("[data-results] [data-entry-url]").count(), 0);
+  await linkTo(page, "search/", "[data-reset]").click();
+  await page.waitForURL(searchURL.href);
+  assert.equal(await page.locator("[data-entry-url]").count(), 0);
 }
 
 async function checkPublicBoundary(page) {
@@ -315,7 +343,7 @@ async function checkPublicBoundary(page) {
   }, await feed.text());
   assert.ok(items.includes(new URL(project, base).pathname));
   assert.ok(!items.some(path => path.includes("/draft/")));
-  for (const privatePath of ["archives/draft/", "archives/draft/wind-in-the-folds/", "archives/wind-in-the-folds/",
+  for (const privatePath of ["tags/", "tags/C/", "archives/draft/", "archives/draft/wind-in-the-folds/", "archives/wind-in-the-folds/",
     "posts/wind-in-the-folds/", "archives/categories/折纸手记/", "categories/折纸手记/"]) {
     assert.equal((await page.request.get(new URL(privatePath, base).href)).status(), 404, privatePath);
   }
@@ -394,6 +422,13 @@ async function run() {
     await staticPage.waitForURL(new URL(project, base).href);
     assert.ok(await staticPage.locator("main h1").isVisible(), "the work must be readable without scripts");
     await checkDocks(staticPage, "works", "location");
+    await staticPage.locator("article .tag-list li").first().getByRole("link").click();
+    await linkTo(staticPage, project, "main details[open]").waitFor({state: "visible"});
+    await linkTo(staticPage, "search/", ".site-header").click();
+    assert.equal(await staticPage.locator("main details[open]").count(), 0);
+    const tag = staticPage.locator("main details").filter({hasText: "折纸"});
+    await tag.locator("summary").click();
+    await linkTo(staticPage, project, "main details[open]").waitFor({state: "visible"});
     await staticPage.close();
     assert.deepEqual(errors, []);
     console.log(engine, "passed five fold docks, direct routes, accessibility, history, themes and draft visibility");

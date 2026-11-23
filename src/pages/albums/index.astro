@@ -1,14 +1,12 @@
 ---
 import Site from "../../layouts/Site.astro";
-import { ActionLink, PageHeading, PostList } from "../../components/ui";
-import { href, published, toEntry } from "../../lib/blog";
+import { PageHeading, PostList } from "../../components/ui";
+import { published, toEntry } from "../../lib/blog";
 const albums = (await published("album")).map(toEntry);
 ---
 <Site title="影集">
   <section>
-    <PageHeading title="影集">
-      <ActionLink href={href("tags/")} arrow="↗">全部标签</ActionLink>
-    </PageHeading>
+    <PageHeading title="影集" />
     <PostList entries={albums} covers empty="还没有公开的影集。" />
   </section>
 </Site>

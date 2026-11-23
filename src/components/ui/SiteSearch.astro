@@ -1,77 +1,157 @@
 ---
-import { href, type PublicEntry } from "../../lib/blog";
+import { href, tagAnchor, type PublicEntry } from "../../lib/blog";
+import { groupedTags, searchText } from "../../lib/public-index";
+import ActionLink from "./ActionLink.astro";
 import ContentGroups from "./ContentGroups.astro";
+import SectionHeading from "./SectionHeading.astro";
+import TagList from "./TagList.astro";
 
 interface Props { entries: PublicEntry[]; }
 const { entries } = Astro.props;
-const index = entries.map(entry => [
-  entry.url,
-  [entry.title, entry.description, ...entry.tags, entry.text].join(" ").normalize("NFKC").toLowerCase(),
-]);
+const groups = groupedTags(entries);
+const index = entries.map(entry => ({
+  url: entry.url,
+  tags: entry.tags,
+  text: searchText([entry.title, entry.description, ...entry.tags, entry.text].join(" ")),
+}));
 ---
-<journal-search data-index={JSON.stringify(index)}>
-  <form role="search" action={href("search/")} hidden>
-    <input name="q" type="search" aria-label="搜索关键词" placeholder="搜索关键词" />
+<div class="site-search" data-search-index={JSON.stringify(index)}>
+  <form role="search" action={href("search/")} method="get" hidden>
+    <input name="q" type="search" aria-label="关键词或标签" placeholder="关键词" />
+    <button type="submit">全文搜索</button>
   </form>
-  <p role="status" aria-live="polite"></p>
-  <noscript>以下是全部公开内容，可使用浏览器的页内查找。</noscript>
-  <ContentGroups entries={entries} />
-</journal-search>
+  <div class="feedback">
+    <p role="status" aria-live="polite"></p>
+    <span data-reset hidden><ActionLink href={href("search/")}>全部标签</ActionLink></span>
+  </div>
+  <div class="groups" data-directory>
+    {groups.map(({ label, tags }) => (
+      <section class="tag-group" data-tag-group={label}>
+        <SectionHeading title={label} />
+        <TagList tags={tags} label={label} />
+        <noscript>
+          {tags.map(tag => (
+            <details>
+              <summary>{tag.name} <small>{tag.count} 项</small></summary>
+              <ul id={tagAnchor(tag.name)}>{tag.matches.map(entry => <li><a href={entry.url}>{entry.title}</a></li>)}</ul>
+            </details>
+          ))}
+        </noscript>
+      </section>
+    ))}
+    {!groups.length && <p>暂无公开标签。</p>}
+  </div>
+  <div class="groups" data-results hidden></div>
+  <template><ContentGroups entries={entries} /></template>
+  <noscript><style is:inline>.site-search .tag-list { display: none; }</style></noscript>
+</div>
 
 <script>
-  class JournalSearch extends HTMLElement {
-    connectedCallback() {
-      const form = this.querySelector("form")!;
-      const input = form.querySelector("input")!;
-      const status = this.querySelector('[role="status"]')!;
-      const records = new Map<string, string>(JSON.parse(this.dataset.index!));
-      const groups = Array.from(this.querySelectorAll<HTMLElement>("[data-content-group]"), group => ({
-        group, rows: Array.from(group.querySelectorAll<HTMLElement>("[data-entry-url]")),
-      }));
-      const filter = () => {
-        const query = input.value.trim();
-        const words = query.normalize("NFKC").toLowerCase().split(/\s+/u).filter(Boolean);
-        let total = 0;
-        for (const {group, rows} of groups) {
-          let visible = 0;
-          for (const row of rows) {
-            const text = records.get(row.dataset.entryUrl!) ?? "";
-            row.hidden = !words.every(word => text.includes(word));
-            if (!row.hidden) visible++;
-          }
-          group.hidden = visible === 0;
-          total += visible;
+  import { searchText } from "../../lib/public-index";
+
+  function initSearch() {
+    const root = document.querySelector<HTMLElement>("[data-search-index]");
+    if (!root) return;
+    const form = root.querySelector("form")!;
+    const input = form.querySelector("input")!;
+    const status = root.querySelector('[role="status"]')!;
+    const reset = root.querySelector<HTMLElement>("[data-reset]")!;
+    const directory = root.querySelector<HTMLElement>("[data-directory]")!;
+    const results = root.querySelector<HTMLElement>("[data-results]")!;
+    const groups = Array.from(directory.querySelectorAll<HTMLElement>("[data-tag-group]"), section => ({
+      section,
+      tags: Array.from(section.querySelectorAll<HTMLElement>("[data-tag-name]"), chip => ({
+        chip, text: searchText(section.dataset.tagGroup + " " + chip.dataset.tagName),
+      })),
+    }));
+
+    function showTags() {
+      const draft = input.value.trim();
+      const words = searchText(draft).split(/\s+/u).filter(Boolean);
+      let count = 0;
+      for (const {section, tags} of groups) {
+        let shown = 0;
+        for (const {chip, text} of tags) {
+          chip.hidden = !words.every(word => text.includes(word));
+          if (!chip.hidden) shown++;
         }
-        status.textContent = total ? (query ? `找到 ${total} 项内容` : "")
-          : (query ? "没有找到相关内容，可以换一个关键词。" : "暂无公开内容。");
-      };
-      input.value = new URLSearchParams(location.search).get("q") ?? "";
-      form.hidden = false;
-      filter();
-      input.oninput = () => {
-        const url = new URL(location.href);
-        if (input.value.trim()) url.searchParams.set("q", input.value.trim());
-        else url.searchParams.delete("q");
-        history.replaceState(history.state, "", url);
-        filter();
-      };
-      form.onsubmit = event => { event.preventDefault(); filter(); };
+        section.hidden = shown === 0;
+        count += shown;
+      }
+      directory.hidden = false;
+      results.hidden = true;
+      results.replaceChildren();
+      reset.hidden = !draft;
+      status.textContent = draft ? (count ? `找到 ${count} 个标签` : "没有匹配的标签。") : "";
     }
+
+    const params = new URLSearchParams(location.search);
+    const query = params.get("q")?.trim() ?? "";
+    const tag = params.get("tag") ?? "";
+    input.value = query || params.get("filter") || "";
+    form.hidden = false;
+    input.oninput = () => {
+      const url = new URL(form.action);
+      if (input.value.trim()) url.searchParams.set("filter", input.value.trim());
+      history.replaceState(history.state, "", url);
+      showTags();
+    };
+    form.onsubmit = event => {
+      input.value = input.value.trim();
+      if (!input.value) {
+        event.preventDefault();
+        history.replaceState(history.state, "", form.action);
+        showTags();
+      }
+    };
+
+    if (!query && !tag) {
+      showTags();
+      return;
+    }
+    const records: { url: string; tags: string[]; text: string }[] = JSON.parse(root.dataset.searchIndex!);
+    const words = searchText(query).split(/\s+/u).filter(Boolean);
+    const matches = new Set(records.filter(entry =>
+      (!tag || entry.tags.includes(tag)) && words.every(word => entry.text.includes(word))
+    ).map(entry => entry.url));
+    const fragment = root.querySelector("template")!.content.cloneNode(true) as DocumentFragment;
+    for (const row of fragment.querySelectorAll<HTMLElement>("[data-entry-url]")) {
+      if (!matches.has(row.dataset.entryUrl!)) row.remove();
+    }
+    for (const group of fragment.querySelectorAll("[data-content-group]")) {
+      if (!group.querySelector("[data-entry-url]")) group.remove();
+    }
+    results.replaceChildren(fragment);
+    results.hidden = !matches.size;
+    directory.hidden = true;
+    reset.hidden = false;
+    const total = matches.size ? `找到 ${matches.size} 项内容` : "没有找到相关内容";
+    status.textContent = tag ? `# ${tag} · ${total}` : total;
   }
-  if (!customElements.get("journal-search")) customElements.define("journal-search", JournalSearch);
+
+  document.addEventListener("astro:after-swap", initSearch);
+  initSearch();
 </script>
 
 <style>
-  journal-search { display: grid; gap: var(--space-6); min-width: 0; }
-  form { display: grid; gap: var(--space-2); }
+  .site-search, .groups, .tag-group { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--space-6); min-width: 0; }
+  .tag-group { gap: var(--space-3); }
+  form { display: flex; align-items: stretch; border: 1px solid var(--line-dark); border-radius: var(--radius-control); }
   input {
-    min-width: 0; width: 100%;
-    padding: var(--space-3) var(--space-4);
-    border: 1px solid var(--line-dark);
-    border-radius: var(--radius-control);
-    color: var(--ink); background: var(--surface); font-size: var(--text-body);
+    flex: 1; min-width: 0; padding: var(--space-3) var(--space-4);
+    border: 0; color: var(--ink); background: var(--surface); font-size: var(--text-body);
   }
   input::placeholder { color: var(--faint); }
-  [role="status"], noscript { color: var(--muted); font-size: var(--text-small); }
-  [role="status"]:empty { display: none; }
+  button {
+    flex: none; padding-inline: var(--space-3); border: 0; border-inline-start: 1px solid var(--line);
+    color: var(--accent); background: var(--surface); font-size: var(--text-small);
+    font-weight: var(--weight-medium); cursor: pointer;
+  }
+  button:hover { background: var(--wash); }
+  .feedback { display: flex; align-items: baseline; justify-content: space-between; flex-wrap: wrap; gap: var(--space-2); }
+  .feedback:has(p:empty):has([data-reset][hidden]) { display: none; }
+  [role="status"], summary small { color: var(--muted); font-size: var(--text-small); overflow-wrap: anywhere; }
+  summary { cursor: pointer; overflow-wrap: anywhere; }
+  details a { color: var(--accent); text-decoration: underline; }
+  @media (max-width: 567px) { input, button { padding-inline: var(--space-2); } }
 </style>
