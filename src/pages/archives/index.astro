@@ -1,16 +1,9 @@
 ---
 import Site from "../../layouts/Site.astro";
-import { ActionLink, ActionRow, PageHeading, PostList } from "../../components/ui";
-import { allPosts, href, localDraftPreview, toEntry } from "../../lib/blog";
+import { PostList } from "../../components/ui";
+import { allPosts, toEntry } from "../../lib/blog";
 const posts = (await allPosts()).map(toEntry);
 ---
 <Site title="文章">
-  <section>
-    <PageHeading title="文章">
-      <ActionRow>
-        {localDraftPreview(Astro.url) && <ActionLink href={href("archives/draft/")} arrow="→">本地草稿</ActionLink>}
-      </ActionRow>
-    </PageHeading>
-    <PostList entries={posts} empty="还没有公开的文章。" />
-  </section>
+  <PostList entries={posts} empty="还没有公开的文章。" />
 </Site>

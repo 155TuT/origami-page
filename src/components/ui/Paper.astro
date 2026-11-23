@@ -1,12 +1,14 @@
 ---
 import type { Section } from "../../lib/sections";
+import PageHeading from "./PageHeading.astro";
 import PaperFooter from "./PaperFooter.astro";
 
-interface Props { section?: Section | null; ruling?: "grid" | "ruled"; }
-const { section, ruling = "ruled" } = Astro.props;
+interface Props { title: string; hasContentHeading?: boolean; section?: Section | null; ruling?: "grid" | "ruled"; }
+const { title, hasContentHeading = false, section, ruling = "ruled" } = Astro.props;
 ---
 <div class="paper-slot">
-  <main id="content" class="site-main" tabindex="0" data-fold-paper={section} data-ruling={ruling}>
+  <main id="content" class="site-main" aria-labelledby="page-title" tabindex="0" data-fold-paper={section} data-ruling={ruling}>
+    {!hasContentHeading && <PageHeading title={title} visuallyHidden />}
     <div class="sheet-ink">
       <div class="sheet-content"><slot /></div>
       <PaperFooter />

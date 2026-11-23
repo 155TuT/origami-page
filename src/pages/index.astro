@@ -1,13 +1,13 @@
 ---
 import Site from "../layouts/Site.astro";
-import { PageHeading, Prose } from "../components/ui";
+import { Prose } from "../components/ui";
 import { profile, contactEmail } from "../lib/profile";
 import { sectionURL } from "../lib/sections";
 ---
-<Site title="关于我" description={profile.introduction}>
+<Site title={profile.name || "关于我"} description={profile.introduction}>
   <article>
-    <PageHeading title={profile.name || "关于我"} />
     <Prose>
+      {profile.name && <p>{profile.name}</p>}
       <p>{profile.introduction}</p>
       <h2>经历</h2>
       {profile.experience.length ? profile.experience.map(item => (

@@ -13,7 +13,7 @@ const { Content } = await render(album);
 const { title, description, tags, date, photos = [], ruling } = album.data;
 const cover = albumCover(album);
 ---
-<Site title={title} description={description} ruling={ruling}>
+<Site title={title} hasContentHeading description={description} ruling={ruling}>
   <article>
     <PageHeading title={title}>
       <PostDate date={date} />

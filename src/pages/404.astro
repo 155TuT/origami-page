@@ -1,11 +1,11 @@
 ---
 import Site from "../layouts/Site.astro";
-import { ActionLink, ActionRow, PageHeading } from "../components/ui";
+import { ActionLink, ActionRow } from "../components/ui";
 import { sectionURL } from "../lib/sections";
 ---
 <Site title="找不到这一页" current={null}>
   <section>
-    <PageHeading title="找不到这一页" ruled={false} />
+    <p>找不到这一页。</p>
     <ActionRow>
       <ActionLink variant="primary" href={sectionURL("home")} arrow="→">返回首页</ActionLink>
       <ActionLink href={sectionURL("articles")} arrow="↗">全部文章</ActionLink>

@@ -1,7 +1,7 @@
 ---
 import { render } from "astro:content";
 import Site from "../../../layouts/Site.astro";
-import { ActionLink, ContentColumns, PageHeading, PostArticle, PostList, TableOfContents } from "../../../components/ui";
+import { ActionLink, ContentColumns, PostArticle, PostList, TableOfContents } from "../../../components/ui";
 import { allDrafts, entrySlug, href, localDraftPreview, toEntry, type Post } from "../../../lib/blog";
 
 export async function getStaticPaths() {
@@ -18,12 +18,12 @@ if (!localDraftPreview(Astro.url)) return new Response(null, { status: 404 });
 const { post, drafts = [] } = Astro.props;
 const rendered = post && await render(post);
 ---
-<Site title={post?.data.title ?? "本地草稿"} description={post?.data.description} ruling={post?.data.ruling}>
+<Site title={post?.data.title ?? "本地草稿"} hasContentHeading={!!post} description={post?.data.description} ruling={post?.data.ruling}>
   {post && rendered ? <ContentColumns>
     <PostArticle post={post}><rendered.Content /></PostArticle>
     <TableOfContents slot="aside" headings={rendered.headings} returnHref={href("archives/draft/")} returnLabel="返回草稿列表" />
   </ContentColumns> : <section>
-    <PageHeading title="本地草稿"><ActionLink href={href("archives/")}>返回文章</ActionLink></PageHeading>
+    <ActionLink href={href("archives/")}>返回文章</ActionLink>
     <PostList entries={drafts.map(toEntry)} empty="暂无草稿。" />
   </section>}
 </Site>

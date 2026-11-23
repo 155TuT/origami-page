@@ -8,11 +8,12 @@ import deskTexture from "../scripts/desk-texture.cjs?raw";
 import "../styles/global.css";
 interface Props {
   title?: string;
+  hasContentHeading?: boolean;
   description?: string;
   current?: Section | null;
   ruling?: "ruled" | "grid";
 }
-const { title, description = "折间，收录个人作品、文章和摄影集。",
+const { title, hasContentHeading = false, description = "折间，收录个人作品、文章和摄影集。",
   current = sectionForPath(Astro.url.pathname), ruling = "ruled" } = Astro.props;
 const documentTitle = title ? title + " · " + siteName : siteName + " · Fold Journal";
 const canonical = Astro.site && new URL(Astro.url.pathname, Astro.site);
@@ -39,7 +40,7 @@ const canonical = Astro.site && new URL(Astro.url.pathname, Astro.site);
   <body>
     <DeskBackdrop />
     <SiteHeader current={current} />
-    <Paper section={current} ruling={ruling}><slot /></Paper>
+    <Paper title={title || siteName} hasContentHeading={hasContentHeading} section={current} ruling={ruling}><slot /></Paper>
     <FoldStage />
     <script>
       import "../scripts/navigation";

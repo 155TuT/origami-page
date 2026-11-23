@@ -1,20 +1,21 @@
 ---
 import Site from "../layouts/Site.astro";
-import { ActionLink, FriendCard, PageHeading, SectionHeading } from "../components/ui";
+import { ActionLink, FriendCard, SectionHeading } from "../components/ui";
 import { friends } from "../lib/friends";
 import { contactEmail } from "../lib/profile";
 import { sectionURL } from "../lib/sections";
-const groups = { friends: "我的朋友", reading: "我常读的网站" };
+const groups = [
+  { title: "我的朋友", sites: friends.filter(site => site.group === "friends") },
+  { title: "我常读的网站", sites: friends.filter(site => site.group === "reading") },
+].filter(group => group.sites.length > 0);
 ---
 <Site title="友链" current={null}>
-  <PageHeading title="友链" />
-  {Object.entries(groups).map(([group, title]) => {
-    const sites = friends.filter(site => site.group === group);
-    return sites.length > 0 && <section>
-      <SectionHeading title={title} />
+  {groups.map(({ title, sites }) => (
+    <section>
+      <SectionHeading title={title} visuallyHidden={groups.length === 1} />
       {sites.map(friend => <FriendCard friend={friend} />)}
-    </section>;
-  })}
+    </section>
+  ))}
   {!friends.length && <p>暂无友链。</p>}
   {contactEmail && <ActionLink href={sectionURL("home") + "#contact"}>联系我</ActionLink>}
 </Site>

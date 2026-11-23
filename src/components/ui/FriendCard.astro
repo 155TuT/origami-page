@@ -34,6 +34,7 @@ const date = latest?.date ?? latest?.updated;
 
 <style>
   article { padding-block: var(--space-5); border-bottom: 1px solid var(--line); overflow-wrap: anywhere; }
+  :global(.visually-hidden) + article { padding-block-start: 0; }
   h3 { font: var(--weight-heading) var(--text-post-title)/1.5 var(--serif); }
   h3 a:hover { color: var(--accent); }
   .site { display: flex; align-items: center; gap: var(--space-3); }

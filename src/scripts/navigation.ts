@@ -138,8 +138,7 @@ function installNavigation() {
     current = undefined;
     if (nav.keyboard && nav.event.navigationType !== "traverse" && !location.hash &&
         (document.activeElement === document.body || !document.activeElement)) {
-      const heading = document.querySelector<HTMLElement>("main h1");
-      if (heading) { heading.tabIndex = -1; heading.focus({ preventScroll: true }); }
+      document.getElementById("content")?.focus({ preventScroll: true });
     }
   });
 

@@ -1,30 +1,21 @@
 ---
-interface Props {
-  title: string;
-  eyebrow?: string;
-  eyebrowHref?: string;
-  description?: string;
-  ruled?: boolean;
-}
-const { title, eyebrow, eyebrowHref, description, ruled = true } = Astro.props;
+interface Props { title: string; visuallyHidden?: boolean; }
+const { title, visuallyHidden = false } = Astro.props;
 ---
-<header class:list={["page-heading", { ruled }]}>
-  {eyebrow && (eyebrowHref ? <a class="eyebrow" href={eyebrowHref}>{eyebrow}</a> : <p class="eyebrow">{eyebrow}</p>)}
-  <h1>{title}</h1>
-  {description && <p class="description">{description}</p>}
-  <slot />
-</header>
+{visuallyHidden ? <h1 id="page-title" class="visually-hidden">{title}</h1> : (
+  <header class="content-heading">
+    <h1 id="page-title">{title}</h1>
+    <slot />
+  </header>
+)}
 
 <style>
-  .ruled { padding-block-end: var(--space-6); border-block-end: 1px solid var(--line-dark); }
-  .eyebrow { color: var(--accent); font: var(--type-eyebrow); letter-spacing: .1em; }
-  a.eyebrow:hover { text-decoration: underline; text-underline-offset: .23em; }
-  h1 {
-    margin: 0 0 var(--space-2);
+  .content-heading { padding-block-end: var(--space-6); border-block-end: 1px solid var(--line-dark); }
+  .content-heading h1 {
+    margin-block-end: var(--space-2);
     font: var(--weight-bold) var(--text-title)/1.2 var(--serif);
     letter-spacing: -.055em;
+    text-spacing-trim: space-all;
     overflow-wrap: anywhere;
   }
-  .eyebrow + h1 { margin-top: var(--space-2); }
-  .description { color: var(--muted); font-size: var(--text-ui); }
 </style>

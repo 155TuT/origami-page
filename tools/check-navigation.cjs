@@ -42,6 +42,20 @@ async function checkTextureCache(page) {
   page.off("request", track);
 }
 
+async function checkPageTitle(page, visible) {
+  const heading = page.getByRole("main").getByRole("heading", { level: 1 });
+  assert.equal(await heading.count(), 1);
+  const name = (await heading.textContent()).trim();
+  assert.ok(name && (await page.title()).startsWith(name + " · "));
+  assert.equal(await page.getByRole("main", { name, exact: true }).count(), 1);
+  const { width, height, clipped } = await heading.evaluate(node => {
+    const box = node.getBoundingClientRect();
+    return { width: box.width, height: box.height, clipped: getComputedStyle(node).clipPath !== "none" };
+  });
+  if (visible) assert.ok(width > 1 && height > 1 && !clipped, "show the content title: " + name);
+  else assert.ok(width <= 1 && height <= 1 && clipped, "keep the entry name off the sheet: " + name);
+}
+
 async function checkLayout(page) {
   const layout = await page.evaluate(() => {
     const rect = selector => document.querySelector(selector).getBoundingClientRect();
@@ -291,6 +305,7 @@ async function checkAuxiliaryPages(page) {
   await checkDocks(page);
   assert.equal(await page.locator("main [data-entry-url]").count(), 0, "the idle search only contains tags");
   await directTurn(page, page.locator(`.sheet-content a[href="${projectTag}"]`).first());
+  await checkPageTitle(page, false);
   await checkDocks(page);
   await directTurn(page, linkTo(page, project, ".sheet-content"));
   await checkDocks(page, "works", "location");
@@ -302,8 +317,10 @@ async function checkAuxiliaryPages(page) {
   await search.focus();
   await page.keyboard.press("Enter");
   await page.waitForURL(new URL("search/", base).href);
-  await page.waitForFunction(() => document.activeElement === document.querySelector("main h1"));
+  await page.waitForFunction(() => document.activeElement === document.querySelector("main#content"));
   await checkDocks(page);
+  await page.keyboard.press("Tab");
+  assert.ok(await page.getByRole("searchbox").evaluate(input => input === document.activeElement));
   const input = page.getByRole("searchbox");
   await input.fill("编程");
   assert.deepEqual(await page.locator("[data-tag-group]:visible h2").allTextContents(), ["编程与算法"]);
@@ -398,11 +415,19 @@ async function run() {
       await page.setViewportSize(viewport);
       for (const dark of [false, true]) {
         await setting(page, "theme", dark);
-        for (const path of ["", project, "404.html"]) {
+        for (const [path, visibleTitle] of [
+          ["", false], ["works/", false], ["archives/", false], ["albums/", false],
+          ["search/", false], ["friends/", false], ["404.html", false],
+          [project, true], ["archives/learn-of-stylessp/", true], ["archives/class-source-list/", true],
+        ]) {
           await page.goto(new URL(path, base).href);
           await page.waitForSelector("html[data-enhanced]", { state: "attached" });
           assert.equal(await page.locator("html").getAttribute("data-theme"), dark ? "dark" : "light");
+          await checkPageTitle(page, visibleTitle);
           await checkLayout(page);
+          if (["works/", "archives/", "albums/"].includes(path)) {
+            assert.equal(await page.locator(".sheet-content .action-link").count(), 0, "the listing must start with its entries");
+          }
           if (path === "404.html") {
             await checkDocks(page);
             if (viewport.width === 1440) assert.equal(await page.locator("#content")
@@ -419,10 +444,12 @@ async function run() {
     await staticPage.goto(base.href);
     await checkDocks(staticPage, "home", "page");
     const profile = staticPage.locator("main article .prose");
+    await checkPageTitle(staticPage, false);
     assert.deepEqual(await profile.locator("h2").allTextContents(), ["经历", "代表项目", "联系方式"]);
     await linkTo(staticPage, project, "main article .prose").click();
     await staticPage.waitForURL(new URL(project, base).href);
-    assert.ok(await staticPage.locator("main h1").isVisible(), "the work must be readable without scripts");
+    await checkPageTitle(staticPage, true);
+    assert.ok(await staticPage.locator("main article .prose p").first().isVisible(), "the work must be readable without scripts");
     await checkDocks(staticPage, "works", "location");
     await staticPage.locator("article .tag-list li").first().getByRole("link").click();
     await linkTo(staticPage, project, "main details[open]").waitFor({state: "visible"});

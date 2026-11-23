@@ -63,7 +63,6 @@
   --text-deck: clamp(17px, 1.5vw, 20px);
   --leading-body: 1.65;
   --leading-prose: 1.95;
-  --type-eyebrow: var(--weight-semibold) var(--text-meta)/1.5 var(--sans);
   --type-count: var(--text-caption)/1.5 var(--mono), var(--sans);
 
   --space-1: 4px;
