@@ -22,6 +22,8 @@ export const collections = {
       ruling: z.enum(["ruled", "grid"]).default("ruled"),
       art: z.enum(["crane", "river"]).optional(),
       category: z.string().optional(),
+      legacyPath: z.string().regex(/^\d{4}\/\d{2}\/\d{2}\/[^/]+$/).optional(),
+      sticky: z.number().optional(),
       cover: photo.optional(),
       photos: z.array(photo).min(1).optional(),
     }),

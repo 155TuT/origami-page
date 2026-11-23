@@ -1,0 +1,15 @@
+---
+import { allPosts, href, postURL } from "../lib/blog";
+
+export async function getStaticPaths() {
+  const posts = await allPosts();
+  const aliases = posts.flatMap(post => post.data.legacyPath
+    ? [{ params: { legacy: post.data.legacyPath }, props: { to: postURL(post) } }]
+    : []);
+  return [
+    ...aliases,
+    { params: { legacy: "links" }, props: { to: href("friends/") } },
+  ];
+}
+return Astro.redirect(Astro.props.to, 301);
+---
