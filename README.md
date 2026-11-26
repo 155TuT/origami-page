@@ -58,7 +58,7 @@ ruling: ruled
 ## 作品、影集与个人资料
 
 - 在 `src/content/works/` 添加带标题、摘要、日期和标签的 Markdown。站点自身的案例在 `/works/fold-journal/`，可从页脚版权或个人介绍正文中的「折间」链接打开。
-- 在 `src/content/albums/` 发布影集，使用 `photos` 数组按观看顺序填写每张照片的 `src`、`alt` 与可选的 `caption`。`cover` 可指定单独的封面，默认取第一张照片。公开照片可放进 `public/`，也可填 R2 图片子域名的完整 HTTPS 地址。每册拥有独立地址 `/albums/<slug>/`。[R2 建桶、上传与引用示例](docs/r2-images.md)
+- 在 `src/content/albums/` 添加一本影集，按观看顺序在 `photos` 中填写每张照片的 `src`、`alt` 和可选的 `caption`。首张照片默认作封面，也可用 `cover` 另选。每册发布到 `/albums/<slug>/`。照片可以随站点放在 `public/`，也可以上传到腾讯云对象存储（COS），在 `src` 中填写图片子域名的完整 HTTPS 地址。[COS 图床配置与迁移](docs/cos-images.md)
 - 在 [个人资料配置](src/lib/profile.ts) 填写署名、自我介绍、经历和邮箱。首页从自我介绍开始，填写署名后会在首段前以正文字号显示。经历和邮箱留空时分别显示「暂无公开经历」和「邮箱暂未公开」。也可用 `PUBLIC_CONTACT_EMAIL` 设置邮箱，公开后友链页的「联系我」指向首页的「联系方式」段落 `/#contact`。
 - 友链名录在 `src/data/friends.json`。每条填写分组 `group`（`friends` 或 `reading`）、站名 `name`、主页 `url`、推荐语 `note` 与手选文章 `picks`（每篇含 `title`、`url`）。用 `feed` 指定 RSS/Atom 地址，也可以用 `latest` 手填最新文章及可选日期 `date`。`npm run sync:friends` 从对方的订阅源同步最新一篇文章，构建时也会同步。`src/data/friend-updates.json` 保存成功结果。保留此快照即可在后续构建遇到源站离线时继续展示。
 - 正式部署时将 `SITE_URL` 设为站点源地址。`/feed.xml` 在每次构建时收录已发布的作品、文章和影集，并使用含部署前缀的绝对链接。
@@ -102,6 +102,8 @@ ruling: ruled
 | `public/art/` | 从同一模型和河岸绘图生成的静态插图，支持无脚本阅读 |
 | `models/crane/`、`tools/` | 折痕、原始姿态、模型烘焙和打包工具 |
 
-在 [字体与页面功能图标对照板](prototype/selection/index.html) 比较正文、界面字体和工具图标，在 [栏目折纸对照板](prototype/selection/folds.html) 试选四个栏目的折姿与停靠组合。两张板保存在 `prototype/selection/`，可在本地打开，也可从项目根目录用静态 HTTP 服务器预览。
+## 原型实验
 
-最初的两篇互切实验保存在 [prototype](prototype/index.html)。博客构建只发布 Astro 页面。原实验的[渲染实测](docs/渲染回退与博客集成.md)和[模型说明](docs/实现与多图标扩展.md)保留供对照。纸鹤折痕来源见[第三方署名](THIRD-PARTY-NOTICES.txt)。
+从项目根目录启动静态服务器，打开 `/prototype/`，就可以在「折纸手记」和「散步笔记」之间切换。`prototype/docs/` 收录了纸鹤的折叠过程图、两轮渲染实测数据，以及当时接入博客框架的实验记录。[双页原型](prototype/index.html) · [模型与多图标扩展](prototype/docs/实现与多图标扩展.md) · [渲染回退与博客集成](prototype/docs/渲染回退与博客集成.md) · [折痕来源与许可](THIRD-PARTY-NOTICES.txt)
+
+两张对照板都可以在本地打开。一张用于比较正文字体、界面字体和工具图标，另一张用于试选四个栏目的折姿和停靠位置。[字体与功能图标对照板](prototype/selection/index.html) · [栏目折纸对照板](prototype/selection/folds.html)
