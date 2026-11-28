@@ -199,10 +199,13 @@ async function checkDocks(page, active, current) {
     outline: getComputedStyle(node, "::before").maskImage,
   })));
   assert.deepEqual(docks.map(dock => dock.id), ["home", "works", "articles", "albums"]);
-  assert.deepEqual(docks.map(dock => dock.model), ["crane", "scissors", "paper-boat", "kawasaki-rose"]);
+  assert.deepEqual(docks.map(dock => dock.model), ["crane", "crown", "paper-boat", "kawasaki-rose"]);
   assert.equal(new Set(docks.map(dock => dock.print)).size, 4, "each section has its own solid print");
   assert.equal(new Set(docks.map(dock => dock.outline)).size, 4, "each section has its own fold outline");
   for (const dock of docks) {
+    const assetDir = new URL("art/folds/" + dock.model + "/", base);
+    assert.equal(dock.print, new URL("solid.png", assetDir).href);
+    assert.ok(dock.outline.includes(new URL("outline.svg", assetDir).href));
     assert.equal(dock.width, 39, "all four sections keep the 39 px docking frame");
     assert.equal(dock.current, dock.id === active ? current : null);
     assert.equal(dock.solid, dock.id === active ? "hidden" : "visible");
