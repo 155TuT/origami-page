@@ -57,8 +57,22 @@ async function checkPageTitle(page, visible) {
 }
 
 async function checkLayout(page) {
-  const layout = await page.evaluate(() => {
+  const layout = await page.evaluate(async () => {
+    await document.fonts.ready;
     const rect = selector => document.querySelector(selector).getBoundingClientRect();
+    const inkBottom = selector => {
+      const label = document.querySelector(selector);
+      const style = getComputedStyle(label);
+      const ctx = document.createElement("canvas").getContext("2d");
+      ctx.font = [style.fontStyle, style.fontWeight, style.fontSize, style.fontFamily].join(" ");
+      const descent = ctx.measureText(label.textContent).actualBoundingBoxDescent;
+      const baseline = document.createElement("span");
+      baseline.style.display = "inline-block";
+      label.append(baseline);
+      const y = baseline.getBoundingClientRect().bottom;
+      baseline.remove();
+      return y + descent;
+    };
     const sheet = document.querySelector("#content");
     const originalTop = sheet.scrollTop;
     sheet.scrollTop = 0;
@@ -91,7 +105,7 @@ async function checkLayout(page) {
       path: location.pathname, width: window.innerWidth, sheetWidth: paper.width, sheetLeft: paper.left,
       brand: brand.left - paper.left,
       menu: stacked ? (nav[0].left + nav.at(-1).right - window.innerWidth) / 2 : nav.at(-1).right - paper.right,
-      wordmark: rect(".wordmark i").bottom - rect(".wordmark strong").bottom,
+      wordmark: inkBottom(".wordmark i") - inkBottom(".wordmark strong"),
       menuFits: nav[0].left >= 0 && nav.at(-1).right <= window.innerWidth &&
         nav.slice(1).every((link, i) => link.left >= nav[i].right),
       toolGap: tools.left - brand.right,

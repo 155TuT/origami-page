@@ -4,11 +4,13 @@
   .prose {
     color: var(--ink);
     font: var(--weight-regular) var(--text-prose)/var(--leading-prose) var(--serif);
+    font-synthesis: weight;
     overflow-wrap: anywhere;
   }
   .prose > :global(*) { margin-block: 1em; }
   .prose > :global(:last-child) { margin-block-end: 0; }
-  .prose :global(:is(h2, h3)) { margin: 1.6em 0 .5em; font-weight: var(--weight-bold); line-height: 1.5; }
+  .prose :global(:is(h1, h2, h3, h4, h5, h6)) { font-weight: var(--weight-heading); }
+  .prose :global(:is(h2, h3)) { margin: 1.6em 0 .5em; line-height: 1.5; }
   .prose :global(h2) { font-size: var(--text-prose-h2); }
   .prose :global(h3) { font-size: var(--text-prose-h3); }
   .prose:first-child > :global(:first-child) { margin-block-start: 0; }
@@ -17,6 +19,9 @@
   .prose :global(img) { border: 1px solid var(--line); }
   .prose :global(.katex) { display: inline-block; max-width: 100%; overflow-x: auto; vertical-align: middle; }
   .prose :global(.katex:has(> math[display="block"])), .prose :global(table) { display: block; max-width: 100%; overflow-x: auto; }
+  .prose :global(math) { font-family: var(--math); }
+  .prose :global(math mtext) { font-family: var(--math); }
+  .prose :global(math [mathvariant="monospace"]) { font-family: var(--mono); font-style: normal; text-transform: none; }
   .prose :global(math[display="block"]) { width: max-content; margin-inline: auto; }
   .prose :global(table) { border-collapse: collapse; }
   .prose :global(:is(th, td)) { padding: var(--space-1) var(--space-2); border-bottom: 1px solid var(--line); }
@@ -25,7 +30,8 @@
     padding: var(--space-3) var(--space-4);
     border: 1px solid var(--line);
     border-radius: var(--radius-control);
-    font: var(--text-small)/1.6 var(--mono);
+    font-size: var(--text-small);
+    line-height: 1.6;
   }
   .prose :global(:not(pre) > code) { padding: 2px var(--space-1); background: var(--wash); font: .85em var(--mono); }
   .prose :global(blockquote) { margin-inline: 0; padding-inline-start: 1em; border-inline-start: 3px solid var(--line-dark); color: var(--muted); }

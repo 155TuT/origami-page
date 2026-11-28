@@ -5,50 +5,56 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>栏目折纸 · 折间</title>
   <link rel="stylesheet" href="../../src/styles/tokens.css">
+  <link rel="stylesheet" href="./selection.css">
   <link rel="stylesheet" href="./folds.css">
+  <style id="desk-texture"></style>
+  <script src="../../src/scripts/desk-texture.cjs"></script>
+  <script src="./selection.js" defer></script>
+  <script src="./fold-catalog.js" defer></script>
+  <script src="./fold-poses.js" defer></script>
   <script src="./fold-shapes.js" defer></script>
   <script src="./folds.js" defer></script>
 </head>
 <body>
-  <header>
-    <div class="masthead">
-      <a class="brand" href="./index.html">折间 <i lang="en">Fold Journal</i></a>
-      <nav aria-label="选型对照">
-        <a href="./index.html#type">字体</a>
-        <a href="./index.html#icons">页面功能图标</a>
-        <a aria-current="page" href="#top">栏目折纸</a>
-        <a href="./index.html#specimen">页面试排</a>
+  <a class="skip" href="#fold-title">跳到栏目折纸</a>
+  <header class="bar">
+    <div class="bar-inner">
+      <a class="wordmark" href="./index.html"><strong>折间</strong><i lang="en">Fold Journal</i></a>
+      <nav aria-label="样张导航">
+        <a href="./index.html#specimen">正文试排</a>
+        <a href="./index.html#technical">代码与公式</a>
+        <a href="./index.html#icons">功能图标</a>
+        <a href="./folds.html" aria-current="page">栏目折纸</a>
       </nav>
-      <button id="theme" type="button">深色纸面</button>
+      <button class="theme-toggle" type="button"><span aria-hidden="true"></span><span id="theme-label">深色纸面</span></button>
     </div>
   </header>
-  <main id="top">
-    <h1>栏目折纸</h1>
-    <section class="proof" aria-label="四个栏目停靠预览">
-      <div class="spread" aria-hidden="true">
-        <div class="model"><div id="print"></div><span>实心</span></div>
-        <div class="model"><div id="outline"></div><span>线稿</span></div>
+  <main class="fold-page">
+    <header class="fold-heading">
+      <h1 id="fold-title">栏目折纸</h1>
+      <p>首页留给千纸鹤，作品集用纸剪刀。文章比较四种可撑开的纸船，影集从较高角度看川崎玫瑰的花心。</p>
+    </header>
+    <section aria-labelledby="dock-title" class="fold-dock-proof">
+      <div class="section-heading">
+        <h2 id="dock-title">并排看轮廓</h2>
+        <fieldset class="segment" id="fold-sizes">
+          <legend class="sr-only">停靠样张宽度</legend>
+          <label><input type="radio" name="fold-size" value="22" checked>22 px</label>
+          <label><input type="radio" name="fold-size" value="39">39 px</label>
+        </fieldset>
       </div>
-      <div class="proof-info">
-        <h2 id="model-name"></h2>
-        <p id="motion"></p>
-        <div class="size-control" role="group" aria-label="停靠预览宽度">
-          <button type="button" data-width="39" aria-pressed="true">39 px</button>
-          <button type="button" data-width="22" aria-pressed="false">22 px</button>
-        </div>
+      <div class="fold-docks" role="group" aria-label="选择要比较的栏目"></div>
+      <p class="fold-proof-note">点选栏目查看折边。下方选中的纸船会出现在「文章」位置。</p>
+    </section>
+    <section class="fold-study" aria-labelledby="fold-section-name">
+      <div class="fold-study-header">
+        <h2 id="fold-section-name"></h2>
+        <div id="fold-options" role="group" aria-label="并排比较文章的四种纸船"></div>
       </div>
-      <div class="docks" role="group" aria-label="选择当前栏目"></div>
+      <div id="fold-detail"></div>
     </section>
-    <section aria-labelledby="choices">
-      <h2 id="choices">四个栏目的选形</h2>
-      <div id="rows"></div>
-    </section>
-    <details>
-      <summary>从选形到换页</summary>
-      <p>顶栏停留时，当前栏目露出线稿，其余栏目显示实心。跨栏目时，纸面先折回旧图标，再从新图标的位置展开。同栏目内直接换内容。</p>
-      <p>千纸鹤引用站内已有模型的末帧。其余七件是为这次选型绘制的折面草图。选定后要制作可连续收展的折痕模型，再从同一停靠视角导出实心图与可见边线稿，核对飞行末帧的边距和轮廓。</p>
-    </details>
-    <noscript>请启用 JavaScript 查看折纸样张和停靠预览。</noscript>
+    <p class="fold-notes">纸鹤与四种船的方位角为 −30°，仰角为 30°。玫瑰沿用同一方位，将仰角抬至 60°。各款实心和线稿来自同一折姿。<a href="./fold-art/credits.md">折姿与图版来源</a></p>
+    <noscript>请启用 JavaScript 查看折纸资料与停靠样张。</noscript>
   </main>
 </body>
 </html>

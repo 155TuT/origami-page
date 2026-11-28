@@ -1,24 +1,17 @@
-# 折间功能图标样张
+# 折间功能图标
 
-图版把三套图标放在相同的尺寸和纸色上，比较搜索、阅读设置、订阅、打开外链、邮件和向右六种动作。四个一级栏目的实心折纸、线稿与收展动效由项目 VI 单独定义。
+八枚图形取自 Phosphor 作者维护的 `@phosphor-icons/core`，固定到 v2.0.8 的 Regular 版本。每个用途对应一个名字，点击对照板中的图标可查看该枚 SVG 原稿。[官方仓库](https://github.com/phosphor-icons/core) · [固定版本的 Regular 目录](https://github.com/phosphor-icons/core/tree/v2.0.8/assets/regular) · [随附 MIT 许可](phosphor-LICENSE.txt)
 
-| 动作 | Lucide 1.78.0 | Tabler Outline 3.52.0 | Phosphor Regular 2.0.8 |
-| --- | --- | --- | --- |
-| 搜索 | search | search | magnifying-glass |
-| 阅读设置 | sliders-horizontal | adjustments-horizontal | sliders-horizontal |
-| RSS | rss | rss | rss-simple |
-| 打开外链 | external-link | external-link | arrow-square-out |
-| 邮件 | mail | mail | envelope-simple |
-| 向右 | arrow-right | arrow-right | arrow-right |
+| 场景 | 用途 | 上游名称 |
+| --- | --- | --- |
+| 顶栏 | 全站搜索 | magnifying-glass |
+| 顶栏 | 阅读设置 | sliders-horizontal |
+| 正文 | 本篇目录 | list-bullets |
+| 文末 | 上一篇、下一篇 | arrow-left、arrow-right |
+| 友链与项目 | 打开外部原文 | arrow-square-out |
+| 个人介绍 | 邮件联系 | envelope-simple |
+| 页脚 | RSS 订阅 | rss-simple |
 
-**优先试用 Tabler Outline。** 阅读设置的空心圆钮呼应折间现有顶栏。搜索、邮件和外链共用圆头线，缩到工具栏尺寸后仍能辨认。入站时可以单独调整 24 单位画框上的描边粗细，与现有 19 px 工具按钮对齐。图版展示上游默认值，便于横向比较。
+阅读设置保留两条横轨和两个空心滑钮。前后篇采用成对的水平箭头，跳出本站的箭头带外框。信封与订阅各用简化版，减少 16 px 下相邻线条的密度。样张默认显示折间顶栏工具使用的 19 px，也可对照 16 和 24 px。
 
-Lucide 同样使用 24 单位画框和 2 单位圆头描边。它把阅读设置的钮简化为短直线，适合想减少细节时采用。Phosphor Regular 用封闭的填充路径描绘曲线和圆点，图版等比缩放其 256 单位画框。要改变它的线条分量，可以采用同库的 Light 或 Bold 字重。
-
-## 素材与许可
-
-- Lucide 1.78.0 使用 ISC 许可。本组的 search、rss、external-link 和 arrow-right 也在上游列出的 Feather 衍生图标之内，附带 Feather 的 MIT 声明。[上游 SVG](https://github.com/lucide-icons/lucide/tree/1.78.0/icons) · [随附完整许可](lucide-LICENSE.txt)
-- Tabler Outline 3.52.0 使用 MIT 许可，作者为 Paweł Kuna。[上游 SVG](https://github.com/tabler/tabler-icons/tree/v3.52.0/icons/outline) · [随附完整许可](tabler-LICENSE.txt)
-- Phosphor Regular 2.0.8 使用 MIT 许可，版权归 Phosphor Icons。[上游 SVG](https://github.com/phosphor-icons/core/tree/v2.0.8/assets/regular) · [随附完整许可](phosphor-LICENSE.txt)
-
-两个分发文件共用相同的 18 个 symbol。`sprite.svg` 可作静态 SVG 使用，`sprite.js` 为双击打开的本地图版内联同一份图形。每个 symbol 保留上游图形元素，继承调用处的 `currentColor`，并统一为 24 单位画框。
+[sprite.svg](sprite.svg) 中的八个 symbol 保留官方的 `0 0 256 256` 画框及路径，使用 `currentColor` 随纸面主题着色。离线样张用 [sprite.js](sprite.js) 内联同一套 symbol，以支持双击 HTML 预览。四个栏目的模型单独在[折纸选型页](../folds.html)中试选。

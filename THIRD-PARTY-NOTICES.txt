@@ -25,3 +25,31 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+
+网站字体 · Site fonts
+
+汇文明朝体 GBK 1.001，特里王（TerryWang），2022。本站从原版抽取按需加载的
+WOFF2 分片，保留原版字符。作者允许显示、嵌入、分发及制作衍生字体，禁止单独
+转售字体文件。作者的完整声明见 font-licenses/huiwen-mincho-gbk.txt。
+https://huozi.cool/article/1780107027757.html
+
+IM FELL English 3.00，正体与斜体，Igino Marini。字体内部版权声明为 © 2007
+Igino Marini，保留名称 IM FELL English Roman 和 IM FELL English Italic。
+发行版附 © 2010 Igino Marini 的 SIL Open Font License 1.1。
+本站衍生 WOFF2 采用独立内部名称。许可见 font-licenses/im-fell-english.txt。
+https://github.com/google/fonts/tree/06bfe0d62a98375cb09c942fa18e68bd32cff057/ofl/imfellenglish
+
+Inconsolata 3.001，Copyright 2006 The Inconsolata Project Authors。
+本站取字重 400、宽度 100 的静态 WOFF2。SIL Open Font License 1.1
+见 font-licenses/inconsolata.txt。
+https://github.com/google/fonts/tree/06bfe0d62a98375cb09c942fa18e68bd32cff057/ofl/inconsolata
+
+Noto Serif SC 2.003，Copyright 2012 Google Inc.，© 2017–2024 Adobe。
+本站取 Regular 400 的静态 WOFF2 分片。SIL Open Font License 1.1
+见 font-licenses/noto-serif-sc.txt。
+https://github.com/google/fonts/tree/06bfe0d62a98375cb09c942fa18e68bd32cff057/ofl/notoserifsc
+
+Latin Modern Math 1.959，Copyright 2012–2014 B. Jackowski, P. Strzelczyk
+and P. Pianowski，GUST e-foundry。本站分发原版 OpenType 数学字体。
+GUST Font License 见 font-licenses/latin-modern-math.txt。
+可从 CTAN 取得完整原版、文档和清单：https://ctan.org/pkg/lm-math

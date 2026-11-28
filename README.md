@@ -106,4 +106,4 @@ ruling: ruled
 
 从项目根目录启动静态服务器，打开 `/prototype/`，就可以在「折纸手记」和「散步笔记」之间切换。`prototype/docs/` 收录了纸鹤的折叠过程图、两轮渲染实测数据，以及当时接入博客框架的实验记录。[双页原型](prototype/index.html) · [模型与多图标扩展](prototype/docs/实现与多图标扩展.md) · [渲染回退与博客集成](prototype/docs/渲染回退与博客集成.md) · [折痕来源与许可](THIRD-PARTY-NOTICES.txt)
 
-两张对照板都可以在本地打开。一张用于比较正文字体、界面字体和工具图标，另一张用于试选四个栏目的折姿和停靠位置。[字体与功能图标对照板](prototype/selection/index.html) · [栏目折纸对照板](prototype/selection/folds.html)
+两张对照板都可直接在本地打开。正文、顶栏、目录和其他界面文字共用一套字体。汉字与半角数字用汇文明朝体 GBK，西文字母用 IM FELL English。字体板可以在同一行比较数字与英文大写的高度。代码用 Inconsolata 配 Noto Serif SC Regular，公式用 Latin Modern Math，可在同一篇 Markdown 样文中切换备选字体。页面另收录八枚 Phosphor Regular 功能图标。折纸板支持按 22 px 和 39 px 比较实心图与可见折边。[正文与技术字体试排](prototype/selection/index.html) · [栏目折纸对照板](prototype/selection/folds.html)

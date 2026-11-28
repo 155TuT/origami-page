@@ -6,10 +6,18 @@
   <title>字体与图标 · 折间</title>
   <link rel="stylesheet" href="../../src/styles/tokens.css">
   <link rel="stylesheet" href="selection.css">
+  <link rel="stylesheet" href="type-specimen.css">
+  <link rel="stylesheet" href="tech-fonts.css">
+  <link rel="stylesheet" href="folds.css">
   <style id="desk-texture"></style>
   <script src="../../src/scripts/desk-texture.cjs"></script>
   <script src="icons/sprite.js" defer></script>
   <script src="selection.js" defer></script>
+  <script src="type-specimen.js" defer></script>
+  <script src="fold-catalog.js" defer></script>
+  <script src="fold-poses.js" defer></script>
+  <script src="fold-shapes.js" defer></script>
+  <script src="folds.js" defer></script>
 </head>
 <body>
   <a class="skip" href="#type">跳到样张</a>
@@ -17,78 +25,90 @@
     <div class="bar-inner">
       <a class="wordmark" href="#top"><strong>折间</strong><i lang="en">Fold Journal</i></a>
       <nav aria-label="样张导航">
-        <a href="#type">字体</a><a href="#icons">页面功能图标</a><a href="./folds.html">栏目折纸</a><a href="#specimen">页面试排</a>
+        <a href="#specimen">正文试排</a><a href="#figures">正文数字</a><a href="#technical">代码与公式</a><a href="#icons">功能图标</a><a href="./folds.html">栏目折纸</a>
       </nav>
       <button class="theme-toggle" type="button"><span aria-hidden="true"></span><span id="theme-label">深色纸面</span></button>
     </div>
   </header>
   <main id="top">
     <header class="cover">
-      <div class="title-block">
-        <h1>字体与图标</h1>
-      </div>
-      <div class="cover-art" aria-hidden="true">
-        <img src="../../public/art/crane.webp" alt="">
-      </div>
+      <h1>字体与图标</h1>
+      <div class="cover-art" aria-hidden="true"><img src="../../public/art/crane.webp" alt=""></div>
     </header>
 
-    <section id="type">
-      <div class="section-heading"><h2>字样对照</h2><span class="technical">30 / 18 · 26 · 17 · 12 px</span></div>
-      <div class="font-grid" id="font-grid"></div>
-      <div class="common">
-        <div><h3>导航与操作</h3><div class="common-ui"><span>作品集</span><span>文章</span><span>影集</span><span>RSS</span></div><p>DM Sans · Noto Sans SC，550</p></div>
-        <div><h3>日期与代码</h3><div class="common-mono">2026.11.16 &nbsp; #A1 · 09:42</div><p>IBM Plex Mono，400</p></div>
-      </div>
+    <section id="type" aria-label="字体选型">
+      <div id="fonts" class="panel"></div>
     </section>
 
-    <section id="icons">
+    <section id="technical" aria-labelledby="technical-title">
+      <div class="section-heading"><h2 id="technical-title">代码与公式</h2></div>
+      <fieldset class="tech-monos">
+        <legend>等宽西文</legend>
+        <label style="--face: 'Tech inconsolata'"><span><input type="radio" name="tech-mono" value="inconsolata" checked> Inconsolata</span><samp>0O 1lI {} [] != -&gt;</samp></label>
+        <label style="--face: 'Tech dejavu'"><span><input type="radio" name="tech-mono" value="dejavu"> DejaVu Sans Mono</span><samp>0O 1lI {} [] != -&gt;</samp></label>
+        <label style="--face: 'Tech plex'"><span><input type="radio" name="tech-mono" value="plex"> IBM Plex Mono</span><samp>0O 1lI {} [] != -&gt;</samp></label>
+      </fieldset>
+      <div class="type-workbench tech-workbench">
+        <article class="technical-sheet" aria-labelledby="technical-sample-title">
+          <h3 id="technical-sample-title">折线长度</h3>
+          <!-- technical:start -->
+        <div class="technical-prose"><p>沿纸边折回，记下起点和终点。用 <code>dx</code>、<code>dy</code> 表示两个方向的位移，折线长度就是 <span class="katex"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>d</mi><mo>=</mo><msqrt><mrow><msup><mrow><mi mathvariant="monospace">d</mi><mi mathvariant="monospace">x</mi></mrow><mn>2</mn></msup><mo>+</mo><msup><mrow><mi mathvariant="monospace">d</mi><mi mathvariant="monospace">y</mi></mrow><mn>2</mn></msup></mrow></msqrt></mrow><annotation encoding="application/x-tex">d=\sqrt{\mathtt{dx}^2+\mathtt{dy}^2}</annotation></semantics></math></span>。</p>
+<pre class="astro-code css-variables" style="background-color:var(--astro-code-background);color:var(--astro-code-foreground); overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:var(--astro-code-token-comment)">// 折线长度</span></span>
+<span class="line"><span style="color:var(--astro-code-token-keyword)">function</span><span style="color:var(--astro-code-token-function)"> length</span><span style="color:var(--astro-code-foreground)">(dx</span><span style="color:var(--astro-code-token-punctuation)">,</span><span style="color:var(--astro-code-foreground)"> dy) {</span></span>
+<span class="line"><span style="color:var(--astro-code-token-keyword)">  return</span><span style="color:var(--astro-code-token-constant)"> Math</span><span style="color:var(--astro-code-token-function)">.hypot</span><span style="color:var(--astro-code-foreground)">(dx</span><span style="color:var(--astro-code-token-punctuation)">,</span><span style="color:var(--astro-code-foreground)"> dy);</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">}</span></span></code></pre>
+<p>一条折线有 <span class="katex"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi></mrow><annotation encoding="application/x-tex">n</annotation></semantics></math></span> 段时，把每段的长度加在一起。</p>
+<span class="katex"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>L</mi><mo>=</mo><munderover><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>n</mi></munderover><msqrt><mrow><mo stretchy="false">(</mo><msub><mi>x</mi><mi>i</mi></msub><mo>−</mo><msub><mi>x</mi><mrow><mi>i</mi><mo>−</mo><mn>1</mn></mrow></msub><msup><mo stretchy="false">)</mo><mn>2</mn></msup><mo>+</mo><mo stretchy="false">(</mo><msub><mi>y</mi><mi>i</mi></msub><mo>−</mo><msub><mi>y</mi><mrow><mi>i</mi><mo>−</mo><mn>1</mn></mrow></msub><msup><mo stretchy="false">)</mo><mn>2</mn></msup></mrow></msqrt><mspace width="1em"/><mtext>（总长度）</mtext></mrow><annotation encoding="application/x-tex">L=\sum_{i=1}^{n}\sqrt{(x_i-x_{i-1})^2+(y_i-y_{i-1})^2}\quad\text{（总长度）}</annotation></semantics></math></span>
+</div>
+        <details class="technical-source"><summary>查看 Markdown 原文</summary><pre tabindex="0"><code>沿纸边折回，记下起点和终点。用 `dx`、`dy` 表示两个方向的位移，折线长度就是 $d=\sqrt{\mathtt{dx}^2+\mathtt{dy}^2}$。
+
+```js
+// 折线长度
+function length(dx, dy) {
+  return Math.hypot(dx, dy);
+}
+```
+
+一条折线有 $n$ 段时，把每段的长度加在一起。
+
+$$
+L=\sum_{i=1}^{n}\sqrt{(x_i-x_{i-1})^2+(y_i-y_{i-1})^2}\quad\text{（总长度）}
+$$</code></pre></details>
+        <!-- technical:end -->
+        </article>
+        <div class="type-settings tech-settings">
+          <div><label for="tech-zh">中文注释与公式文字</label>
+            <select id="tech-zh"><option value="song">Noto Serif SC Regular</option><option value="fangsong">不寐仿宋 Book</option></select>
+          </div>
+          <div><label for="tech-math">数学符号</label>
+            <select id="tech-math"><option value="lm">Latin Modern Math</option><option value="stix">STIX Two Math</option></select>
+          </div>
+          <div class="tech-columns"><span>四个汉字与八个半角字符</span><samp>折线长度<br>01234567</samp><small id="tech-width-note"></small></div>
+          <p class="type-pair-note">行内代码、代码块和公式里的 <code>dx</code>、<code>dy</code> 随等宽西文切换。看代码注释与公式末尾的「总长度」比较宋体和仿宋，看根号及求和上下限比较数学字体。</p>
+        </div>
+      </div>
+      <p class="type-sources">样文由本站 Markdown 处理器生成。KaTeX 输出 MathML，Shiki 语法高亮取当前纸面的颜色。<a href="technical.md">Markdown 文件</a> · <a href="fonts/README.md">字库与许可</a></p>
+    </section>
+
+    <section id="icons" aria-labelledby="icons-title">
       <div class="section-heading">
-        <h2>页面功能图标</h2>
+        <h2 id="icons-title">功能图标</h2>
         <fieldset class="segment" id="sizes"><legend class="sr-only">图标显示尺寸</legend>
           <label><input type="radio" name="size" value="16">16 px</label>
-          <label><input type="radio" name="size" value="20" checked>20 px</label>
+          <label><input type="radio" name="size" value="19" checked>19 px</label>
           <label><input type="radio" name="size" value="24">24 px</label>
         </fieldset>
       </div>
+      <p class="section-intro">Phosphor Regular。按站内操作选八枚，先用顶栏的 19 px 看放大镜、滑钮和箭头，再切到 16 px 比较小字号旁的效果。</p>
       <div class="icon-grid" id="icon-grid"></div>
+      <p class="source-links"><a href="https://github.com/phosphor-icons/core/tree/v2.0.8/assets/regular">Phosphor 官方原稿 · v2.0.8</a><a href="icons/phosphor-LICENSE.txt">MIT 许可</a></p>
     </section>
 
-    <section id="specimen">
-      <div class="section-heading"><h2>页面试排</h2></div>
-      <div class="tryout">
-        <div class="sample-page" data-face="song">
-          <div class="sample-bar"><div class="mini-brand"><strong>折间</strong><i lang="en">Fold Journal</i></div><div class="sample-tools" id="sample-tools"></div></div>
-          <div class="sample-article">
-            <time datetime="2026-11-16">2026.11.16</time>
-            <h3>纸上生风</h3>
-            <p>午后折了一只纸鹤。拇指压住翼根，轻轻提起纸尖，桌面上便多了一道细长的影子。</p>
-            <p>一张方纸平放在窗边，很难看出它究竟有多薄。斜着抬高一角，迎光的边缘忽然亮起来，纸上细小的起伏也跟着显了形。</p>
-          </div>
-        </div>
-        <aside class="controls">
-          <label for="face">文字组合</label>
-          <select id="face"><option value="song">Noto Serif SC + Lora</option><option value="kai">霞鹜文楷 + Crimson Pro</option><option value="hei">Noto Sans SC + Source Serif 4</option></select>
-          <label for="library">工具图标</label>
-          <select id="library"><option value="tabler">Tabler Outline</option><option value="lucide">Lucide</option><option value="phosphor">Phosphor Regular</option></select>
-          <div class="verdict"><h3>建议组合</h3><p>Noto Serif SC 的横细竖重呼应纸上的细线，Lora 的斜体能在 18 px 站标上读清。工具选 Tabler Outline，调节杆上的空心圆与折线之间留有余白。</p></div>
-        </aside>
-      </div>
+    <section id="shapes" aria-labelledby="shapes-title">
+      <div class="section-heading"><h2 id="shapes-title">栏目折纸</h2><a href="./folds.html#paper-boat">比较四种文章纸船 →</a></div>
+      <div data-fold-summary></div>
     </section>
-    <details class="sources">
-      <summary>字体来源与许可</summary>
-      <p>样张附带用于本页文字的 WOFF2 子集。八个字体家族均依 SIL Open Font License 1.1 分发，原文和作者署名随文件保留。用于正式文章时需按实际内容重新分包。</p>
-      <ul>
-        <li><a href="https://github.com/google/fonts/tree/main/ofl/notoserifsc">Noto Serif SC</a><a href="fonts/noto-serif-OFL.txt">许可</a></li>
-        <li><a href="https://github.com/lxgw/LxgwWenKai">霞鹜文楷</a><a href="fonts/wenkai-OFL.txt">许可</a></li>
-        <li><a href="https://github.com/google/fonts/tree/main/ofl/notosanssc">Noto Sans SC</a><a href="fonts/noto-sans-OFL.txt">许可</a></li>
-        <li><a href="https://github.com/google/fonts/tree/main/ofl/lora">Lora</a><a href="fonts/lora-OFL.txt">许可</a></li>
-        <li><a href="https://github.com/google/fonts/tree/main/ofl/crimsonpro">Crimson Pro</a><a href="fonts/crimson-OFL.txt">许可</a></li>
-        <li><a href="https://github.com/google/fonts/tree/main/ofl/sourceserif4">Source Serif 4</a><a href="fonts/source-serif-OFL.txt">许可</a></li>
-        <li><a href="https://github.com/google/fonts/tree/main/ofl/dmsans">DM Sans</a><a href="fonts/dm-sans-OFL.txt">许可</a></li>
-        <li><a href="https://github.com/IBM/plex">IBM Plex Mono</a><a href="fonts/plex-mono-OFL.txt">许可</a></li>
-      </ul>
-    </details>
+    <noscript>启用 JavaScript 即可切换字体、查看图标与折纸候选。</noscript>
   </main>
-  <footer><a href="./folds.html">栏目折纸方案 →</a></footer>
 </body>
 </html>

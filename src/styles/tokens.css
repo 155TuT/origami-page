@@ -35,14 +35,15 @@
   --shadow-fold: 0 5px 20px #442f202b;
   --shadow-cover: 3px 4px 0 var(--base), 4px 5px 0 var(--line);
 
-  --serif: "Noto Serif SC", "Songti SC", "Source Han Serif SC", "STSong", "SimSun", Georgia, serif;
-  --sans: "DM Sans", "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
-  --mono: "IBM Plex Mono", Consolas, "Liberation Mono", monospace;
-  --latin-serif: Georgia, serif;
+  --serif: "Huiwen Figures", "IM FELL English", "Huiwen Mincho GBK", "Songti SC", SimSun, Georgia, serif;
+  --latin-serif: var(--serif);
+  --tech-cjk: "Noto Serif SC", "Songti SC", SimSun;
+  --mono: "Inconsolata", Consolas, "Liberation Mono", var(--tech-cjk), monospace;
+  --math: "Latin Modern Math", var(--tech-cjk), math;
   --weight-regular: 400;
   --weight-medium: 550;
   --weight-semibold: 600;
-  --weight-heading: 650;
+  --weight-heading: 400;
   --weight-bold: 700;
   --text-caption: 11px;
   --text-meta: 12px;
@@ -63,7 +64,7 @@
   --text-deck: clamp(17px, 1.5vw, 20px);
   --leading-body: 1.65;
   --leading-prose: 1.95;
-  --type-count: var(--text-caption)/1.5 var(--mono), var(--sans);
+  --type-count: var(--text-caption)/1.5 var(--serif);
 
   --space-1: 4px;
   --space-2: 8px;
