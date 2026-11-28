@@ -25,8 +25,8 @@ const calendar = new Intl.DateTimeFormat("en-CA", {
 export const isoDate = (date: Date) => calendar.format(date);
 export const printedDate = (date: Date) => isoDate(date).replaceAll("-", ".");
 export const artwork = {
-  crane: { file: "crane.webp", alt: "一只赤陶色的折纸鹤，双翼斜展，在纸面上投下轻轻的阴影", caption: "千纸鹤", english: "Paper crane" },
-  river: { file: "river.webp", alt: "暮色中的河岸，淡紫色夕阳映在层叠的山影和水面上", caption: "河岸余晖", english: "Along the river" },
+  crane: { src: "art/illustrations/crane.webp", alt: "一只赤陶色的折纸鹤，双翼斜展，在纸面上投下轻轻的阴影", caption: "千纸鹤", english: "Paper crane" },
+  river: { src: "art/illustrations/river.webp", alt: "暮色中的河岸，淡紫色夕阳映在层叠的山影和水面上", caption: "河岸余晖", english: "Along the river" },
 };
 export const entrySlug = (entry: Post) => entry.id.slice(entry.id.lastIndexOf("/") + 1);
 export const isDraft = (entry: Post) => entry.id.startsWith("posts/draft/");
@@ -78,7 +78,7 @@ export function toEntry(entry: Post): PublicEntry {
     kind, title, description, date, pinned: pinPriority(entry) > 0, tags: [...new Set(tags)], url: postURL(entry),
     text: [entry.body, ...(photos ?? []).map(photo => [photo.alt, photo.caption].join(" "))].join("\n"),
     cover: cover ? { src: photoURL(cover.src), alt: cover.alt }
-      : art ? { src: href("art/" + artwork[art].file), alt: artwork[art].alt } : undefined,
+      : art ? { src: href(artwork[art].src), alt: artwork[art].alt } : undefined,
   };
 }
 

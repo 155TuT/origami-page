@@ -22,7 +22,7 @@ npm run dev
 默认每块 384 × 384 px 纸纹含 850 条深色短纤维和 1,570 条浅色纤维。修改密度、种子或噪声时，在生成器内更新默认配方和缓存版本。仓库另附两张同配方的 WebP，供禁用脚本等情况使用。在装有 Node.js 和 Pillow 的环境运行以下命令即可重新导出。[浏览器生成器](src/scripts/desk-texture.cjs)
 
 ```sh
-python tools/generate-paper.py
+python scripts/generate-paper.py
 ```
 
 竹林等带透明通道的纹样可以叠在纸纹上方。在项目根目录的 `.env.local` 填写图片地址，重启开发服务或重新构建。本地图片放在 `public/`，路径会自动补齐部署子目录。线上图片可填写完整的 HTTPS 地址。假设纹样保存为 `public/art/bamboo.webp`，配置如下。
@@ -81,9 +81,9 @@ ruling: blank
 - 折纸模型在第一次需要动效时下载。各页面共用一个动效层，长文只取当前可视纸面，最多缓存两张大纸纹。首轮使用 Canvas 2D，空闲时可以准备 WebGL2，并按模型、尺寸、纸纹和收展方向比较绘制表现。开启减少动态效果或画布不可用时，直接显示目标页。
 - Astro ClientRouter 管理导航和页面元数据。博客按浏览器历史条目保存纸面的阅读位置，支持前进、后退和刷新。目录锚点、在新标签页打开和禁用 JavaScript 阅读使用普通链接。
 
-顶栏依次使用千纸鹤、纸剪刀、报纸船和川崎玫瑰。每栏配置折叠模型 `model`、实心图 `icon` 和可见折边线稿 `outline`。四个停靠画框均为 39 × 32 px。玫瑰在框内居中缩至原尺寸的 73%，给饱满的花冠留出更多空白。跨栏目时用当前模型收纸，用目标模型展纸。纸鹤用 `node tools/render-crane.cjs` 导出，其余折姿用 `node prototype/selection/render-fold-poses.mjs` 生成。[栏目配置](src/lib/sections.ts) · [通用可见边提取](tools/fold-outline.mjs) · [停靠规则与实录](docs/vi-design.md#导航线稿与停靠)
+顶栏依次使用千纸鹤、四角王冠、报纸船和川崎玫瑰。每栏的 `model` 对应同名素材目录，内含实心图 `solid.png` 和可见折边线稿 `outline.svg`。四个停靠画框均为 39 × 32 px。王冠和玫瑰在框内居中缩至各自原尺寸的 73%。王冠从俯视方向逆时针转 10°，让前后冠尖错开。跨栏目时用当前模型收纸，用目标模型展纸。修改模型后运行 `npm run bake:folds`，从姿态母版生成运行时动画，再从同一终帧导出四栏静态图。[模型目录与预烘焙步骤](models/README.md) · [栏目配置](src/lib/sections.ts) · [通用可见边提取](scripts/fold-outline.mjs) · [停靠规则与实录](docs/vi-design.md#导航线稿与停靠)
 
-需要复查换页时，可在生产预览运行期间执行 `node tools/check-navigation.cjs`。此开发工具使用可选的 `playwright` 包和本机 Chrome，设置 `ORIGAMI_BROWSER=edge` 可改用本机 Edge，`ORIGAMI_URL` 可指向其他预览地址。回归覆盖背景缓存、导航线稿与实心图交接、跨栏目收展、同栏目直达、锚点和历史滚动恢复，以及桌面和窄屏下的纸边与版权位置。
+需要复查换页时，可在生产预览运行期间执行 `node scripts/check-navigation.cjs`。此开发工具使用可选的 `playwright` 包和本机 Chrome，设置 `ORIGAMI_BROWSER=edge` 可改用本机 Edge，`ORIGAMI_URL` 可指向其他预览地址。回归覆盖背景缓存、导航线稿与实心图交接、跨栏目收展、同栏目直达、锚点和历史滚动恢复，以及桌面和窄屏下的纸边与版权位置。
 
 ## 设计规范与组件库
 
@@ -97,12 +97,13 @@ ruling: blank
 | `src/pages/`、`src/layouts/Site.astro` | 四个主栏目、辅助页面、RSS 与 404 |
 | `docs/page-map.md`、`src/lib/sections.ts` | 可编辑的页面层级、一级栏目与图标配置 |
 | `src/components/ui/`、`src/styles/tokens.css` | 博客组件库与 VI 设计变量 |
+| `scripts/` | 在项目根目录运行的开发脚本，包括折纸烘焙、字体与纸纹生成、友链同步及回归测试 |
 | `src/scripts/desk-texture.cjs` | 再生纸配方、首屏生成和浏览器存储 |
-| `src/assets/paper/`、`tools/generate-paper.py` | 同配方导出的静态后备遮罩及导出工具 |
+| `src/assets/paper/`、`scripts/generate-paper.py` | 同配方导出的静态后备遮罩及导出工具 |
 | `src/scripts/navigation.ts` | 路由生命周期、导航取消、偏好和键盘焦点 |
-| `src/lib/fold/` | 四个栏目的折纸模型、收展时间轨、Canvas 2D 与 WebGL2 绘制 |
-| `public/art/` | 从同一模型和河岸绘图生成的静态插图，支持无脚本阅读 |
-| `models/crane/`、`tools/` | 折痕、原始姿态、模型烘焙和打包工具 |
+| `src/lib/fold/` | 读入 `generated/` 的姿态帧，控制收展时序与 Canvas 2D、WebGL2 绘制 |
+| `public/art/folds/`、`public/art/illustrations/` | 各模型的导航实心图和线稿，以及独立的正文插图 |
+| `models/`、`scripts/bake-folds.mjs` | 四款模型各自的折痕与姿态母版，以及统一的离线烘焙入口 |
 
 ## 原型实验
 

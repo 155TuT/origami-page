@@ -1,12 +1,10 @@
-import {CraneClip} from './crane-data.js';
-import {prepareFaces, sectionFrame, sectionMotion, sectionScores, sheetFaces} from './section-motion.js';
+import {CraneClip} from './generated/crane-data.js';
+import {decodePositions, prepareFaces, sectionFrame, sectionMotion} from './section-motion.js';
 
 /* Shared paper geometry for the printed plate, both navigation icons and the transition. */
 export const Paper = (() => {
   const { vertexCount, poseCount, triangles } = CraneClip;
-  const bytes = Uint8Array.from(atob(CraneClip.positions), c => c.charCodeAt(0));
-  const packed = new DataView(bytes.buffer);
-  const vertices = Float32Array.from({ length: bytes.length / 2 }, (_, i) => packed.getInt16(i * 2, true) / 10000);
+  const vertices = decodePositions(CraneClip.positions);
   const rad = Math.PI / 180;
   const view = {paperDiagonal: -45, modelPitch: 31, azimuth: -30, elevation: 30};
   const clamp = v => Math.min(1, Math.max(0, v));
@@ -188,7 +186,7 @@ export const Paper = (() => {
     // Only long scores from the source pattern, never triangulation diagonals.
     ctx.beginPath();
     const motion = sectionMotion(modelId);
-    const scores = motion ? sectionScores : CraneClip.scores.map(([i,j]) => [uv[i],uv[j]]);
+    const scores = motion ? motion.scores : CraneClip.scores.map(([i,j]) => [uv[i],uv[j]]);
     for (const [[u,v],[u1,v1]] of scores) {
       ctx.moveTo(u*w,v*h); ctx.lineTo(u1*w,v1*h);
     }
@@ -202,7 +200,7 @@ export const Paper = (() => {
     }
     ctx.stroke();
     // Sample just this face's part of the sheet, with a texel gutter for filtering.
-    const patches=(motion ? sheetFaces : faces).map(face=>{
+    const patches=(motion ? motion.sheet.faces : faces).map(face=>{
       const x=Math.max(0,Math.floor(face.minU*el.width)-1);
       const y=Math.max(0,Math.floor(face.minV*el.height)-1);
       return {x,y,w:Math.min(el.width,Math.ceil(face.maxU*el.width)+1)-x,

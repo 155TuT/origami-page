@@ -59,7 +59,7 @@
         button.type = "button";
         button.dataset.id = item.id;
         button.innerHTML = `<span class="fold-option-art">${art.shape(item.id)}${art.shape(item.id, true)}</span>
-          <span class="fold-option-label"><strong>${item.name}</strong>${index === 0 ? "<small>本站试用</small>" : ""}</span>
+          <span class="fold-option-label"><strong>${item.name}</strong>${index === 0 ? "<small>本站使用</small>" : ""}</span>
           <span class="fold-option-desc">${item.silhouette}</span>`;
         button.addEventListener("click", () => { location.hash = item.id; });
         options.append(button);

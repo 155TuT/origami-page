@@ -1,10 +1,15 @@
-// The two images share a transparent frame, including its optical margins.
-export const sections = [
-  { id: "home", label: "首页", path: "", model: "crane", icon: "art/crane-icon.png", outline: "art/crane-outline.svg" },
-  { id: "works", label: "作品集", path: "works/", model: "scissors", icon: "art/scissors-icon.svg", outline: "art/scissors-outline.svg" },
-  { id: "articles", label: "文章", path: "archives/", model: "paper-boat", icon: "art/paper-boat-icon.svg", outline: "art/paper-boat-outline.svg" },
-  { id: "albums", label: "影集", path: "albums/", model: "kawasaki-rose", icon: "art/kawasaki-rose-icon.svg", outline: "art/kawasaki-rose-outline.svg" },
+const navigation = [
+  { id: "home", label: "首页", path: "", model: "crane" },
+  { id: "works", label: "作品集", path: "works/", model: "crown" },
+  { id: "articles", label: "文章", path: "archives/", model: "paper-boat" },
+  { id: "albums", label: "影集", path: "albums/", model: "kawasaki-rose" },
 ] as const;
+
+export const sections = navigation.map(section => ({
+  ...section,
+  icon: `art/folds/${section.model}/solid.png`,
+  outline: `art/folds/${section.model}/outline.svg`,
+}));
 
 export type NavSection = typeof sections[number];
 export type Section = NavSection["id"];

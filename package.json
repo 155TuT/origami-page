@@ -5,8 +5,9 @@
   "type": "module",
   "scripts": {
     "dev": "astro dev",
-    "sync:friends": "node tools/sync-friends.mjs",
-    "prebuild": "node tools/sync-friends.mjs",
+    "bake:folds": "node scripts/bake-folds.mjs",
+    "sync:friends": "node scripts/sync-friends.mjs",
+    "prebuild": "node scripts/sync-friends.mjs",
     "build": "astro build",
     "preview": "astro preview",
     "check": "astro check"

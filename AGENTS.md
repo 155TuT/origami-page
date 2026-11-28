@@ -13,19 +13,19 @@
 ## 页面层级与栏目图标
 
 - 调整栏目或新增页面前先看[可编辑的页面层级图](docs/page-map.md)，按图安排页面、链接和导航归属。主导航依次为首页、作品集、文章、影集。首页直接呈现个人介绍原稿，保留经历和邮箱的占位文案，代表项目使用正文文字链接。同步维护图、README 与 [一级栏目配置](src/lib/sections.ts)。文章列表用 `/archives/`，正文和分类都在该分支内，页面文字统一用「文章」。
-- 每个一级栏目通过 `FoldDock` 使用独立配置的实心图和线稿。线稿保留最终折姿的所有可见纸边、内折边与遮挡关系，线宽和明暗主题的描线取 VI 变量。实心图、线稿和飞行末帧共用画框、边距和视角。新模型可复用 [离线可见边提取](tools/fold-outline.mjs)，将导出的 SVG 随静态素材发布。
+- 每个一级栏目通过 `FoldDock` 使用独立配置的实心图和线稿。线稿保留最终折姿的所有可见纸边、内折边与遮挡关系，线宽和明暗主题的描线取 VI 变量。实心图、线稿和飞行末帧共用画框、边距和视角。新模型可复用 [离线可见边提取](scripts/fold-outline.mjs)，将导出的 SVG 随静态素材发布。
 - 作品集、文章和影集列表直接展示各自的条目。分组标签索引、全文检索和标签匹配共用 `/search/`，正文标签也链接到该页。草稿入口由作者在本机手动输入 `/archives/draft/`。
 - 线稿始终铺在图标底层。停留时当前栏目露出线稿，其余栏目覆盖实心图。跨一级栏目才收纸与展纸。文章列表、分类、正文之间的点击，以及同栏目历史导航，均直接切换内容。
 
 ## 纸面与换页
 
 - 桌面材质统一由 `DeskBackdrop` 组合。底纸与深浅纤维分别取 `--bg-surface`、`--bg-strong-fiber`、`--bg-lite-fiber`。每块 384 × 384 px 的纸纹使用 850 条深色短纤维，竹林等透明纹样放在纤维上方的浮层。
-- 文档头部从浏览器存储恢复两张纸纹，缺少有效缓存时才生成。站内换页保留桌面及其样式表。调整 `src/scripts/desk-texture.cjs` 中的配方时更新缓存版本，用 `python tools/generate-paper.py` 导出同配方的静态后备图，并同步 VI 和样张。换色直接使用设计变量。
+- 文档头部从浏览器存储恢复两张纸纹，缺少有效缓存时才生成。站内换页保留桌面及其样式表。调整 `src/scripts/desk-texture.cjs` 中的配方时更新缓存版本，用 `python scripts/generate-paper.py` 导出同配方的静态后备图，并同步 VI 和样张。换色直接使用设计变量。
 - 顶栏与桌面固定在视口，中央纸面保持 60% 视口宽度。整张 `main#content` 是唯一纵向滚动区，原生轨道上接顶栏下沿、下达视口底部。四边共用 `--paper-inset`，上下留白由正文与版权的共同容器承载，随内容滚动。
 - 正文与版权都放在 `Paper` 里面。短页版权靠底，长页版权接在内容末尾。真实备案号和链接在 `PaperFooter` 中统一更新。
 - 折纸始终测量 `.paper-slot` 的完整外框。保留 `data-fold-paper`、`data-ruling`、`data-fold-dock`、`data-fold-solid` 及其测量关系。修改纸面或导航时，同时检查收展、减少动态效果、键盘焦点、目录锚点和历史滚动恢复。
-- 折面从当前主题的 `--surface` 过渡到纸鹤用色。修改 `--crane-paper`、`--crane-shadow`、`--dock-outline-stroke` 或末帧姿态后运行 `node tools/render-crane.cjs`，同步纸鹤实心图、折边线稿与插图。
+- 折面从当前主题的 `--surface` 过渡到纸鹤用色。修改 `--crane-paper`、`--crane-shadow`、`--dock-outline-stroke` 或末帧姿态后运行 `npm run bake:folds`。四个模型的折痕与姿态在 `models/<id>/`，打包帧在 `src/lib/fold/generated/`，实心图与线稿在 `public/art/folds/<id>/`，正文插图在 `public/art/illustrations/`。
 
 ## 验证
 
-运行 `npm run check`、`npm run build`。布局与换页改动还需在生产预览中执行 `node tools/check-navigation.cjs`。桌面与窄屏分别查看首页、长文和短页，检查明暗主题、四边留白、页脚换行与折纸停靠。运行条件见 [README](README.md)。
+运行 `npm run check`、`npm run build`。布局与换页改动还需在生产预览中执行 `node scripts/check-navigation.cjs`。桌面与窄屏分别查看首页、长文和短页，检查明暗主题、四边留白、页脚换行与折纸停靠。运行条件见 [README](README.md)。

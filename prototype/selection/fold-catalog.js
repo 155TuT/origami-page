@@ -1,4 +1,4 @@
-// The first article candidate also appears in the overview and initial dock.
+// The first option in each section is the published navigation icon.
 window.FOLD_CATALOG = [
   {
     name: "首页", role: "认识作者",
@@ -19,7 +19,18 @@ window.FOLD_CATALOG = [
     name: "作品集", role: "看设计怎样做成",
     options: [
       {
+        id: "crown", name: "四角王冠", english: "Four-point Paper Crown",
+        silhouette: "前尖有一道竖脊，左右两尖露出叠边",
+        why: "一张纸撑起四角，折好的小冠可以立在桌面上。作品集用它标出完成的作品。",
+        structure: "一张方纸围出四面冠身。前尖的中折落到底边，左右两层纸缘相叠，后尖从冠口露出。",
+        difficulty: "简易 · 撑开冠口时沿折痕整形，让四面均匀立起。",
+        sources: [
+          { label: "折纸王子 · 单纸四角皇冠视频教程", url: "https://www.youtube.com/watch?v=P4gDGANNtBo" },
+        ],
+      },
+      {
         id: "scissors", name: "纸剪刀", english: "Scissors · Takenao Handa",
+        silhouette: "双指孔与窄剪刃，早期选型",
         why: "做纸样、裁版、拼贴，剪刀都是创作者手边的工具。缩成图标，两枚有棱角的指孔和并拢的长剪刃仍能认出。",
         structure: "半田丈直用一张方纸折出双柄和剪刃。指孔由纸带围成，可以透出底色。两片窄刃叠在同一平面，剪尖略微错开。日本折纸协会会刊第 17 期及精选集均收录此作。",
         difficulty: "中级 · OrigamiUSA 2014 年大会将这堂课列为 Intermediate。折柄要留出两个指孔，收窄的剪刃也要对齐。",

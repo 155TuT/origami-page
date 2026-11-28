@@ -1,6 +1,6 @@
 models/crane/creases.svg is the traditional crane crease pattern flat_crane.svg
 from Origami Simulator by Amanda Ghassaei. The topology in models/crane/poses.fold
-and the packed runtime asset crane-data.js were derived from this pattern.
+and the packed runtime asset src/lib/fold/generated/crane-data.js were derived from this pattern.
 https://github.com/amandaghassaei/OrigamiSimulator/blob/main/assets/Origami/flat_crane.svg
 The sampled animation, page design, and browser renderer were created for this demo.
 
@@ -32,9 +32,9 @@ SOFTWARE.
 
 栏目折纸参考
 
-纸剪刀参考半田丈直（Takenao Handa）的 Scissors，文章栏采用传统报纸船，
+作品集的单纸四角王冠参考折纸王子发布的皇冠折叠示范。文章栏采用传统报纸船，
 影集参考川崎敏和的开放型川崎玫瑰。本站重绘了栏目图标并编排了换页折姿。
-https://www.giladorigami.com/origami-database/Scissors%2BTakenao%2BHanda
+https://www.youtube.com/watch?v=P4gDGANNtBo
 https://webspace.science.uu.nl/~bodla101/d.origami/traditional/boat.html
 https://www.asahipress.com/origami/kawasakirose/
 
