@@ -3,10 +3,10 @@ import { tagAnchor, tagURL } from "../../lib/blog";
 
 interface Props {
   tags: { name: string; count?: number }[];
-  variant?: "index" | "article";
+  variant?: "index" | "article" | "inline";
   label?: string;
 }
-const { tags, variant = "index", label = variant === "article" ? "内容标签" : "全部标签" } = Astro.props;
+const { tags, variant = "index", label = variant === "index" ? "全部标签" : "内容标签" } = Astro.props;
 ---
 {tags.length > 0 && (
   <ul class:list={["tag-list", variant]} aria-label={label}>
@@ -16,14 +16,14 @@ const { tags, variant = "index", label = variant === "article" ? "内容标签" 
           <span>{variant === "article" && "# "}{name}</span>
           {count !== undefined && <small>{count} 项</small>}
         </a>
-        {variant === "article" && <noscript>
-          <a href={tagURL(name) + "#" + encodeURIComponent(tagAnchor(name))}># {name}</a>
+        {variant !== "index" && <noscript>
+          <a href={tagURL(name) + "#" + encodeURIComponent(tagAnchor(name))}>{variant === "article" && "# "}{name}</a>
         </noscript>}
       </li>
     ))}
   </ul>
 )}
-{variant === "article" && <noscript><style is:inline>.tag-list.article .tag-query { display: none; }</style></noscript>}
+{variant !== "index" && <noscript><style is:inline>.tag-list:is(.article, .inline) .tag-query { display: none !important; }</style></noscript>}
 
 <style>
   .tag-list {
@@ -50,4 +50,10 @@ const { tags, variant = "index", label = variant === "article" ? "内容标签" 
   a:hover { border-color: var(--accent); }
   small { color: var(--faint); font: var(--type-count); }
   .article a { padding: 3px var(--space-2); color: var(--accent); font-size: var(--text-meta); }
+  .inline { min-width: 0; gap: 0 var(--space-2); }
+  .inline a {
+    display: inline; padding: 0; border: 0; background: transparent;
+    color: var(--muted); font-size: var(--text-meta);
+  }
+  .inline a:hover { color: var(--accent); text-decoration: underline; text-underline-offset: .2em; }
 </style>

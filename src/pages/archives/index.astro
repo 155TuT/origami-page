@@ -1,9 +1,9 @@
 ---
 import Site from "../../layouts/Site.astro";
 import { PostList } from "../../components/ui";
-import { allPosts, toEntry } from "../../lib/blog";
-const posts = (await allPosts()).map(toEntry);
+import { timelineEntries } from "../../lib/blog";
+const posts = await timelineEntries("post");
 ---
 <Site title="文章">
-  <PostList entries={posts} empty="还没有公开的文章。" />
+  <PostList entries={posts} variant="articles" empty="还没有公开的文章。" />
 </Site>

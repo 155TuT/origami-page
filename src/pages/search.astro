@@ -3,6 +3,6 @@ import Site from "../layouts/Site.astro";
 import { SiteSearch } from "../components/ui";
 import { allPublicEntries } from "../lib/blog";
 ---
-<Site title="全站搜索" current={null} ruling="grid">
+<Site title="全站搜索" current={null}>
   <SiteSearch entries={await allPublicEntries()} />
 </Site>

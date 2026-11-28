@@ -1,4 +1,5 @@
 import { getCollection, type CollectionEntry } from "astro:content";
+import { getImage } from "astro:assets";
 import { href, sectionURL } from "./sections";
 export { href } from "./sections";
 
@@ -9,6 +10,7 @@ export type PublicEntry = {
   title: string;
   description: string;
   date: Date;
+  pinned: boolean;
   tags: string[];
   url: string;
   text: string;
@@ -55,11 +57,12 @@ export function albumCover(entry: Post) {
 }
 
 const newestFirst = (a: Post, b: Post) => b.data.date.getTime() - a.data.date.getTime() || a.id.localeCompare(b.id);
-export async function published(kind?: PublicEntry["kind"]) {
+const pinPriority = (entry: Post) => Math.max(0, entry.data.sticky ?? 0);
+export async function published(kind?: PublicEntry["kind"], compare = newestFirst) {
   const entries = await getCollection("journal", entry => !isDraft(entry) && (!kind || entryKind(entry) === kind));
   // This path belongs to the local draft index, even when there are no drafts.
   if (entries.some(entry => entry.id === "posts/draft")) throw new Error("文章文件名 draft 已由草稿列表使用。");
-  return entries.sort(newestFirst);
+  return entries.sort(compare);
 }
 
 export const allPosts = () => published("post");
@@ -72,11 +75,32 @@ export function toEntry(entry: Post): PublicEntry {
   const kind = entryKind(entry);
   const cover = kind === "album" ? albumCover(entry) : entry.data.cover;
   return {
-    kind, title, description, date, tags: [...new Set(tags)], url: postURL(entry),
+    kind, title, description, date, pinned: pinPriority(entry) > 0, tags: [...new Set(tags)], url: postURL(entry),
     text: [entry.body, ...(photos ?? []).map(photo => [photo.alt, photo.caption].join(" "))].join("\n"),
     cover: cover ? { src: photoURL(cover.src), alt: cover.alt }
       : art ? { src: href("art/" + artwork[art].file), alt: artwork[art].alt } : undefined,
   };
+}
+
+const articleCovers = import.meta.glob<ImageMetadata>("/public/media/posts/*/head.{avif,jpg,jpeg,png,webp}", { import: "default" });
+
+async function timelineEntry(entry: Post): Promise<PublicEntry> {
+  const item = toEntry(entry);
+  const cover = entry.data.cover;
+  if (item.kind !== "post" || !cover) return item;
+  const source = articleCovers["/public/" + cover.src.replace(/^\/+/, "")];
+  if (!source) return item;
+  const image = await source();
+  // The mobile strip keeps the taller crop. On desktop its center is displayed at 6:1.
+  const width = Math.min(1280, image.width, image.height * 4);
+  const preview = await getImage({ src: image, width, height: Math.max(1, Math.round(width / 4)),
+    fit: "cover", position: "center", format: "webp", quality: 80 });
+  return { ...item, cover: { src: preview.src, alt: cover.alt } };
+}
+
+export async function timelineEntries(kind: PublicEntry["kind"]) {
+  const entries = await published(kind, (a, b) => pinPriority(b) - pinPriority(a) || newestFirst(a, b));
+  return Promise.all(entries.map(timelineEntry));
 }
 
 export async function allPublicEntries() {

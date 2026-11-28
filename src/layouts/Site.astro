@@ -1,7 +1,7 @@
 ---
 import { ClientRouter } from "astro:transitions";
 import { DeskBackdrop, FoldStage, Paper, SiteHeader } from "../components/ui";
-import { siteName } from "../lib/blog";
+import { siteName, type Post } from "../lib/blog";
 import { href, sectionForPath, type Section } from "../lib/sections";
 import initialPreferences from "../scripts/initial-preferences.js?raw";
 import deskTexture from "../scripts/desk-texture.cjs?raw";
@@ -11,10 +11,10 @@ interface Props {
   hasContentHeading?: boolean;
   description?: string;
   current?: Section | null;
-  ruling?: "ruled" | "grid";
+  ruling?: Post["data"]["ruling"];
 }
 const { title, hasContentHeading = false, description = "折间，收录个人作品、文章和摄影集。",
-  current = sectionForPath(Astro.url.pathname), ruling = "ruled" } = Astro.props;
+  current = sectionForPath(Astro.url.pathname), ruling } = Astro.props;
 const documentTitle = title ? title + " · " + siteName : siteName + " · Fold Journal";
 const canonical = Astro.site && new URL(Astro.url.pathname, Astro.site);
 ---

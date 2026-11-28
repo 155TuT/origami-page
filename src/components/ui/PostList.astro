@@ -1,46 +1,114 @@
 ---
 import type { PublicEntry } from "../../lib/blog";
 import PostDate from "./PostDate.astro";
-interface Props { entries: PublicEntry[]; empty?: string; covers?: boolean; }
-const { entries, empty = "暂无公开内容。", covers = false } = Astro.props;
+import TagList from "./TagList.astro";
+
+interface Props {
+  entries: PublicEntry[];
+  empty?: string;
+  variant?: "compact" | "articles" | "collection";
+}
+const { entries, empty = "暂无公开内容。", variant = "compact" } = Astro.props;
+const timeline = variant !== "compact";
+const articles = variant === "articles";
+const List = timeline ? "ol" : "ul";
+const Heading = timeline ? "h2" : "div";
 ---
-{entries.length ? <ul class="post-list">
+{entries.length ? <List class:list={["post-list", { timeline }]} role="list">
   {entries.map(entry => (
-    <li data-entry-url={entry.url} class:list={{ illustrated: covers && entry.cover }}>
-      {covers && entry.cover && <div class="thumb">
-        <img src={entry.cover.src} alt={entry.cover.alt} loading="lazy" />
-      </div>}
-      <div class="entry">
-        <div class="post-date">
-          <PostDate date={entry.date} />
-        </div>
-        <a class="post-title" href={entry.url}>{entry.title}<span aria-hidden="true">↗</span></a>
+    <li class="entry" data-entry-url={entry.url} data-pinned={timeline && entry.pinned ? "" : undefined}>
+      <div class="entry-meta">
+        <PostDate date={entry.date} clock={articles} />
+        {articles && entry.tags.length > 0 && <div class="entry-tags">
+          <svg viewBox="0 0 256 256" fill="currentColor" aria-hidden="true" focusable="false">
+            <path d="M243.31,136,144,36.69A15.86,15.86,0,0,0,132.69,32H40a8,8,0,0,0-8,8v92.69A15.86,15.86,0,0,0,36.69,144L136,243.31a16,16,0,0,0,22.63,0l84.68-84.68a16,16,0,0,0,0-22.63Zm-96,96L48,132.69V48h84.69L232,147.31ZM96,84A12,12,0,1,1,84,72,12,12,0,0,1,96,84Z" />
+          </svg>
+          <TagList tags={entry.tags.map(name => ({ name }))} variant="inline" />
+        </div>}
+      </div>
+      <div class:list={["entry-body", { illustrated: variant === "collection" && entry.cover }]}>
+        {variant === "collection" && entry.cover && <div class="thumb">
+          <img src={entry.cover.src} alt={entry.cover.alt} loading="lazy" />
+        </div>}
+        <Heading>
+          <a class="post-title" href={entry.url}>
+            {timeline && entry.pinned && <span class="visually-hidden">置顶：</span>}
+            {entry.title}<span class="arrow" aria-hidden="true">↗</span>
+          </a>
+        </Heading>
+        {articles && <p class="summary">{entry.description}</p>}
+        {articles && entry.cover && <img class="cover-strip" src={entry.cover.src} alt={entry.cover.alt} loading="lazy" />}
       </div>
     </li>
   ))}
-</ul> : <p class="empty">{empty}</p>}
+</List> : <p class="empty">{empty}</p>}
 
 <style>
-  ul { list-style: none; margin: 0; padding: 0; }
-  li { padding-block: var(--space-5); border-block-end: 1px solid var(--line); }
-  li.illustrated { position: relative; display: grid; grid-template-columns: minmax(100px, .45fr) minmax(0, 1fr); align-items: center; gap: var(--space-6); }
+  .post-list { margin: 0; padding: 0; list-style: none; }
+  .post-list:not(.timeline) > .entry { padding-block: var(--space-5); border-block-end: 1px solid var(--line); }
+  .timeline { container-type: inline-size; }
+  .timeline > .entry {
+    --seal-center-y: calc(var(--text-meta) * .8);
+    position: relative;
+    padding-inline-start: var(--space-8);
+  }
+  .timeline > .entry:not(:last-child) { padding-block-end: var(--space-8); }
+  /* Each dated item draws the segment from its seal down to the next seal. */
+  .timeline > .entry:not([data-pinned]):not(:last-child)::before {
+    content: "";
+    position: absolute;
+    inset-inline-start: calc((var(--timeline-seal-size) - 1px) / 2);
+    inset-block-start: var(--seal-center-y);
+    width: 1px;
+    height: 100%;
+    background: var(--line-dark);
+  }
+  .timeline > .entry::after {
+    content: "";
+    position: absolute;
+    inset-inline-start: 0;
+    inset-block-start: calc(var(--seal-center-y) - var(--timeline-seal-size) / 2);
+    width: var(--timeline-seal-size);
+    height: var(--timeline-seal-size);
+    border-radius: 47% 53% 45% 55% / 52% 45% 55% 48%;
+    background:
+      radial-gradient(ellipse at 35% 27%, var(--wax-highlight), transparent 43%),
+      var(--wax-body);
+    box-shadow: inset -1px -1px 2px var(--wax-rim), inset 1px 1px 1px var(--wax-highlight),
+                0 1px 1px color-mix(in srgb, var(--wax-rim) 35%, transparent);
+  }
+  .entry-meta, .entry-tags { display: flex; color: var(--faint); font: var(--text-meta)/1.6 var(--serif); }
+  .entry-meta { align-items: flex-start; flex-wrap: wrap; gap: var(--space-1) var(--space-4); }
+  .entry-tags { align-items: flex-start; gap: var(--space-1); min-width: 0; max-width: 100%; }
+  .entry-tags svg {
+    flex: none; width: var(--text-ui); height: var(--text-ui);
+    margin-block-start: calc((var(--text-meta) * 1.6 - var(--text-ui)) / 2);
+  }
+  .timeline .entry-body { display: grid; gap: var(--space-2); margin-block-start: var(--space-1); }
+  .timeline .illustrated {
+    position: relative; grid-template-columns: minmax(0, .45fr) minmax(0, 1fr);
+    align-items: center; gap: var(--space-6);
+  }
   .illustrated .post-title::after { content: ""; position: absolute; inset: 0; }
-  .thumb { display: grid; align-items: center; background: var(--plate); }
+  .thumb { background: var(--plate); }
   .thumb img { display: block; width: 100%; height: auto; }
-  .post-date { display: flex; flex-wrap: wrap; gap: var(--space-3); color: var(--faint); font-size: var(--text-meta); }
   .post-title {
-    display: flex;
-    justify-content: space-between;
-    align-items: baseline;
-    gap: var(--space-3);
+    display: flex; justify-content: space-between; align-items: baseline; gap: var(--space-3);
     font: var(--weight-heading) var(--text-post-title)/1.5 var(--serif);
     letter-spacing: -.035em;
     overflow-wrap: anywhere;
   }
   .post-title:hover { color: var(--accent); }
-  .post-title span { color: var(--faint); font: var(--text-body)/1 var(--serif); }
+  .arrow { flex: none; color: var(--faint); font: var(--text-body)/1 var(--serif); }
+  .summary { color: var(--muted); font-size: var(--text-ui); overflow-wrap: anywhere; }
+  .cover-strip {
+    display: block; width: 100%; aspect-ratio: 6 / 1; object-fit: cover; object-position: center;
+    margin-block-start: var(--space-1); background: var(--plate);
+  }
   .empty { margin-block: var(--space-6); color: var(--muted); font-size: var(--text-small); }
-  @media (max-width: 700px) {
-    li.illustrated { grid-template-columns: minmax(0, 1fr); gap: var(--space-3); }
+  @container (max-width: 420px) {
+    .timeline > .entry { padding-inline-start: var(--space-5); }
+    .timeline .illustrated { grid-template-columns: minmax(0, 1fr); gap: var(--space-2); }
+    .cover-strip { aspect-ratio: 4 / 1; }
   }
 </style>

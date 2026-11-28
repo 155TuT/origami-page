@@ -1,4 +1,4 @@
-import { writeFile } from "node:fs/promises";
+import { readFile, writeFile } from "node:fs/promises";
 import { visibleFoldEdges } from "../../tools/fold-outline.mjs";
 
 // Visible folded surfaces in model coordinates: x along the hull, y towards
@@ -8,6 +8,8 @@ function mesh() {
     faces = [],
     creases = [],
     panels = new Map();
+  const groups = new Map(), tones = new Map();
+  let groupName;
   const ids = new Map();
   function vertex(p) {
     const key = p.map((n) => n.toFixed(6)).join("/");
@@ -17,19 +19,53 @@ function mesh() {
     }
     return ids.get(key);
   }
-  function panel(corners, scored = true) {
+  function panel(corners, scored = true, tone) {
     const p = corners.map(vertex);
     for (let i = 1; i < p.length - 1; i++) {
       const triangle = [p[0], p[i], p[i + 1]];
       faces.push(triangle);
       panels.set(triangle, p);
+      groups.set(triangle, groupName);
+      if (tone !== undefined) tones.set(triangle, tone);
     }
     if (scored) p.forEach((a, i) => creases.push([a, p[(i + 1) % p.length]]));
   }
   function edge(a, b) {
     creases.push([vertex(a), vertex(b)]);
   }
-  return { points, faces, creases, panels, panel, edge };
+  function group(name) { groupName = name; }
+  return { points, faces, creases, panels, tones, groups, group, panel, edge };
+}
+
+// Handa's scissor handles are loops of folded strips. Each loop is built
+// around its open middle; both blade tips sit forward of the two loops.
+function scissors() {
+  const m = mesh();
+  const angle = 15 * Math.PI / 180;
+  // The original study is a 100 × 82 elevation rotated about its centre.
+  // Keep that view when assembling its visible paper facets as a shallow mesh.
+  const corner = ([x, y], z) => [
+    (x - 50) * Math.cos(angle) - (y - 41) * Math.sin(angle),
+    (x - 50) * Math.sin(angle) + (y - 41) * Math.cos(angle), z
+  ];
+  const face = (tone, z, points) => m.panel(points.map(p => corner(p, z)), true, tone);
+  m.group("handle-a");
+  face(7, 0, [[42,14],[48,7],[59,4],[56,11],[47,17]]);
+  face(18, 0, [[59,4],[66,6],[69,10],[62,15],[56,11]]);
+  face(65, 0, [[69,10],[67,26],[58,33],[53,25],[62,15]]);
+  face(77, 0, [[58,33],[50,29],[43,22],[53,25]]);
+  face(65, 0, [[43,22],[42,14],[47,17],[53,25]]);
+  m.group("handle-b");
+  face(18, .1, [[60,34],[69,25],[85,24],[77,29],[66,36]]);
+  face(18, .1, [[85,24],[89,27],[88,40],[84,33],[77,29]]);
+  face(77, .1, [[88,40],[83,46],[74,46],[78,41],[84,33]]);
+  face(7, .1, [[74,46],[66,40],[60,34],[66,36],[78,41]]);
+  m.group("blade-a");
+  face(65, .2, [[12,69],[28,46],[54,30],[67,25],[60,34],[41,47]]);
+  m.group("blade-b");
+  face(18, .3, [[15,74],[40,47],[67,25],[85,24],[62,38],[45,62]]);
+  face(7, .4, [[15,74],[40,47],[62,38],[45,62]]);
+  return m;
 }
 
 // Bodlaender's traditional newspaper boat. The central point is part of the
@@ -40,6 +76,7 @@ function paperBoat() {
     right = [1.1, 0, 0.58],
     peak = [-0.075, 0, 0.91];
   for (const side of [-1, 1]) {
+    m.group(side === 1 ? "hull-near" : "hull-far");
     const middle = [0, side * 0.38, 0.3];
     const keelLeft = [-0.61, side * 0.07, 0],
       keelRight = [0.61, side * 0.07, 0];
@@ -51,6 +88,7 @@ function paperBoat() {
     m.panel([left, collarLeft, middle]);
     m.panel([middle, collarRight, right]);
     m.panel([collarLeft, collarRight, middle]);
+    m.group("peak");
     m.panel([collarLeft, peak, collarRight]);
   }
   for (const end of [-1, 1]) {
@@ -228,6 +266,7 @@ function rose() {
   const across = [0, 0.1, 0.23, 0.38, 0.53, 0.68, 0.84, 1];
   const quarters = [];
   for (let petal = 0; petal < 4; petal++) {
+    m.group("petal-" + petal);
     const grid = profile.map(([r, twist, h, overlap], i) =>
       across.map((t) => {
         // The free corners extend beyond the middle of each folded edge.
@@ -259,6 +298,7 @@ function rose() {
   const centre = [0, 0, 0.77],
     bottom = [0, 0, 0.03];
   quarters.forEach((grid, k) => {
+    m.group("petal-" + k);
     const previous = quarters[(k + 3) % 4];
     for (let i = 0; i < profile.length - 1; i++) {
       m.panel([grid[i][0], previous[i].at(-1), previous[i + 1].at(-1), grid[i + 1][0]], false);
@@ -387,28 +427,34 @@ function painterOrder(points, faces) {
   return out;
 }
 
-function bake(model, elevation = 30) {
-  const projected = model.points.map((p) => project(p, elevation));
+const tokens = await readFile(new URL("../../src/styles/tokens.css", import.meta.url), "utf8");
+function token(name) {
+  const value = tokens.match(new RegExp("--" + name + ":\\s*([^;]+);"));
+  if (!value) throw new Error("Missing design token " + name);
+  return value[1].trim();
+}
+
+function bake(model, elevation = 30, opticalScale = 1) {
+  const projected = elevation === null ? model.points : model.points.map((p) => project(p, elevation));
   const xs = projected.map((p) => p[0]),
     ys = projected.map((p) => p[1]);
   const left = Math.min(...xs),
     right = Math.max(...xs),
     top = Math.min(...ys),
     bottom = Math.max(...ys);
-  const scale = Math.min((39 * 0.92) / (right - left), (32 * 0.91) / (bottom - top));
-  const xy = projected.map(([x, y]) => [
-    19.5 + (x - (left + right) / 2) * scale,
-    16 + (y - (top + bottom) / 2) * scale,
+  const scale = opticalScale * Math.min((39 * 0.92) / (right - left), (32 * 0.91) / (bottom - top));
+  const points = projected.map(([x, y, z]) => [
+    round(19.5 + (x - (left + right) / 2) * scale),
+    round(16 + (y - (top + bottom) / 2) * scale),
+    round(z * scale),
   ]);
-  const faces = painterOrder(
-    xy.map(([x, y], i) => [x, y, projected[i][2]]),
-    model.faces,
-  );
+  const xy = points.map(([x, y]) => [x, y]);
+  const faces = painterOrder(points, model.faces);
+  const shades = faces.map(ids => model.tones.get(ids) ?? shade(model.panels.get(ids).map(i => projected[i])));
   const fill = [];
-  for (const ids of faces) {
-    const coords = ids.map((i) => xy[i]);
-    const tone = shade(model.panels.get(ids).map((i) => projected[i]));
-    const d = "M" + coords.map((p) => p.map(round).join(" ")).join("L") + "Z";
+  for (const [i, ids] of faces.entries()) {
+    const tone = shades[i];
+    const d = "M" + ids.map(id => xy[id].join(" ")).join("L") + "Z";
     if (fill.at(-1)?.[0] === tone) fill.at(-1)[1] += d;
     else fill.push([tone, d]);
   }
@@ -416,18 +462,44 @@ function bake(model, elevation = 30) {
     .filter(([a, b]) => Math.hypot(b[0] - a[0], b[1] - a[1]) > 0.035)
     .map(([a, b]) => "M" + a.map(round).join(" ") + "L" + b.map(round).join(" "))
     .join("");
-  return { fill, edges };
+  return { print: { fill, edges }, mesh: { points, faces, shades, groups: faces.map(ids => model.groups.get(ids)) } };
 }
 const baked = {
+  scissors: bake(scissors(), null),
   "paper-boat": bake(paperBoat()),
   sampan: bake(sampan()),
   sailboat: bake(catamaran()),
   "two-masted-boat": bake(twoMastedBoat()),
-  "kawasaki-rose": bake(rose(), 60),
+  "kawasaki-rose": bake(rose(), 60, Number(token("dock-rose-scale"))),
 };
+const generated = "// Generated by node prototype/selection/render-fold-poses.mjs.\n";
+const print = Object.fromEntries(Object.entries(baked).map(([id, pose]) => [id, pose.print]));
 await writeFile(
   new URL("./fold-poses.js", import.meta.url),
-  "// Generated by node prototype/selection/render-fold-poses.mjs.\nwindow.foldPoses = " +
-    JSON.stringify(baked) +
-    ";\n",
+  generated + "window.foldPoses = " + JSON.stringify(print) + ";\n",
 );
+
+// The player, both dock images and the file:// specimen share one projection.
+const models = {};
+const paper = token("crane-paper"), shadow = token("crane-shadow");
+const frame = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 39 32" width="39" height="32">';
+const stroke = parseFloat(token("dock-outline-stroke"));
+for (const id of ["scissors", "paper-boat", "kawasaki-rose"]) {
+  const { print, mesh } = baked[id];
+  models[id] = mesh;
+  const faces = print.fill.map(([tone, d]) => {
+    const color = Array.from({length:3}, (_, i) => {
+      const digit = 1 + i * 2;
+      const a = parseInt(paper.slice(digit, digit+2), 16);
+      const b = parseInt(shadow.slice(digit, digit+2), 16);
+      return Math.round(a + (b-a) * tone/120).toString(16).padStart(2, "0");
+    }).join("");
+    return `<path color="#${color}" d="${d}"/>`;
+  });
+  const outline = `<path d="${print.edges}" fill="none" stroke="black" stroke-width="${stroke}" stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke"/>`;
+  const save = (suffix, content) => writeFile(new URL(`../../public/art/${id}-${suffix}.svg`, import.meta.url), frame + content + "</svg>\n");
+  await save("icon", '<g fill="currentColor" stroke="currentColor" stroke-width=".045" stroke-linejoin="round">' + faces.join("") + '</g>');
+  await save("outline", outline);
+}
+await writeFile(new URL("../../src/lib/fold/dock-models.js", import.meta.url),
+  generated + "export const dockModels = " + JSON.stringify(models) + ";\n");

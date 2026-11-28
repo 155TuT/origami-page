@@ -1,14 +1,9 @@
 """Build the selection board's small WOFF2 samples with FontTools and Brotli."""
 
-from concurrent.futures import ThreadPoolExecutor
-from functools import partial
+import argparse
 from hashlib import sha256
 from pathlib import Path
 import re
-from tempfile import gettempdir
-from urllib.parse import quote
-from urllib.request import urlopen
-import sys
 
 from fontTools import subset
 from fontTools.ttLib import TTFont
@@ -16,20 +11,6 @@ from fontTools.varLib.instancer import instantiateVariableFont
 
 
 HERE = Path(__file__).resolve().parent
-GOOGLE = "https://raw.githubusercontent.com/google/fonts/06bfe0d62a98375cb09c942fa18e68bd32cff057/ofl/"
-WENKAI = "https://raw.githubusercontent.com/lxgw/LxgwWenKai/e52e0e1e9f561f1caa2e14c8154d3a1accee834a/"
-SOURCES = (
-    ("noto-serif", GOOGLE + "notoserifsc/", "NotoSerifSC[wght].ttf"),
-    ("wenkai-regular", WENKAI, "fonts/TTF/LXGWWenKai-Regular.ttf"),
-    ("wenkai-medium", WENKAI, "fonts/TTF/LXGWWenKai-Medium.ttf"),
-    ("noto-sans", GOOGLE + "notosanssc/", "NotoSansSC[wght].ttf"),
-    ("dm-sans", GOOGLE + "dmsans/", "DMSans[opsz,wght].ttf"),
-    ("plex-mono", GOOGLE + "ibmplexmono/", "IBMPlexMono-Regular.ttf"),
-)
-SUBSET_FAMILIES = {
-    "noto-serif": "Text A", "wenkai-regular": "Text B", "wenkai-medium": "Text B",
-    "noto-sans": "Text C", "dm-sans": "Interface", "plex-mono": "Numerals",
-}
 
 # Source hashes refer to the unpacked original fonts. See README.md for download links.
 SPECIMENS = (
@@ -66,27 +47,6 @@ def open_original(directory, filename, expected):
     return TTFont(path)
 
 
-def make_font(source, corpus, download_only):
-    key, base, filename = source
-    cache = Path(gettempdir()) / "fold-journal-specimen-fonts"
-    cache.mkdir(exist_ok=True)
-    url = base + quote(filename)
-    original = cache / (sha256(url.encode()).hexdigest()[:12] + ".ttf")
-    if not original.exists():
-        with urlopen(url, timeout=120) as response:
-            original.write_bytes(response.read())
-    # Both WenKai weights share one upstream license.
-    license_name = "wenkai" if base == WENKAI else key
-    license_file = HERE / (license_name + "-OFL.txt")
-    if key != "wenkai-medium" and not license_file.exists():
-        with urlopen(base + "OFL.txt", timeout=45) as response:
-            license_file.write_bytes(response.read())
-    if download_only:
-        return
-
-    save_subset(TTFont(original), key, SUBSET_FAMILIES[key], CODE_SYMBOLS if key == "plex-mono" else corpus)
-
-
 def save_subset(font, key, family_suffix, corpus, axes=None):
     options = subset.Options()
     options.name_IDs = ["*"]
@@ -104,8 +64,6 @@ def save_subset(font, key, family_suffix, corpus, axes=None):
     styles = {record.nameID: record.toUnicode() for record in names.names
               if record.nameID in (2, 17) and record.langID == 0x409}
     style = "Regular" if axes else styles.get(17, styles.get(2, "Regular"))
-    if key == "wenkai-medium":
-        style = "Medium"
     postscript = family.replace(" ", "") + "-" + style.replace(" ", "")
     replacements = {1: family, 2: style, 3: postscript, 4: family + " " + style, 6: postscript,
                     16: family, 17: style, 18: family + " " + style, 21: family, 25: family.replace(" ", "")}
@@ -161,7 +119,7 @@ def build_specimens(originals):
         axes = {"wght": 400, "wdth": 100} if key == "tech-inconsolata" else None
         if key == "tech-song":
             axes = {"wght": 400}
-        family = SUBSET_FAMILIES.get(key, key.replace("-", " ").title())
+        family = "Numerals" if key == "plex-mono" else key.replace("-", " ").title()
         if key in ("tech-song", "tech-fangsong"):
             missing = [ch for ch in chinese_sample if ord(ch) not in cmap]
             if missing:
@@ -177,13 +135,7 @@ def build_specimens(originals):
 
 
 if __name__ == "__main__":
-    if len(sys.argv) == 3 and sys.argv[1] == "--specimens-from":
-        build_specimens(Path(sys.argv[2]))
-        sys.exit(0)
-    download_only = "--download-only" in sys.argv
-    corpus = ASCII
-    if not download_only:
-        for name in ("index.html", "selection.js"):
-            corpus += (HERE.parent / name).read_text(encoding="utf-8")
-    with ThreadPoolExecutor(max_workers=3) as pool:
-        list(pool.map(partial(make_font, corpus=corpus, download_only=download_only), SOURCES))
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--specimens-from", required=True, type=Path, metavar="DIR",
+                        help="directory containing the original research fonts")
+    build_specimens(parser.parse_args().specimens_from)

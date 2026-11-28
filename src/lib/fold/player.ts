@@ -32,6 +32,7 @@ export class FoldPlayer {
   private ctx: CanvasRenderingContext2D | null = null;
   private stack: ReturnType<typeof createRenderStack>;
   private stocks = new Map<string, Surface>();
+  private model = "crane";
   private paper?: HTMLElement;
   private surface?: Surface;
   private box?: Box;
@@ -82,7 +83,7 @@ export class FoldPlayer {
 
   private stock(box: Box, ruling: string) {
     const material = Paper.readMaterial();
-    const key = [Math.round(box.width), Math.round(box.height), devicePixelRatio, ruling, material.key].join("/");
+    const key = [this.model, Math.round(box.width), Math.round(box.height), devicePixelRatio, ruling, material.key].join("/");
     let surface = this.stocks.get(key);
     if (surface) this.stocks.delete(key);
     else {
@@ -94,7 +95,7 @@ export class FoldPlayer {
       }
       const canvas = document.createElement("canvas");
       canvas.dataset.ruling = ruling;
-      surface = Paper.drawStock(canvas, box, material);
+      surface = Paper.drawStock(canvas, box, material, this.model);
     }
     this.stocks.set(key, surface);
     if (this.flat.firstChild !== surface.stock) this.flat.replaceChildren(surface.stock);
@@ -106,11 +107,12 @@ export class FoldPlayer {
     if (!paper) return false;
     const anchor = document.querySelector<HTMLElement>(`[data-fold-dock="${CSS.escape(paper.dataset.foldPaper!)}"]`);
     const icon = anchor?.querySelector<HTMLImageElement>("[data-fold-solid]");
-    if (!anchor || !icon) return false;
+    if (!anchor?.dataset.foldModel || !icon) return false;
+    this.model = anchor.dataset.foldModel;
     // The slot stays still while the scrollport and the visible ink scale together.
     const box = paper.closest(".paper-slot")!.getBoundingClientRect();
     if (box.width < 2 || box.height < 2) return false;
-    const { key, surface } = this.stock(box, paper.dataset.ruling ?? "ruled");
+    const { key, surface } = this.stock(box, paper.dataset.ruling ?? "blank");
     this.box = box;
     this.surface = surface;
     this.dock = anchor.getBoundingClientRect();
@@ -152,7 +154,7 @@ export class FoldPlayer {
   }
 
   private drawMesh(pose: Pose) {
-    const shape = Paper.foldShape(this.box!, pose);
+    const shape = Paper.foldShape(this.box!, pose, this.model);
     if (this.stack.active === "webgl2" && this.stack.gpu) {
       try {
         this.stack.gpu.draw(shape, pose, this.surface, this.fit(this.meshGL, shape));
@@ -172,7 +174,7 @@ export class FoldPlayer {
 
   private paint() {
     const box = this.box!, dock = this.dock!;
-    const pose = poseAt(this.clock, Paper.craneWidth(dock.width, dock.height) / Paper.fullWidth(box.width, box.height));
+    const pose = poseAt(this.clock, Paper.iconWidth(dock.width, dock.height, this.model) / Paper.fullWidth(box.width, box.height, this.model));
     const flat = pose.fold === 0, small = this.clock >= SMALL;
     this.flat.hidden = !flat;
     this.shuttle.hidden = !small || this.clock === DOCK_MS && document.documentElement.dataset.foldPhase === "docked";

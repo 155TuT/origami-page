@@ -80,6 +80,13 @@ async function checkLayout(page) {
     const content = rect(".sheet-content");
     const inset = content.left - paper.left;
     const nav = [...document.querySelectorAll(".site-nav a")].map(link => link.getBoundingClientRect());
+    const activeLink = document.querySelector(".site-nav a[aria-current]");
+    let labelClearance;
+    if (activeLink && window.innerWidth <= 700) {
+      const underline = getComputedStyle(activeLink, "::after");
+      const lineTop = activeLink.getBoundingClientRect().bottom - parseFloat(underline.bottom) - parseFloat(underline.height);
+      labelClearance = lineTop - activeLink.lastElementChild.getBoundingClientRect().bottom;
+    }
     const brand = rect(".wordmark");
     const tools = rect(".header-tools");
     const stacked = nav[0].top >= brand.bottom;
@@ -106,7 +113,7 @@ async function checkLayout(page) {
       brand: brand.left - paper.left,
       menu: stacked ? (nav[0].left + nav.at(-1).right - window.innerWidth) / 2 : nav.at(-1).right - paper.right,
       wordmark: inkBottom(".wordmark i") - inkBottom(".wordmark strong"),
-      menuFits: nav[0].left >= 0 && nav.at(-1).right <= window.innerWidth &&
+      labelClearance, menuFits: nav[0].left >= 0 && nav.at(-1).right <= window.innerWidth &&
         nav.slice(1).every((link, i) => link.left >= nav[i].right),
       toolGap: tools.left - brand.right,
       settingsFits: tools.left >= brand.right && (stacked || tools.right <= nav[0].left),
@@ -126,6 +133,7 @@ async function checkLayout(page) {
     layout.bottomInset - layout.inset, layout.overflowX]) assert.ok(Math.abs(error) <= 1, JSON.stringify(layout));
   assert.ok(layout.inset >= 10 && layout.menuFits && layout.settingsFits && layout.footer &&
     layout.fullScrollport && layout.fixed && layout.footerRow && layout.desktopFilings, JSON.stringify(layout));
+  if (layout.labelClearance !== undefined) assert.ok(layout.labelClearance >= 1, JSON.stringify(layout));
   assert.deepEqual(layout.footerText.slice(0, 2), ["友链", "RSS"]);
   assert.match(layout.footerText[2], /^©\d{4} 折间$/u);
 }
@@ -183,12 +191,19 @@ async function directTurn(page, link) {
 async function checkDocks(page, active, current) {
   const docks = await page.locator(".site-nav [data-fold-dock]").evaluateAll(nodes => nodes.map(node => ({
     id: node.dataset.foldDock, current: node.closest("a").getAttribute("aria-current"),
+    model: node.dataset.foldModel,
+    print: node.querySelector("[data-fold-solid]").src,
+    width: node.getBoundingClientRect().width,
     solid: getComputedStyle(node.querySelector("[data-fold-solid]")).visibility,
     loaded: node.querySelector("[data-fold-solid]").naturalWidth > 0,
     outline: getComputedStyle(node, "::before").maskImage,
   })));
   assert.deepEqual(docks.map(dock => dock.id), ["home", "works", "articles", "albums"]);
+  assert.deepEqual(docks.map(dock => dock.model), ["crane", "scissors", "paper-boat", "kawasaki-rose"]);
+  assert.equal(new Set(docks.map(dock => dock.print)).size, 4, "each section has its own solid print");
+  assert.equal(new Set(docks.map(dock => dock.outline)).size, 4, "each section has its own fold outline");
   for (const dock of docks) {
+    assert.equal(dock.width, 39, "all four sections keep the 39 px docking frame");
     assert.equal(dock.current, dock.id === active ? current : null);
     assert.equal(dock.solid, dock.id === active ? "hidden" : "visible");
     assert.ok(dock.loaded, "the navigation print must load for " + dock.id);
@@ -214,9 +229,13 @@ async function observeMotion(page) {
       const print = icon.querySelector("[data-fold-solid]");
       const width = document.documentElement.clientWidth;
       const flat = document.querySelector(".fold-flat").style;
+      const stock = document.querySelector(".fold-flat canvas");
+      const blankStock = () => stock && !stock.getContext("2d").getImageData(0, 0, stock.width, stock.height)
+        .data.some((value, i) => i % 4 === 3 && value !== 0);
       const top = document.querySelector(".site-header").getBoundingClientRect().bottom;
       window.dockChecks.push({
-        direction, section,
+        direction, section, matchesPaper: stock?.dataset.ruling === sheet.dataset.ruling &&
+          (sheet.dataset.ruling !== "blank" || blankStock()),
         reachesDock: Math.abs(position.m41 - dock.left) < 1 && Math.abs(position.m42 - dock.top) < 1,
         samePrint: shuttle.hidden === (direction === "in") && shuttle.src === print.src &&
           Math.abs(parseFloat(shuttle.style.width) - dock.width) < 1 &&
@@ -254,15 +273,18 @@ async function setting(page, name, checked) {
 }
 
 async function checkHandoff(page, from, to, path, parallel) {
+  const renderer = page.locator("#renderer-info");
+  const gpuWasReady = await renderer.getAttribute("data-ready") === "true";
   await page.evaluate(() => { window.dockChecks.length = 0; });
   await delayedTurn(page, linkTo(page, path, ".site-nav"), parallel);
   await checkDockEvidence(page, from, to);
+  if (gpuWasReady) assert.notEqual(await renderer.getAttribute("data-decision"), "unavailable", await renderer.textContent());
 }
 
 async function checkDockEvidence(page, from, to) {
   const checks = await page.evaluate(() => window.dockChecks);
   assert.deepEqual(checks.map(check => [check.direction, check.section]), [["in", from], ["out", to]]);
-  assert.ok(checks.every(check => check.centered && check.reachesDock && check.fixedFrame && check.samePrint),
+  assert.ok(checks.every(check => check.centered && check.reachesDock && check.fixedFrame && check.samePrint && check.matchesPaper),
     JSON.stringify(checks));
   await checkDocks(page, to, "page");
 }
@@ -396,6 +418,13 @@ async function run() {
     await checkTextureCache(page);
     await page.waitForSelector("html[data-enhanced]", { state: "attached" });
     await observeMotion(page);
+    const settings = page.locator("[data-settings] summary");
+    assert.equal((await settings.innerText()).trim(), "");
+    assert.equal(await settings.getAttribute("aria-label"), "阅读设置");
+    await settings.press("Enter");
+    assert.ok(await page.getByRole("switch", { name: "深色模式" }).isVisible());
+    await page.keyboard.press("Escape");
+    assert.ok(await settings.evaluate(el => el === document.activeElement && !el.closest("details").open));
     await checkDocks(page, "home", "page");
     await checkLayout(page);
     const backdrop = await page.locator(".desk-backdrop").elementHandle();
@@ -438,9 +467,17 @@ async function run() {
           await page.waitForSelector("html[data-enhanced]", { state: "attached" });
           assert.equal(await page.locator("html").getAttribute("data-theme"), dark ? "dark" : "light");
           await checkPageTitle(page, visibleTitle);
+          if (!visibleTitle) assert.equal(await page.locator("main").getAttribute("data-ruling"), "blank");
           await checkLayout(page);
           if (["works/", "archives/", "albums/"].includes(path)) {
             assert.equal(await page.locator(".sheet-content .action-link").count(), 0, "the listing must start with its entries");
+            const rows = await page.locator(".timeline > li").evaluateAll(entries => entries.map((entry, i) => ({
+              dot: getComputedStyle(entry, "::after").content !== "none",
+              line: getComputedStyle(entry, "::before").content !== "none",
+              shouldConnect: !entry.hasAttribute("data-pinned") && i < entries.length - 1,
+            })));
+            assert.ok(rows.every(row => row.dot && row.line === row.shouldConnect), JSON.stringify(rows));
+            if (!rows.length) assert.ok(await page.locator(".sheet-content .empty").isVisible());
           }
           if (path === "404.html") {
             await checkDocks(page);
@@ -472,6 +509,11 @@ async function run() {
     const tag = staticPage.locator("main details").filter({hasText: "折纸"});
     await tag.locator("summary").click();
     await linkTo(staticPage, project, "main details[open]").waitFor({state: "visible"});
+    await staticPage.goto(new URL("archives/", base).href);
+    const inlineTag = staticPage.locator(".timeline .tag-list > li").first();
+    assert.equal(await inlineTag.locator("a:visible").count(), 1, "each tag has one visible link without JavaScript");
+    await inlineTag.locator("a:visible").click();
+    await staticPage.locator("main details[open] :target").waitFor({state: "visible"});
     await staticPage.close();
     assert.deepEqual(errors, []);
     console.log(engine, "passed four fold docks, home profile, grouped tags, full-text search, direct routes, accessibility, history, themes and draft visibility");

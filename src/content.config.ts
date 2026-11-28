@@ -19,7 +19,7 @@ export const collections = {
       description: z.string().min(1),
       date: z.coerce.date(),
       tags: z.array(z.string().min(1)).default([]),
-      ruling: z.enum(["ruled", "grid"]).default("ruled"),
+      ruling: z.enum(["blank", "ruled", "grid"]).default("blank"),
       art: z.enum(["crane", "river"]).optional(),
       category: z.string().optional(),
       legacyPath: z.string().regex(/^\d{4}\/\d{2}\/\d{2}\/[^/]+$/).optional(),

@@ -16,6 +16,10 @@
   --line-dark: #a18a72;
   --accent: #874630;
   --accent-ink: #fff4e7;
+  --wax-body: #a35b41;
+  --wax-highlight: #d59371;
+  --wax-rim: #6e3627;
+  --timeline-seal-size: 11px;
   --plate: #e9dcc7;
   --plot-line: #906e5045;
   --plot-grid: #90745125;
@@ -24,7 +28,8 @@
   --crane-shadow: #643321;
   --dock-outline-ink: #785139;
   --dock-outline-stroke: .65px;
-  --dock-width: clamp(27px, 3.15vw, 39px);
+  --dock-width: 39px;
+  --dock-rose-scale: .73;
   --fold-shadow: #90745a;
   --fold-rule: #86664450;
   --fold-grid: #87684a46;
@@ -101,6 +106,9 @@
   --line-dark: #8b7461;
   --accent: #e6ae91;
   --accent-ink: #3f241a;
+  --wax-body: #b97859;
+  --wax-highlight: #e2ac86;
+  --wax-rim: #76432f;
   --plate: #473a30;
   --plot-line: #ceb4964d;
   --plot-grid: #c7a78526;
@@ -135,8 +143,11 @@
     --text-brand: 24px;
     --text-brand-latin: 15px;
     --text-nav: clamp(11px, 3vw, 14px);
-    --dock-width: clamp(17px, 5.6vw, 34px);
   }
+}
+
+@media (max-width: 700px) {
+  :root { --header-height: 100px; }
 }
 
 @media (max-width: 567px) {

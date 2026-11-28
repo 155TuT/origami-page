@@ -4,7 +4,7 @@ import { href, type NavSection } from "../../lib/sections";
 interface Props { section: NavSection; }
 const { section } = Astro.props;
 ---
-<span class="fold-dock" data-fold-dock={section.id} aria-hidden="true"
+<span class="fold-dock" data-fold-dock={section.id} data-fold-model={section.model} aria-hidden="true"
   style={{ "--dock-outline-image": `url(${JSON.stringify(href(section.outline))})` }}>
   <img data-fold-solid src={href(section.icon)} width="39" height="32" alt="" />
 </span>

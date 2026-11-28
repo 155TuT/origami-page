@@ -2,11 +2,11 @@
 
 ## 本轮折姿
 
-首页沿用千纸鹤，作品集用半田丈直的纸剪刀，影集用川崎敏和的开放型玫瑰。文章的四种单纸船并排绘出实心与可见折边，可切换到 22 px 或 39 px，与其余三栏共同查看。[栏目折纸样张](../folds.html) · [实心与线稿对照图](boat-comparison.png)
+首页沿用千纸鹤，作品集用半田丈直的纸剪刀，文章用报纸船，影集用川崎敏和的开放型玫瑰。选型板保留另外三种单纸船，可切换实心图和可见折边，与其余三栏共同查看。导航预览默认宽 39 px、高约 32 px，也可切到 22 px 宽检查小尺寸轮廓。[栏目折纸样张](../folds.html) · [实心与线稿对照图](boat-comparison.png)
 
-四种船沿用纸鹤停靠时的方位角 −30°、仰角 30°。玫瑰取同一方位，仰角 60°。同一折姿投影出实心图和线稿，前层纸片遮住的远侧折线随之隐藏。双桅帆船与报纸船一样展开一个船腹，靠船底自立，双体帆船的帆则由两条分开的船体承托。成品参照下列图录建模，导航画框和留白与鹤相同。[折姿模型与生成脚本](../render-fold-poses.mjs) · [离线图样](../fold-poses.js) · [可见折边提取](../../../tools/fold-outline.mjs)
+四种船沿用纸鹤停靠时的方位角 −30°、仰角 30°。玫瑰取同一方位，仰角 60°，花头在共同画框中居中缩至原来的 73%。同一折姿投影出实心图和线稿，前层纸片遮住的远侧折线随之隐藏。双桅帆船与报纸船一样展开一个船腹，靠船底自立，双体帆船的帆则由两条分开的船体承托。[折姿模型与生成脚本](../render-fold-poses.mjs) · [离线图样](../fold-poses.js) · [可见折边提取](../../../tools/fold-outline.mjs)
 
-赤陶纸的颜色取自 `--crane-paper` 与 `--crane-shadow`。纸鹤、四种船与玫瑰按折面朝向在两色间取 121 档。纸剪刀使用纸鹤末帧的第 7、18、65、77 档，两处指孔露出底纸，交叠剪刃有迎光与背光之分。线稿在明暗纸面上分别使用主题描线。[纸鹤面光照](../../../src/lib/fold/paper.js) · [纸鹤实心图](../../../public/art/crane-icon.png) · [样张色阶](../folds.css)
+赤陶纸的颜色取自 `--crane-paper` 与 `--crane-shadow`。纸鹤、四种船与玫瑰按折面朝向在两色间取 121 档。纸剪刀使用纸鹤末帧的第 7、18、65、77 档，两处指孔露出底纸，交叠剪刃有迎光与背光之分。线稿在明暗纸面上分别使用主题描线。[纸鹤面光照](../../../src/lib/fold/paper.js) · [纸鹤实心图](../../../public/art/crane-icon.png) · [颜色与尺寸变量](../../../src/styles/tokens.css)
 
 | 栏目与图样 | 折姿依据 |
 | --- | --- |
@@ -18,12 +18,12 @@
 | 文章备选 · 双体帆船 | Maarten van Gelder 于 1987 年 5 月署名的《Catamaran》。单张方纸在第 7 步收成双船体，第 12、13 步将前帆尖收入夹层，第 14 步展开两帆。成品依靠两条平行船体自立。此前研究的传统双帆款把底角向后折成支脚。[作者 14 步原图](https://www.origami.cz/Pdf/catamaran.pdf) · [桌面实折与难度记录](https://papernpearlz.blogspot.com/2012/05/catamaran.html) · [此前平折背撑款](https://origami.guide/origami-vehicles/origami-boats/origami-sail-boat/) |
 | 影集 · 川崎玫瑰 | 选川崎敏和原作的开放型「開いたばら」。朝日出版社并列展示花蕾与开放型，Gilad Aharoni 的档案另列开放型的单张方纸实折和《折り紙夢WORLD》等出版记录。花头经扭转和整形，从 60° 仰角能看到内瓣的旋纹和近侧外瓣的高低。[官方版本图鉴](https://www.asahipress.com/origami/kawasakirose/) · [开放型实折与出版记录](https://www.giladorigami.com/origami-Roses-Kawasaki#:~:text=Rose%20-%20open%20petals) |
 
-## 本地图版与此前的参考图
+## 此前的折纸参考
 
-| 本地素材 | 图像来源与用途 |
+| 形象 | 原始图版 |
 | --- | --- |
-| [junk-1884.webp](junk-1884.webp) | Gaston Tissandier《Jeux et jouets du jeune âge》，巴黎，G. Masson，1884 年。公版插图。离线样张将扫描局部转存为 WebP。[档案及原始图版](https://www.origamiheaven.com/historyofchinesejunk.htm) |
-| [purse-1826.webp](purse-1826.webp) | 大都会艺术博物馆《Valentine: Puzzle Purse》，1826 年，藏品 1981.1136.178，Gift of Mrs. Richard Riddell, 1981。藏品展开正面 DP879753，开放图像 CC0，转存为 WebP。[藏品及授权](https://www.metmuseum.org/art/collection/search/775441) |
-| [jumping-frog.svg](jumping-frog.svg) | Iyo《Origami Jumping Frog》，2010 年，Open Clip Art Library，CC0。上一轮纸蛙样张以原稿作大图，并在停靠小样中重新着色、略去投影。[作者作品](https://openclipart.org/detail/95113/origami-jumping-frog) · [文件与 CC0 授权](https://commons.wikimedia.org/wiki/File:Origami_jumping_frog.svg) |
-| [frame-1887.webp](frame-1887.webp) | H. E.〈The First Paper Canoe〉，《St. Nicholas》，1887 年 9 月，第 874 页图 18。佛罗里达大学馆藏公版期刊图版，截取原图后转存为 WebP。[原刊图版](https://ufdcimages.uflib.ufl.edu/UF/00/06/55/13/00189/UF00065513_00189.pdf#page=75) |
+| 篷船 | Gaston Tissandier《Jeux et jouets du jeune âge》，1884 年。[折纸史档案](https://www.origamiheaven.com/historyofchinesejunk.htm) |
+| 谜折信 | 《Valentine: Puzzle Purse》，1826 年，藏品 1981.1136.178。[大都会艺术博物馆](https://www.metmuseum.org/art/collection/search/775441) |
+| 跳蛙 | Iyo《Origami Jumping Frog》，2010 年。[Open Clip Art Library](https://openclipart.org/detail/95113/origami-jumping-frog) |
+| 纸舟框架 | H. E.〈The First Paper Canoe〉，《St. Nicholas》，1887 年 9 月，第 874 页图 18。[佛罗里达大学馆藏](https://ufdcimages.uflib.ufl.edu/UF/00/06/55/13/00189/UF00065513_00189.pdf#page=75) |
 

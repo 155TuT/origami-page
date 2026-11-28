@@ -1,9 +1,9 @@
 ---
 import Site from "../../layouts/Site.astro";
 import { PostList } from "../../components/ui";
-import { published, toEntry } from "../../lib/blog";
-const works = (await published("work")).map(toEntry);
+import { timelineEntries } from "../../lib/blog";
+const works = await timelineEntries("work");
 ---
 <Site title="作品集">
-  <PostList entries={works} covers empty="作品集还没有公开作品。" />
+  <PostList entries={works} variant="collection" empty="作品集还没有公开作品。" />
 </Site>

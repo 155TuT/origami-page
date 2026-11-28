@@ -14,6 +14,8 @@ async function run() {
     const sources = new Map([
       ["/tokens.css", ["src/styles/tokens.css", "text/css"]],
       ["/paper.js", ["src/lib/fold/paper.js", "text/javascript"]],
+      ["/section-motion.js", ["src/lib/fold/section-motion.js", "text/javascript"]],
+      ["/dock-models.js", ["src/lib/fold/dock-models.js", "text/javascript"]],
       ["/crane-data.js", ["src/lib/fold/crane-data.js", "text/javascript"]],
       ["/fold-outline.mjs", ["tools/fold-outline.mjs", "text/javascript"]],
     ]);

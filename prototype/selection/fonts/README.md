@@ -63,7 +63,7 @@
 | 数学字库 | 文件与来源 |
 | --- | --- |
 | STIX Two Math 2.13 b171 | `stix-two-math.otf`。[STIX 原版](https://github.com/stipub/stixfonts/tree/v2.13b171/fonts/static_otf) · [OFL 1.1](stix-two-math-LICENSE.txt) |
-| Latin Modern Math 1.959 | `latin-modern-math.otf`。[CTAN 发行版](https://ctan.org/pkg/lm-math) · [GUST Font License](latin-modern-math-LICENSE.txt) |
+| Latin Modern Math 1.959 | 与正式站共用[完整 OTF](../../../src/assets/fonts/latinmodern-math.otf)。[CTAN 发行版](https://ctan.org/pkg/lm-math) · [GUST Font License](../../../public/font-licenses/latin-modern-math.txt) |
 
 这两份 OTF 均随附完整原版，保留了 OpenType MATH 表中的数学轴、字距和伸缩字形配置。编辑 [Markdown 样文](../technical.md) 后，可在项目根目录运行 `node prototype/selection/render-technical.mjs` 再生成页面使用的渲染结果。
 
@@ -73,7 +73,7 @@
 
 TRW 缺少的 31 个码位对应「佧、氽、坶、揞、揎、甙、囝、猸、庀、沲、彐、缍、缋、缏、楱、軎、搿、朊、膪、憝、肀、泶、砩、礤、钸、镙、窆、蟓、蠛、鳋、齄」。本页的站标、标题和样文本身均已逐字核过字库。
 
-将表中原版文件按 [构建脚本](build.py) 的 `SPECIMENS` 与 `TECHNICAL` 表命名，放入一个临时目录，安装 FontTools 和 Brotli 后运行下列命令。脚本核验原版 SHA-256、中文覆盖与 ASCII 等宽度量，再从正文和技术 Markdown 中提取字符，重命名并生成离线 WOFF2。界面字库由同脚本的默认入口生成。
+将表中原版文件按 [构建脚本](build.py) 的 `SPECIMENS` 与 `TECHNICAL` 表命名，放入一个临时目录，安装 FontTools 和 Brotli 后运行下列命令。脚本核验原版 SHA-256、中文覆盖与 ASCII 等宽度量，再从正文和技术 Markdown 中提取字符，重命名并生成离线 WOFF2。
 
 ```sh
 python prototype/selection/fonts/build.py --specimens-from "/path/to/original-fonts"

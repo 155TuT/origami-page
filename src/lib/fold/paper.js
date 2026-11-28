@@ -1,4 +1,5 @@
 import {CraneClip} from './crane-data.js';
+import {prepareFaces, sectionFrame, sectionMotion, sectionScores, sheetFaces} from './section-motion.js';
 
 /* Shared paper geometry for the printed plate, both navigation icons and the transition. */
 export const Paper = (() => {
@@ -84,15 +85,14 @@ export const Paper = (() => {
   }
 
   // The inverse of each triangle's REST UV basis is constant across all poses.
-  const faces = triangles.map((ids,index) => {
-    const [[u,v],[u1,v1],[u2,v2]] = ids.map(i=>uv[i]);
-    const determinant = (u1-u)*(v2-v)-(u2-u)*(v1-v);
-    return {ids,index,u,v, minU:Math.min(u,u1,u2), maxU:Math.max(u,u1,u2),
-      minV:Math.min(v,v1,v2), maxV:Math.max(v,v1,v2), ax:(v2-v)/determinant, bx:(v-v1)/determinant,
-      ay:(u-u2)/determinant, by:(u1-u)/determinant, depth:0};
-  });
-  const order = faces.slice();
-  function orderedFaces(points) {
+  const faces = prepareFaces(triangles,uv);
+  const sorted = new WeakMap();
+  function orderedFaces(points, topology=faces, layered=false) {
+    // Once the packet opens, preserve the visible layers of the model. Its
+    // static print uses this same precomputed occlusion order.
+    if (layered) return topology;
+    let order = sorted.get(topology);
+    if (!order) { order = topology.slice(); sorted.set(topology,order); }
     order.forEach(face => {
       const [a,b,c]=face.ids;
       face.depth=points[a][2]+points[b][2]+points[c][2];
@@ -100,32 +100,32 @@ export const Paper = (() => {
     order.sort((a,b) => a.depth-b.depth);
     return order;
   }
-  function drawMesh(ctx, points, fold, surface, rulingAmount=0, detail=false) {
-    const relief = ease(fold/.48);
+  function drawMesh(ctx, points, fold, surface, rulingAmount=0, detail=false, frame) {
+    const relief = frame?.relief ?? ease(fold/.48);
     const {shades} = (surface?.material ?? readMaterial()).palette(fold);
     const shade = amount => shades[Math.round(clamp(amount)*120)];
     ctx.lineJoin = 'round';
-    for (const face of orderedFaces(points)) {
+    for (const face of orderedFaces(points, frame?.faces, frame?.layered)) {
       const ids=face.ids, a=points[ids[0]], b=points[ids[1]], c=points[ids[2]];
       const bx=b[0]-a[0], by=b[1]-a[1], bz=b[2]-a[2];
       const cx=c[0]-a[0], cy=c[1]-a[1], cz=c[2]-a[2];
       let nx=by*cz-bz*cy, ny=bz*cx-bx*cz, nz=bx*cy-by*cx;
-      if (Math.abs(nz) < .035) continue;
+      if (Math.abs(nz) < (frame?.layered ? 1e-8 : .035)) continue;
       const front = nz > 0;
       const normalLength=Math.hypot(nx,ny,nz)*(front ? 1 : -1);
       nx/=normalLength; ny/=normalLength; nz/=normalLength;
       const light = clamp(.52 + .55*(-.45*nx-.78*ny+.43*nz) + (front ? .025 : -.07));
-      const darkness = (1-light)*.93*relief;
+      const darkness = mix((1-light)*.93*relief, face.endTone / 120, frame?.endTint ?? 0);
       ctx.beginPath(); ctx.moveTo(a[0],a[1]); ctx.lineTo(b[0],b[1]); ctx.lineTo(c[0],c[1]); ctx.closePath();
       let fill = shade(darkness);
       if (detail) {
         const grad=ctx.createLinearGradient(a[0],a[1],(b[0]+c[0])/2+.001,(b[1]+c[1])/2);
         grad.addColorStop(0, shade(darkness-.065)); grad.addColorStop(1, shade(darkness+.045)); fill=grad;
       }
-      ctx.lineWidth=detail ? .36 : .55;
+      ctx.lineWidth=detail ? .36 : mix(.55, frame?.printStrokeWidth ?? .55, frame?.endTint ?? 0);
       ctx.fillStyle=fill; ctx.strokeStyle=fill;
       ctx.stroke(); ctx.fill();
-      if (!surface || rulingAmount<=0) continue;
+      if (!surface?.patches.length || rulingAmount<=0) continue;
       // Ink is already gone before the first lifted face. Only the printed stock
       // travels through the mesh. Both sides share the original paper origin.
       const sx=surface.stock.width, sy=surface.stock.height;
@@ -168,9 +168,16 @@ export const Paper = (() => {
   }
   // This transparent bitmap is both the live HTML underlay and the material
   // wrapped around the mesh. Draw the whole sheet once in CSS-pixel units.
-  function drawStock(el, rect=el.getBoundingClientRect(), material=readMaterial()) {
+  function drawStock(el, rect=el.getBoundingClientRect(), material=readMaterial(), modelId='crane') {
+    const style=stockStyles[el.dataset.ruling];
+    if (!style) {
+      // The sheet and facets supply the paper colour. Only printed marks use this texture.
+      el.width=el.height=1;
+      context2D(el);
+      return {stock:el, grid:false, material, outputDpr:1, patches:[], stepX:0, stepY:0};
+    }
     const {ctx,w,h}=prepareCanvas(el,Math.min(devicePixelRatio || 1,1.5),rect);
-    const grid=el.dataset.ruling==='grid', style=stockStyles[el.dataset.ruling];
+    const grid=el.dataset.ruling==='grid';
     const step=style.step, origin=step/2;
     ctx.beginPath();
     for (let y=origin+.5;y<h;y+=step) { ctx.moveTo(0,y); ctx.lineTo(w,y); }
@@ -180,21 +187,22 @@ export const Paper = (() => {
     ctx.strokeStyle=grid ? material.grid : material.rule; ctx.lineWidth=style.width; ctx.stroke();
     // Only long scores from the source pattern, never triangulation diagonals.
     ctx.beginPath();
-    for (const [i,j] of CraneClip.scores) {
-      ctx.moveTo(uv[i][0]*w,uv[i][1]*h);
-      ctx.lineTo(uv[j][0]*w,uv[j][1]*h);
+    const motion = sectionMotion(modelId);
+    const scores = motion ? sectionScores : CraneClip.scores.map(([i,j]) => [uv[i],uv[j]]);
+    for (const [[u,v],[u1,v1]] of scores) {
+      ctx.moveTo(u*w,v*h); ctx.lineTo(u1*w,v1*h);
     }
     ctx.lineWidth=.65; ctx.strokeStyle=material.score; ctx.stroke();
     ctx.translate(.55,.65); ctx.strokeStyle=material.highlight;
     // Canvas paths capture transforms at construction; offset the highlight
     // in the sheet's coordinates so it projects with the groove.
     ctx.beginPath();
-    for (const [i,j] of CraneClip.scores) {
-      ctx.moveTo(uv[i][0]*w,uv[i][1]*h); ctx.lineTo(uv[j][0]*w,uv[j][1]*h);
+    for (const [[u,v],[u1,v1]] of scores) {
+      ctx.moveTo(u*w,v*h); ctx.lineTo(u1*w,v1*h);
     }
     ctx.stroke();
     // Sample just this face's part of the sheet, with a texel gutter for filtering.
-    const patches=faces.map(face=>{
+    const patches=(motion ? sheetFaces : faces).map(face=>{
       const x=Math.max(0,Math.floor(face.minU*el.width)-1);
       const y=Math.max(0,Math.floor(face.minV*el.height)-1);
       return {x,y,w:Math.min(el.width,Math.ceil(face.maxU*el.width)+1)-x,
@@ -259,20 +267,33 @@ export const Paper = (() => {
     ctx.font='9px Consolas, monospace'; ctx.textAlign='right'; ctx.fillStyle='#5b6f7b';
     ctx.fillText(key==='wind'?'ORIZURU  /  FOLDED PAPER':'RIVERSIDE  /  DUSK',332,225);
   }
-  function fullWidth(w,h) { return fitWidth(w*.73,h*1.06); }
-  function foldShape(rect,state) {
+  function iconWidth(w,h,id='crane') {
+    const motion = sectionMotion(id);
+    return motion ? motion.width * 19.5 * Math.min(w/39,h/32) : craneWidth(w,h);
+  }
+  function fullWidth(w,h,id='crane') {
+    const motion = sectionMotion(id);
+    return motion ? Math.min(w*.73,h*1.06*motion.width/motion.height) : fitWidth(w*.73,h*1.06);
+  }
+  function foldShape(rect,state,id='crane') {
     const {fold,scale}=state;
-    const u=fullWidth(rect.width, rect.height)/bounds.width, q=ease(fold);
-    const points=place(fold===1 ? folded : project(fold),0,0,mix(rect.width/2,u,q)*scale,mix(rect.height/2,u,q)*scale,u*scale,q);
+    const motion = sectionMotion(id);
+    const u=fullWidth(rect.width, rect.height,id)/(motion?.width ?? bounds.width), q=ease(fold);
+    const sx=mix(rect.width/2,u,q)*scale, sy=mix(rect.height/2,u,q)*scale, sz=u*scale;
+    const frame=motion ? sectionFrame(motion,fold) : null;
+    const points=frame ? frame.points.map(([x,y,z])=>[x*sx,y*sy,z*sz]) :
+      place(fold===1 ? folded : project(fold),0,0,sx,sy,sz,q);
     let left=Infinity, right=-Infinity, top=Infinity, bottom=-Infinity;
     for (const [x,y] of points) {
       left=Math.min(left,x); right=Math.max(right,x); top=Math.min(top,y); bottom=Math.max(bottom,y);
     }
-    return {points,left,right,top,bottom};
+    return {points,left,right,top,bottom,uv:frame?.uv ?? uv,faces:frame?.faces ?? faces,
+      layered:frame?.layered ?? false, relief:frame?.relief ?? ease(fold/.48), endTint:frame?.endTint ?? 0,
+      ruling:frame?.ruling ?? 1, printStrokeWidth:motion ? .045*sx/19.5 : .55};
   }
   function drawFold(ctx, shape, state, surface) {
-    drawMesh(ctx,shape.points,state.fold,surface,state.ruling);
+    drawMesh(ctx,shape.points,state.fold,surface,state.ruling*shape.ruling,false,shape);
   }
-  return {drawIcon,drawPlate,drawStock,foldShape,drawFold,craneWidth,fullWidth,ease,mix,
+  return {drawIcon,drawPlate,drawStock,foldShape,drawFold,craneWidth,iconWidth,fullWidth,ease,mix,
     uv,orderedFaces,readMaterial,drawCrane:bird,context2D};
 })();

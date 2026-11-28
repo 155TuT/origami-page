@@ -35,7 +35,7 @@ PUBLIC_DESK_IMAGE_URL=art/bamboo.webp
 
 ## 写一篇文章
 
-在 `src/content/posts/` 添加 Markdown 文件，文件名决定永久链接，日期决定列表和相邻文章顺序。例如 `a-sheet-of-paper.md` 发布到 `/archives/a-sheet-of-paper/`。已发布文章的 `/posts/<slug>/` 旧书签指向正式地址。`draft` 为草稿分区保留。
+在 `src/content/posts/` 添加 Markdown 文件，文件名决定永久链接。例如 `a-sheet-of-paper.md` 发布到 `/archives/a-sheet-of-paper/`。三个栏目均按日期从新到旧排列，可在 frontmatter 中以正数 `sticky` 置顶，数值越大越靠前。每条置顶记录单独留点，普通记录沿时间线连接。正文的相邻文章按实际发布时间排列。已发布文章的 `/posts/<slug>/` 旧书签指向正式地址。`draft` 为草稿分区保留。
 
 ```markdown
 ---
@@ -43,7 +43,7 @@ title: 一张纸的尺寸
 description: 在不同尺寸的纸上比较同一道折痕。
 date: 2026-11-18
 tags: [纸艺, 观察]
-ruling: ruled
+ruling: blank
 ---
 
 ## 对齐纸边
@@ -51,9 +51,11 @@ ruling: ruled
 这里写正文。
 ```
 
-`ruling` 可选 `ruled`（横线纸）或 `grid`（方格纸），默认横线纸。文章名填在 `title`，同时用作列表链接和正文页的一级标题。Markdown 从正文开始，二、三级标题生成目录。草稿可直接在 `src/content/posts/draft/` 阅读，或启动本机开发服务，手动输入 `/archives/draft/` 预览。将定稿移至 `src/content/posts/` 即可发布。生产构建只为公开内容生成页面、标签、搜索结果、订阅条目和旧址跳转。
+`ruling` 默认 `blank`（空白纸）。在单篇内容的 frontmatter 可改为 `ruled`（横线纸）或 `grid`（方格纸）。文章名填在 `title`，同时用作列表链接和正文页的一级标题。Markdown 从正文开始，二、三级标题生成目录。草稿可直接在 `src/content/posts/draft/` 阅读，或启动本机开发服务，手动输入 `/archives/draft/` 预览。将定稿移至 `src/content/posts/` 即可发布。生产构建只为公开内容生成页面、标签、搜索结果、订阅条目和旧址跳转。
 
 旧 Hexo 博客的八篇公开文章保留原发布时间、标签和日期书签。两份原草稿一并存入本机草稿区。日期按北京时间显示，RSS 使用原发布时刻。用 `$…$` 写行内公式，用独立成行的 `$$` 包裹公式块，构建时生成 MathML。旧文章的插图位于 `public/media/posts/<slug>/`，在 Markdown 里写 `![图注](/media/posts/<slug>/图片.webp)`，构建会补上部署子路径。友链的可选 `avatar` 字段可填写 `media/friends/文件名.webp`。
+
+文章列表使用 frontmatter 的 `description`、`tags` 和可选的 `cover`。常规头图放在 `public/media/posts/<slug>/head.webp`，也可用 PNG、JPEG 或 AVIF，`cover.src` 填对应的公开路径。构建时自动生成居中裁切的 WebP 条幅，其他本地路径和外部图片直接使用配置的地址。
 
 ## 作品、影集与个人资料
 
@@ -71,15 +73,15 @@ ruling: ruled
 
 ## 阅读与换页
 
-- 页眉的「阅读设置」提供深色模式、减少动态效果和并行取文与收纸。三项选择保存在浏览器中。首次访问时，配色跟随系统，折纸为完整速度，并行默认关闭。
+- 点击顶栏的滑杆图标可打开阅读设置，调整深色模式、减少动态效果和并行取文与收纸。三项选择保存在浏览器中。首次访问时，配色跟随系统，折纸为完整速度，并行默认关闭。
 - 首页、作品集、文章、影集各有一个折纸入口。当前栏目显示线稿，其余入口在线稿上覆盖实心图。跨栏目时，纸面折回原入口并与线稿重合，新内容从目标图标的位置展开。
 - 同栏目内直接换内容。搜索、友链与 404 共用无选中项的顶栏，进出这些页面均直接切换。前进、后退遵循相同的栏目判断。
 - 跨栏目时默认先取文，再收纸。并行模式同时取文与收纸，两项完成后交换正文。单程 1160 毫秒，完整收展约 2.32 秒。
 - 中央纸面占视口宽度的 60%，整张纸面均可滚动。原生滚动条与纸面等高，从不透明顶栏下沿延伸到视口底边。四边等宽的留白属于内容容器，上下留白随正文滚动。短页版权靠底，长文滚到末尾可见。窄屏保留纸面比例并改用单栏。
-- 折纸模型在第一次需要动效时下载。各页面共用一个动效层，长文只取当前可视纸面，最多缓存两张大纸纹。首轮使用 Canvas 2D，空闲时可以准备 WebGL2，并在相同尺寸、纸纹和收展方向下比较绘制表现。开启减少动态效果或画布不可用时，直接显示目标页。
+- 折纸模型在第一次需要动效时下载。各页面共用一个动效层，长文只取当前可视纸面，最多缓存两张大纸纹。首轮使用 Canvas 2D，空闲时可以准备 WebGL2，并按模型、尺寸、纸纹和收展方向比较绘制表现。开启减少动态效果或画布不可用时，直接显示目标页。
 - Astro ClientRouter 管理导航和页面元数据。博客按浏览器历史条目保存纸面的阅读位置，支持前进、后退和刷新。目录锚点、在新标签页打开和禁用 JavaScript 阅读使用普通链接。
 
-四个入口共用同一只赤陶色纸鹤，每个栏目可以单独配置实心图 `icon` 和线稿 `outline`。线稿保留外缘和可见折边，按最终折姿预先生成。浏览器直接显示 SVG，换主题时用 CSS 着色。修改纸色、造型或线宽后，使用下文相同的 Playwright 与本机 Chrome 运行 `node tools/render-crane.cjs`，同步导出实心图、线稿和文章插图。加 `--benchmark` 可复测提取与显示开销。[栏目配置](src/lib/sections.ts) · [通用可见边提取](tools/fold-outline.mjs) · [停靠规则与性能实测](docs/vi-design.md#导航线稿与停靠)
+顶栏依次使用千纸鹤、纸剪刀、报纸船和川崎玫瑰。每栏配置折叠模型 `model`、实心图 `icon` 和可见折边线稿 `outline`。四个停靠画框均为 39 × 32 px。玫瑰在框内居中缩至原尺寸的 73%，给饱满的花冠留出更多空白。跨栏目时用当前模型收纸，用目标模型展纸。纸鹤用 `node tools/render-crane.cjs` 导出，其余折姿用 `node prototype/selection/render-fold-poses.mjs` 生成。[栏目配置](src/lib/sections.ts) · [通用可见边提取](tools/fold-outline.mjs) · [停靠规则与实录](docs/vi-design.md#导航线稿与停靠)
 
 需要复查换页时，可在生产预览运行期间执行 `node tools/check-navigation.cjs`。此开发工具使用可选的 `playwright` 包和本机 Chrome，设置 `ORIGAMI_BROWSER=edge` 可改用本机 Edge，`ORIGAMI_URL` 可指向其他预览地址。回归覆盖背景缓存、导航线稿与实心图交接、跨栏目收展、同栏目直达、锚点和历史滚动恢复，以及桌面和窄屏下的纸边与版权位置。
 
@@ -98,7 +100,7 @@ ruling: ruled
 | `src/scripts/desk-texture.cjs` | 再生纸配方、首屏生成和浏览器存储 |
 | `src/assets/paper/`、`tools/generate-paper.py` | 同配方导出的静态后备遮罩及导出工具 |
 | `src/scripts/navigation.ts` | 路由生命周期、导航取消、偏好和键盘焦点 |
-| `src/lib/fold/` | 原纸鹤模型、独立收展时间轨、2D 与按需 WebGL2 绘制 |
+| `src/lib/fold/` | 四个栏目的折纸模型、收展时间轨、Canvas 2D 与 WebGL2 绘制 |
 | `public/art/` | 从同一模型和河岸绘图生成的静态插图，支持无脚本阅读 |
 | `models/crane/`、`tools/` | 折痕、原始姿态、模型烘焙和打包工具 |
 
@@ -106,4 +108,4 @@ ruling: ruled
 
 从项目根目录启动静态服务器，打开 `/prototype/`，就可以在「折纸手记」和「散步笔记」之间切换。`prototype/docs/` 收录了纸鹤的折叠过程图、两轮渲染实测数据，以及当时接入博客框架的实验记录。[双页原型](prototype/index.html) · [模型与多图标扩展](prototype/docs/实现与多图标扩展.md) · [渲染回退与博客集成](prototype/docs/渲染回退与博客集成.md) · [折痕来源与许可](THIRD-PARTY-NOTICES.txt)
 
-两张对照板都可直接在本地打开。正文、顶栏、目录和其他界面文字共用一套字体。汉字与半角数字用汇文明朝体 GBK，西文字母用 IM FELL English。字体板可以在同一行比较数字与英文大写的高度。代码用 Inconsolata 配 Noto Serif SC Regular，公式用 Latin Modern Math，可在同一篇 Markdown 样文中切换备选字体。页面另收录八枚 Phosphor Regular 功能图标。折纸板支持按 22 px 和 39 px 比较实心图与可见折边。[正文与技术字体试排](prototype/selection/index.html) · [栏目折纸对照板](prototype/selection/folds.html)
+两张对照板都可直接在本地打开。正文、顶栏、目录和其他界面文字共用一套字体。汉字与半角数字用汇文明朝体 GBK，西文字母用 IM FELL English。字体板可以在同一行比较数字与英文大写的高度。代码用 Inconsolata 配 Noto Serif SC Regular，公式用 Latin Modern Math，可在同一篇 Markdown 样文中切换备选字体。页面另收录八枚 Phosphor Regular 功能图标。折纸板默认以 39 px 显示实心图与可见折边，也可切到 22 px 比较。[正文与技术字体试排](prototype/selection/index.html) · [栏目折纸对照板](prototype/selection/folds.html)

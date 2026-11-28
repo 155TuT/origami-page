@@ -4,7 +4,6 @@ import SettingSwitch from "./SettingSwitch.astro";
 <details class="reading-settings" data-settings>
   <summary aria-label="阅读设置" title="阅读设置">
     <svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="1.55" aria-hidden="true"><path d="M3 7h5m5 0h8M3 17h9m5 0h4"/><circle cx="10.5" cy="7" r="2.5"/><circle cx="14.5" cy="17" r="2.5"/></svg>
-    <span>阅读设置</span>
   </summary>
   <div class="settings-panel">
     <SettingSwitch setting="theme">深色模式</SettingSwitch>
@@ -22,13 +21,12 @@ import SettingSwitch from "./SettingSwitch.astro";
   }
   :global(html:not([data-enhanced])) .reading-settings { display: none; }
   summary {
-    display: flex;
-    align-items: center;
-    gap: var(--space-2);
+    display: grid;
+    place-items: center;
+    width: var(--tool-size);
+    height: var(--tool-size);
     cursor: pointer;
     color: var(--muted);
-    font-size: var(--text-small);
-    white-space: nowrap;
     list-style: none;
   }
   summary::-webkit-details-marker { display: none; }
@@ -44,11 +42,7 @@ import SettingSwitch from "./SettingSwitch.astro";
     background: var(--surface);
     box-shadow: var(--shadow-panel);
   }
-  @media (max-width: 1360px) {
-    summary span { display: none; }
-  }
   @media (max-width: 1200px) {
     .reading-settings { border: none; padding: 0; }
-    summary { width: var(--tool-size); height: var(--tool-size); justify-content: center; }
   }
 </style>

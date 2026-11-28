@@ -4,7 +4,6 @@ description: 午后折了一只纸鹤。拇指压住翼根，轻轻提起纸尖�
 date: 2026-11-16
 category: 折纸手记
 tags: [纸艺, 折痕, 光影]
-ruling: ruled
 art: crane
 ---
 

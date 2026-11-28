@@ -4,9 +4,13 @@ and the packed runtime asset crane-data.js were derived from this pattern.
 https://github.com/amandaghassaei/OrigamiSimulator/blob/main/assets/Origami/flat_crane.svg
 The sampled animation, page design, and browser renderer were created for this demo.
 
+The clock and tag glyphs on the article timeline are from Phosphor Icons Regular.
+https://github.com/phosphor-icons/core/tree/v2.0.8/assets/regular
+
 MIT License
 
 Copyright (c) 2018 Amanda Ghassaei
+Copyright (c) 2023 Phosphor Icons
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -25,6 +29,14 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+
+栏目折纸参考
+
+纸剪刀参考半田丈直（Takenao Handa）的 Scissors，文章栏采用传统报纸船，
+影集参考川崎敏和的开放型川崎玫瑰。本站重绘了栏目图标并编排了换页折姿。
+https://www.giladorigami.com/origami-database/Scissors%2BTakenao%2BHanda
+https://webspace.science.uu.nl/~bodla101/d.origami/traditional/boat.html
+https://www.asahipress.com/origami/kawasakirose/
 
 网站字体 · Site fonts
 

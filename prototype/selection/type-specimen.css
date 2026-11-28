@@ -14,7 +14,6 @@
 @font-face { font-family: "Figures garamond"; src: url("fonts/figures-garamond.woff2"); unicode-range: U+0030-0039; font-feature-settings: "lnum", "pnum"; size-adjust: 107%; }
 @font-face { font-family: "Figures caslon"; src: url("fonts/figures-caslon.woff2"); unicode-range: U+0030-0039; size-adjust: 87.5%; }
 @font-face { font-family: "STIX specimen"; src: url("fonts/stix-two-math.otf") format("opentype"); }
-@font-face { font-family: "LM specimen"; src: url("fonts/latin-modern-math.otf") format("opentype"); }
 
 #top { --specimen-text: var(--type-digits, var(--type-en)), var(--type-en), var(--type-zh), var(--serif); }
 .type-workbench {
@@ -93,7 +92,7 @@
 #technical {
   --tech-mono: "Tech inconsolata";
   --tech-zh: "Tech song";
-  --tech-math: "LM specimen";
+  --tech-math: "Latin Modern Math";
   --tech-code: var(--tech-mono), "Tech dejavu", var(--tech-zh), monospace;
   --astro-code-background: var(--base);
   --astro-code-foreground: var(--ink);

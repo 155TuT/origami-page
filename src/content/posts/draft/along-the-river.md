@@ -4,7 +4,6 @@ description: 走到桥下，太阳只剩半枚。对岸的树影铺上水面，�
 date: 2026-11-12
 category: 散步笔记
 tags: [河岸, 光影]
-ruling: grid
 art: river
 ---
 

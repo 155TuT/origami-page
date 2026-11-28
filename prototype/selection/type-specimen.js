@@ -121,7 +121,7 @@
     const math = technical.querySelector("#tech-math").value;
     technical.style.setProperty("--tech-mono", `"Tech ${mono}"`);
     technical.style.setProperty("--tech-zh", `"Tech ${zh}"`);
-    technical.style.setProperty("--tech-math", math === "stix" ? '"STIX specimen"' : '"LM specimen"');
+    technical.style.setProperty("--tech-math", math === "stix" ? '"STIX specimen"' : '"Latin Modern Math"');
     technical.querySelector("#tech-width-note").textContent = advances[mono];
   }
   technical.addEventListener("change", updateTechnical);
